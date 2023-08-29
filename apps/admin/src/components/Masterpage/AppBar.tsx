@@ -5,6 +5,7 @@ import { useMasterpageStore } from "@/stores";
 
 interface AppBarProps {
   title?: string;
+  hideButton?: boolean | null | undefined;
 }
 
 export function AppBar (props: AppBarProps) {
@@ -12,9 +13,11 @@ export function AppBar (props: AppBarProps) {
 
   return (
     <AppBarComp>
-      <AppBarMenuBtn onClick={masterpageStore.toggleDrawer}>
-        <MenuOutlined />
-      </AppBarMenuBtn>
+      {!props.hideButton &&
+        <AppBarMenuBtn onClick={masterpageStore.toggleDrawer}>
+          <MenuOutlined />
+        </AppBarMenuBtn>
+      }
       <AppBarTitle level={4}>
         {props.title || 'N/A'}
       </AppBarTitle>

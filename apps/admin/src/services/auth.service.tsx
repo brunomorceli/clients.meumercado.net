@@ -1,17 +1,17 @@
-import { IConfirm, ISignin } from "@/interfaces";
+import { IAuthentication, IConfirm, ISignin } from "@/interfaces";
 import axios from "axios";
 
-class UserServiceClass {
-  static instance: UserServiceClass;
+class AuthServiceClass {
+  static instance: AuthServiceClass;
   baseURL: string;
   
   private constructor() {
     this.baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
   }
 
-  public static getInstance(): UserServiceClass {
+  public static getInstance(): AuthServiceClass {
     if (!this.instance) {
-      this.instance = new UserServiceClass();
+      this.instance = new AuthServiceClass();
     }
 
     return this.instance;
@@ -26,7 +26,7 @@ class UserServiceClass {
     });
   }
   
-  confirm(data: IConfirm): Promise<any> {
+  confirm(data: IConfirm): Promise<IAuthentication> {
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/users/confirm`;
       axios
@@ -37,4 +37,4 @@ class UserServiceClass {
   }
 }
 
-export const UserService = UserServiceClass.getInstance();
+export const AuthService = AuthServiceClass.getInstance();

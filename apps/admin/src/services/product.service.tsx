@@ -26,7 +26,7 @@ class ProductServiceClass {
     });
   }
   
-  search(data: IProductSearch): Promise<IProductSearchResult> {
+  find(data: IProductSearch): Promise<IProductSearchResult> {
     const params = new URLSearchParams(data as any).toString();
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/products/find?${params}`;

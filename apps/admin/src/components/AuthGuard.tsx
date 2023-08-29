@@ -1,17 +1,17 @@
-import { useUserStore } from "@/stores";
+import { useAuthStore } from "@/stores";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useStore } from "zustand";
 
 export function AuthGuard(props: any) {
-  const userStore = useStore(useUserStore);
+  const authStore = useStore(useAuthStore);
   const router = useRouter();
 
   useEffect(() => {
-    if (!userStore.authenticated) {
+    if (!authStore.authenticated) {
       router.replace('/signin');
     }
-  }, [userStore, router]);
+  }, [authStore, router]);
   
-  return userStore.authenticated ? props.children : null;
+  return authStore.authenticated ? props.children : null;
 }

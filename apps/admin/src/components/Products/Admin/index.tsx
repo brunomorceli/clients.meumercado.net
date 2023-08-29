@@ -57,7 +57,7 @@ export function ProductsAdmin() {
     setSearching(true);
 
     productStore
-      .search(search)
+      .find(search)
       .then((result) => {
         setProducts(result.data);
         setTotal(result.total);

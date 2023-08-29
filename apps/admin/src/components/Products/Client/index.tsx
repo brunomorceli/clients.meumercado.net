@@ -48,7 +48,7 @@ export function ProductsClient() {
     setSearching(true);
 
     productStore
-      .search({ label: search, page })
+      .find({ label: search, page })
       .then((result) => {
         setProducts(result.data);
         setTotal(result.total);

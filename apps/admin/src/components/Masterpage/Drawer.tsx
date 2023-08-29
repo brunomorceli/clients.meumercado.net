@@ -1,4 +1,4 @@
-import { useMasterpageStore, useUserStore } from "@/stores";
+import { useMasterpageStore, useAuthStore } from "@/stores";
 import {
   ExclamationCircleOutlined,
   IdcardOutlined,
@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 export function DrawerComp() {
   const router = useRouter();
   const masterpageStore = useStore(useMasterpageStore);
-  const userStore = useStore(useUserStore);
+  const authStore = useStore(useAuthStore);
 
   function handleGoTo(path: string): void {
     router.replace(path);
@@ -31,7 +31,7 @@ export function DrawerComp() {
       icon: <ExclamationCircleOutlined />,
       content: <Typography>Deseja realmente sair?</Typography>,
       cancelText: 'Cancelar',
-      onOk: userStore.signout,
+      onOk: authStore.signout,
     });
   }
 

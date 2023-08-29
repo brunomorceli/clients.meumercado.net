@@ -1,29 +1,29 @@
-import { IConfirm, ISignin } from "@/interfaces";
-import { UserService } from "@/services";
+import { IAuthentication, IAuthenticationHandler, IConfirm, ISignin } from "@/interfaces";
+import { AuthService } from "@/services";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface useUserStoreProps {
+interface useAuthStoreProps {
   authenticated: boolean;
-  data: any;
+  auth: IAuthentication;
   signin: (data: ISignin) => Promise<void>;
   confirm: (data: IConfirm) => Promise<void>;
   signout: () => void;
 }
 
-export const useUserStore = create(
-  persist<useUserStoreProps>(
+export const useAuthStore = create(
+  persist<useAuthStoreProps>(
     (set, get) => ({
       authenticated: false,
-      data: {},
-      signin: (data: ISignin) => UserService.signin(data),
+      auth: IAuthenticationHandler.empty(),
+      signin: (data: ISignin) => AuthService.signin(data),
       confirm: (data: IConfirm) => {
         return new Promise((resolve, reject) => {
-          UserService.confirm(data)
+          AuthService.confirm(data)
             .then((d) => {
               set({
                 ...get(),
-                data: d,
+                auth: d,
                 authenticated: true,
               });
 
@@ -36,10 +36,10 @@ export const useUserStore = create(
         set({
           ...get(),
           authenticated: false,
-          data: {},
+          auth: IAuthenticationHandler.empty(),
         });
       },
     }),
-    { name: 'user-store' }
+    { name: 'auth-store' }
   )
 );

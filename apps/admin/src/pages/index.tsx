@@ -1,4 +1,4 @@
-import { AddCategory, AuthGuard } from "@/components";
+import { AuthGuard } from "@/components";
 import { Button } from "antd";
 
 export default function Home() {

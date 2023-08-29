@@ -1,4 +1,6 @@
-export interface IProductSearch {
+import { IPagination } from ".";
+
+export interface IProductSearch extends IPagination {
   label?: string;
   quantity?: number;
   price?: number;

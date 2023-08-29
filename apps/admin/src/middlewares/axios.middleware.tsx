@@ -1,6 +1,6 @@
 'use client'
 
-import { useUserStore } from '@/stores';
+import { useAuthStore } from '@/stores';
 import { message } from 'antd';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -16,7 +16,7 @@ function getFromLocalStorage(key:string) : any {
 }
 
 axios.interceptors.request.use((config: any) => {
-  const auth = ((getFromLocalStorage('user-store') || {}).state || {}).data;
+  const auth = ((getFromLocalStorage('auth-store') || {}).state || {}).auth;
   if (auth && auth.token && auth.token.length !== 0) {
     config.headers['Authorization'] = `Bearer ${auth.token}`;
   }
@@ -34,10 +34,10 @@ axios.interceptors.request.use((config: any) => {
       }
   
       const router = useRouter();
-      const userStore = useStore(useUserStore);
+      const authStore = useStore(useAuthStore);
       const status = error.response.status;
       if (status === 401) {
-        userStore.signout();
+        authStore.signout();
         router.replace('/signin');
       }
     

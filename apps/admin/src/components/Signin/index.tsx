@@ -1,5 +1,5 @@
 import { IConfirm, ISignin } from "@/interfaces";
-import { useUserStore } from "@/stores";
+import { useAuthStore } from "@/stores";
 import { message } from "antd";
 import { useState } from "react";
 import { useStore } from "zustand";
@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 
 export function Signin() {
   const router = useRouter();
-  const userStore = useStore(useUserStore);
+  const authStore = useStore(useAuthStore);
   const [processing, setProcessing] = useState<boolean>(false);
   const [state, setState] = useState<'signin' | 'confirm'>('signin');
 
@@ -17,7 +17,7 @@ export function Signin() {
   function handleSignup(data: ISignin): void {
     setProcessing(true);
 
-    userStore
+    authStore
       .signin(data)
       .then(() => setState('confirm'))
       .catch((e) => message.error(e))
@@ -27,7 +27,7 @@ export function Signin() {
   function handleConfirm(data: IConfirm): void {
     setProcessing(true);
 
-    userStore
+    authStore
       .confirm(data)
       .then(() => {
         message.success('Bem-vindo(a).');

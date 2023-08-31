@@ -12,8 +12,7 @@ import {
 } from "antd";
 import { useEffect, useState } from "react";
 import { CardCustom } from "./styles";
-import { ImageCrop } from "@/components/ImageCrop";
-import { Currency } from "@/components";
+import { ImageCrop, Currency } from "@/components";
 import {
   CloseCircleOutlined,
   ExclamationCircleOutlined,

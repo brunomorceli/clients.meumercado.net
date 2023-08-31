@@ -20,7 +20,7 @@ class ExternalApiServiceClass {
       axios
         .get(url)
         .then((res) => {
-          if (!res || !res.data || res.data.error) {
+          if (!res || !res.data || res.data.erro) {
             return null;
           }
 

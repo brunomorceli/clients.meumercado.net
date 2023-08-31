@@ -6,6 +6,7 @@ export interface IAuthentication {
   userName: string;
   type: EUserType;
   companies: ICompany[];
+  selectedCompany: ICompany | null;
 }
 
 export class IAuthenticationHandler {
@@ -15,6 +16,7 @@ export class IAuthenticationHandler {
       userName: '',
       type: EUserType.ADMIN,
       companies: [],
+      selectedCompany: null,
     };
   }
 }

@@ -9,10 +9,9 @@ import {
   Typography,
   message,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CardCustom } from "./styles";
-import { ImageCrop } from "@/components/ImageCrop";
-import { Cep } from "@/components/Cep";
+import { ImageCrop, Cep, PhoneNumber } from "@/components";
 import { IFindAddressResult } from "@/interfaces/find-address-result.interface";
 import { useStore } from "zustand";
 import { useCompanyStore } from "@/stores";
@@ -30,15 +29,18 @@ export function CompanyForm(props: CompanyFormProps) {
   const { onSave, onClose } = props;
   const [formHandler] = Form.useForm();
   const [company, setCompany] = useState<ICompany>(ICompanyHandler.empty());
+  const companyRef = useRef(company);
 
   useEffect(() => {
     const data: any = props.company || ICompanyHandler.empty();
-    setCompany({ ...data, subdomainCheck: Boolean(data.id) });
+
+    companyRef.current = { ...data, subdomainCheck: Boolean(data.id) };
+    setCompany(companyRef.current);
 
     Object.keys(data).forEach((key) => {
       formHandler.setFieldValue(key, data[key]);
     });
-  }, [formHandler, props.company]);
+  }, [props.company]);
 
   function setSubdomainError(msg?: string): void {
     const errorMsg = msg || "O subodmínio já se encontra em uso";
@@ -57,38 +59,48 @@ export function CompanyForm(props: CompanyFormProps) {
     }
 
     if (subdomainCache[subdomain]) {
-      return subdomainCache[subdomain];
+      const available= subdomainCache[subdomain];
+
+      companyRef.current = { ...companyRef.current, subdomainCheck: available };
+      setCompany(companyRef.current);
+      !available && setSubdomainError();
+
+      return;
     }
 
     companyStore
       .checkSubdomain(subdomain, id)
       .then((available) => {
         subdomainCache[subdomain] = available;
-        setCompany({ ...company, subdomainCheck: available });
+        companyRef.current = { ...companyRef.current, subdomainCheck: available };
+        setCompany(companyRef.current);
         !available && setSubdomainError();
       })
       .catch((e) => message.error(e));
   }
 
   function handleChangeCompany(key: string, val: any): void {
-    setCompany({ ...company, [key]: val });
+    companyRef.current = { ...companyRef.current, [key]: val };
+    setCompany(companyRef.current);
   }
 
   function handleChangeSubdomain(val: string): void {
     const subdomain = val
       .toLowerCase()
       .replace(/^[^a-z]+/, "")
-      .replace(/[^a-z0-9]/g, '')
-      .trim();
+      .replace(/[^a-z0-9]/g, "")
+      .replace(/[ ]/g, '');
 
-    setCompany({ ...company, subdomain, subdomainCheck: false });
+    companyRef.current = { ...companyRef.current, subdomain, subdomainCheck: false };
+    setCompany(companyRef.current);
     formHandler.setFieldValue("subdomain", subdomain);
 
     checkSubdomain(subdomain, company.id);
   }
 
   function handleChangeLogo(logo?: string | null | undefined): void {
-    setCompany({ ...company, logo: logo || undefined });
+    companyRef.current = { ...companyRef.current, logo: logo || undefined };
+    setCompany(companyRef.current);
   }
 
   function handleChangeCep(address: IFindAddressResult | null): void {
@@ -97,7 +109,8 @@ export function CompanyForm(props: CompanyFormProps) {
       return;
     }
 
-    setCompany({ ...company, ...address }); // [todo] losing ref
+    companyRef.current = { ...companyRef.current, ...address };
+    setCompany(companyRef.current);
 
     Object.keys(address).forEach((key) => {
       formHandler.setFieldValue(key, (address as any)[key]);
@@ -168,7 +181,7 @@ export function CompanyForm(props: CompanyFormProps) {
           <Form.Item
             label="Subdomínio"
             name="subdomain"
-            validateStatus={!company.subdomainCheck ? 'error' : 'success'}
+            validateStatus={!companyRef.current.subdomainCheck ? "error" : "success"}
             hasFeedback
             rules={[
               { required: true, message: "Informe um subdomínio." },
@@ -181,10 +194,10 @@ export function CompanyForm(props: CompanyFormProps) {
                 message: "O subdomínio deve conter pelo menos 3 caracteres.",
               },
             ]}
-            initialValue={company.subdomain}
+            initialValue={companyRef.current.subdomain}
           >
             <Input
-              value={company.subdomain}
+              value={companyRef.current.subdomain}
               onChange={(e) => handleChangeSubdomain(e.target.value || "")}
             />
           </Form.Item>
@@ -273,11 +286,28 @@ export function CompanyForm(props: CompanyFormProps) {
           >
             <Select
               options={[
-                { label: 'Selecione', value: '' },
+                { label: "Selecione", value: "" },
                 ...GeneralUtils.brazilianStates(),
               ]}
-              onChange={(value) =>handleChangeCompany("state", value)}
+              onChange={(value) => handleChangeCompany("state", value)}
               value={company.state}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Telefone"
+            name="phoneNumber"
+            initialValue={company.phoneNumber}
+            rules={[
+              {
+                required: company.phoneNumber.length !== 0,
+                pattern: /^\d{10,11}$/,
+                message: "Telefone inválido",
+              },
+            ]}
+          >
+            <PhoneNumber
+              onChange={(value) => handleChangeCompany("phoneNumber", value)}
+              value={company.phoneNumber}
             />
           </Form.Item>
           <div>

@@ -1,5 +1,11 @@
-import { IAuthentication, IAuthenticationHandler, IConfirm, ISignin } from "@/interfaces";
-import { AuthService } from "@/services";
+import {
+  IAuthentication,
+  IAuthenticationHandler,
+  ICompany,
+  IConfirm,
+  ISignin,
+} from "@/interfaces";
+import { AuthService, CompanyService } from "@/services";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -9,6 +15,22 @@ interface useAuthStoreProps {
   signin: (data: ISignin) => Promise<void>;
   confirm: (data: IConfirm) => Promise<void>;
   signout: () => void;
+  updateCompanies: () => void;
+}
+
+function getSelectedCompany(
+  selectedCompany: ICompany | null,
+  newList: ICompany[]
+): ICompany | null {
+  if (newList.length === 0) {
+    return null;
+  }
+
+  if (!selectedCompany || !newList.some((c) => c.id === selectedCompany.id)) {
+    return newList[0];
+  }
+
+  return newList.find((c) => c.id === selectedCompany.id) || null;
 }
 
 export const useAuthStore = create(
@@ -39,7 +61,28 @@ export const useAuthStore = create(
           auth: IAuthenticationHandler.empty(),
         });
       },
+
+      updateCompanies: async () => {
+        const cache = get();
+        if (!cache.authenticated) {
+          return;
+        }
+
+        const findResult = await CompanyService.findByOwner();
+
+        set({
+          ...cache,
+          auth: {
+            ...cache.auth,
+            companies: findResult.data,
+            selectedCompany: getSelectedCompany(
+              cache.auth.selectedCompany,
+              findResult.data
+            ),
+          },
+        });
+      },
     }),
-    { name: 'auth-store' }
+    { name: "auth-store" }
   )
 );

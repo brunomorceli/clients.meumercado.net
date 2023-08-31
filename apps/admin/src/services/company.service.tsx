@@ -18,10 +18,10 @@ class CompanyServiceClass {
     return this.instance;
   }
 
-  checkSubdomain(subdomain: string, clientId?: string): Promise<boolean> {
+  checkSubdomain(subdomain: string, companyId?: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      const clientIdParam = clientId ? `&clientId=${clientId}` : '';
-      const url = `${this.baseURL}/companies/check-subdomain?subdomain=${subdomain}${clientIdParam}`;
+      const companyIdParam = companyId ? `&companyId=${companyId}` : '';
+      const url = `${this.baseURL}/companies/check-subdomain?subdomain=${subdomain}${companyIdParam}`;
 
       console.log(url)
       axios
@@ -52,6 +52,20 @@ class CompanyServiceClass {
     const params = new URLSearchParams(data as any).toString();
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/companies/find?${params}`;
+      axios
+        .get(url)
+        .then((res) => resolve(res.data))
+        .catch((e) =>
+          reject(
+            GeneralUtils.getErrorMessage(e, "Erro ao tentar buscar empresas.")
+          )
+        );
+    });
+  }
+
+  findByOwner(): Promise<ICompanySearchResult> {
+    return new Promise((resolve, reject) => {
+      const url = `${this.baseURL}/companies/find-by-owner`;
       axios
         .get(url)
         .then((res) => resolve(res.data))

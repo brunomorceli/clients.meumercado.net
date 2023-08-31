@@ -7,8 +7,10 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Search, Backdrop } from "@/components";
 import { CompanyList } from "./List";
 import { CompanyForm } from "./Form";
+import { useAuthStore } from "@/stores";
 
 export function Companies() {
+  const authStore = useStore(useAuthStore);
   const companyStore = useStore(useCompanyStore);
   const size = 20;
   const [total, setTotal] = useState<number>(0);
@@ -38,6 +40,7 @@ export function Companies() {
     companyStore
       .remove(company.id!)
       .then(() => {
+        authStore.updateCompanies();
         message.success("Empresa removido com sucesso.");
         handleSearch();
       })
@@ -53,6 +56,7 @@ export function Companies() {
     companyStore
       .upsert(company)
       .then(() => {
+        authStore.updateCompanies();
         message.success('Empresa salvo com sucesso');
 
         setProcessing(false);

@@ -14,6 +14,7 @@ export interface ICompany {
   state: string;
   addressNumber: string;
   cep: string;
+  phoneNumber: string;
   logo?: string;
   status: ECompanyStatusType;
   createdAt?: string;
@@ -32,6 +33,7 @@ export class ICompanyHandler {
       state: '',
       addressNumber: '',
       cep: '',
+      phoneNumber: '',
       status: ECompanyStatusType.ACTIVE,
     };
   }

@@ -16,13 +16,13 @@ export function Masterpage(props: MasterpageProps) {
   const authStore = useStore(useAuthStore);
 
   const isAuth = authStore.authenticated;
-  const noCompanies = authStore.auth.companies.length === 0;
+  const selectedCompany = !!authStore.auth.selectedCompany;
   return (
     <MasterpageComp>
       {isAuth && (
         <>
           <AppBar
-            hideButton={noCompanies}
+            hideButton={!selectedCompany}
             title={props.title || process.env.NEXT_PUBLIC_APP_NAME}
           />
           <DrawerComp />
@@ -37,7 +37,7 @@ export function Masterpage(props: MasterpageProps) {
           xl={{ offset: 2, span: 20 }}
           xxl={{ offset: 2, span: 20 }}
         >
-          {isAuth && noCompanies ? (
+          {isAuth && !selectedCompany ? (
             <Modal open={true} footer={false} closeIcon={false}>
               <Typography.Title level={3}>
                 Para começar, vamos criar uma empresa.

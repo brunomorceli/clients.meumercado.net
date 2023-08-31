@@ -4,7 +4,7 @@ import { ImageCustom } from "./styles";
 import { DeleteOutlined } from "@ant-design/icons";
 
 interface ImageCropProps {
-  aspect?: "square" | "cover" | "jumbotrom";
+  aspect?: "square" | "cover" | "jumbotrom" | "dynamic";
   src?: string | null | undefined;
   onChange: (src?: string | null | undefined) => void;
 }
@@ -15,11 +15,13 @@ export function ImageCrop(props: ImageCropProps) {
     square: 1,
     cover: 16 / 4,
     jumbotrom: 2 / 1,
+    dynamic: 1,
   };
   const aspectPercent = {
     square: 100,
     cover: 40,
     jumbotrom: 50,
+    dynamic: 100,
   };
 
   function handleBeforeUpload(file: any): boolean {
@@ -55,6 +57,7 @@ export function ImageCrop(props: ImageCropProps) {
           aspect={selectedAspectRatio}
           modalOk="Confirmar"
           modalCancel="Cancelar"
+          aspectSlider={props.aspect === 'dynamic'}
         >
           <Upload
             beforeUpload={handleBeforeUpload}

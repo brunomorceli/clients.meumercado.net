@@ -39,7 +39,9 @@ export function Masterpage(props: MasterpageProps) {
         >
           {isAuth && noCompanies ? (
             <Modal open={true} footer={false} closeIcon={false}>
-              <Typography.Title level={3}>Para começar, vamos criar uma empresa.</Typography.Title>
+              <Typography.Title level={3}>
+                Para começar, vamos criar uma empresa.
+              </Typography.Title>
               <Companies />
             </Modal>
           ) : (

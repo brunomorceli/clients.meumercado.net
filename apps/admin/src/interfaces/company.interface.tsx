@@ -5,6 +5,7 @@ export interface ICompany {
   label: string;
   slug?: string;
   subdomain: string;
+  subdomainCheck?: boolean;
   address: string;
   description?: string;
   addressComplement?: string;
@@ -20,10 +21,11 @@ export interface ICompany {
 }
 
 export class ICompanyHandler {
-  static empty(): ICompany {
+  static empty(subdomainCheck: boolean = false): ICompany {
     return {
       label: '',
       subdomain: '',
+      subdomainCheck,
       address: '',
       neighborhood: '',
       city: '',

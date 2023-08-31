@@ -17,6 +17,24 @@ class CompanyServiceClass {
 
     return this.instance;
   }
+
+  checkSubdomain(subdomain: string, clientId?: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      const clientIdParam = clientId ? `&clientId=${clientId}` : '';
+      const url = `${this.baseURL}/companies/check-subdomain?subdomain=${subdomain}${clientIdParam}`;
+
+      console.log(url)
+      axios
+        .get(url)
+        .then((res) => resolve(res.data.available))
+        .catch((e) =>
+          reject(
+            GeneralUtils.getErrorMessage(e, "Erro ao tentar consultar subdomínio.")
+          )
+        );
+    });
+  }
+
   upsert(data: ICompany): Promise<ICompany> {
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/companies`;
@@ -58,6 +76,7 @@ class CompanyServiceClass {
         );
     });
   }
+
   remove(id: string): Promise<void> {
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/companies/${id}`;

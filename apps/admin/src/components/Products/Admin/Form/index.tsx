@@ -1,3 +1,5 @@
+'use client';
+
 import { ICategory, IProduct, IProductHandler } from "@/interfaces";
 import Highlighter from "react-highlight-words";
 import {
@@ -18,6 +20,9 @@ import {
   CloseCircleOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 interface ProductFormProps {
   product?: IProduct | null | undefined;
@@ -145,22 +150,8 @@ export function ProductForm(props: ProductFormProps) {
               }
             />
           </Form.Item>
-          <Form.Item
-            label="Descrição"
-            name="description"
-            style={{ marginBottom: 0 }}
-            initialValue={product.description}
-          >
-            <Input.TextArea
-              size="large"
-              rows={5}
-              maxLength={2048}
-              value={product.label}
-              onChange={(e) =>
-                handleChangeProduct("description", e.target.value || "")
-              }
-            />
-          </Form.Item>
+
+            <ReactQuill theme="snow" value={product.description} onChange={(d) => handleChangeProduct("description", d || '')} />
           <div style={{ textAlign: "right", marginBottom: 15 }}>
             <Typography.Text disabled>
               {(product.description || "").length}/{2048}

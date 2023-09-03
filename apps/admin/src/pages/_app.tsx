@@ -5,6 +5,7 @@ import type { AppProps } from "next/app";
 import { Masterpage } from "@/components";
 
 import '../middlewares/axios.middleware';
+import 'react-quill/dist/quill.snow.css';
 import "@/styles/globals.css";
 
 export default function App({ Component, pageProps }: AppProps) {

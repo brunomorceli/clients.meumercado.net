@@ -17,7 +17,10 @@ class ProductServiceClass {
 
     return this.instance;
   }
-  upsert(data: IProduct): Promise<IProduct> {
+  upsert(product: IProduct): Promise<IProduct> {
+    const data: any = {...product, categoryId: product.category?.id };
+    delete data.category;
+
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/products`;
       axios[data.id ? 'patch' : 'post'](url, data)

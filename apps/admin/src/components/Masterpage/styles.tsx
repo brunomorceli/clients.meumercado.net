@@ -1,4 +1,4 @@
-import { Button, List, Typography } from "antd";
+import { Button, List, Select, Typography } from "antd";
 import { styled } from "styled-components";
 
 export const AppBarComp = styled.div`
@@ -68,6 +68,26 @@ export const DrawerListItem = styled(List.Item)`
   h4 {
     margin: 0px;
     padding: 0px;
+  }
+`;
+
+export const AppBarLeftActions = styled.div`
+  position: absolute;
+  right: 15px;
+  top: 16px;
+  vertical-align: middle !important;
+`;
+
+export const CustomSelect = styled(Select)`
+  .ant-select-selector {
+    background-color: inherit !important;
+    color: white;
+    font-size: 14px;
+    font-weight: bold !important;
+  }
+
+  .ant-select-arrow {
+    color: white !important;
   }
 `;
  

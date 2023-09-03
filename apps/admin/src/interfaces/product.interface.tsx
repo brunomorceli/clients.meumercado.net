@@ -1,14 +1,16 @@
-import { IDiscount } from ".";
+import { ICategory, IDiscount } from ".";
 
 export interface IProduct {
   id?: string;
+  companyId?: string;
   label: string;
   description?: string;
   cover?: string;
   blob?: string;
   price: number;
+  unlimited: boolean;
   quantity: number;
-  categories: string[];
+  category?: ICategory;
   discount?: IDiscount;
 }
 
@@ -18,8 +20,8 @@ export class IProductHandler {
       label: '',
       description: '',
       price: 0,
+      unlimited: false,
       quantity: 1,
-      categories: [],
     };
   }
 }

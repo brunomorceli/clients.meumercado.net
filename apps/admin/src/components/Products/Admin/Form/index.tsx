@@ -7,6 +7,7 @@ import {
   Input,
   InputNumber,
   Modal,
+  Switch,
   Tag,
   Typography,
 } from "antd";
@@ -34,19 +35,15 @@ export function ProductForm(props: ProductFormProps) {
   );
 
   useEffect(() => {
-    const data: any = props.product || IProductHandler.getEmptyProduct()
+    const data: any = props.product || IProductHandler.getEmptyProduct();
     setProduct(data);
 
     Object.keys(data).forEach((key) => {
       formHandler.setFieldValue(key, data[key]);
     });
 
-    !props.product && setCategorySearch('');
+    !props.product && setCategorySearch("");
   }, [formHandler, props.product]);
-
-  function filterPickedCategories(category: ICategory): boolean {
-    return !product.categories.some((id) => id === category.id);
-  }
 
   function filterBySearch(category: ICategory): boolean {
     const target = categorySearch.toLocaleLowerCase();
@@ -58,19 +55,16 @@ export function ProductForm(props: ProductFormProps) {
       return [];
     }
 
-    return categories
-      .filter(filterBySearch)
-      .filter(filterPickedCategories)
-      .map((c) => ({
-        label: (
-          <Highlighter
-            searchWords={[categorySearch]}
-            autoEscape={true}
-            textToHighlight={c.label}
-          />
-        ),
-        value: c.id,
-      }));
+    return categories.filter(filterBySearch).map((c) => ({
+      label: (
+        <Highlighter
+          searchWords={[categorySearch]}
+          autoEscape={true}
+          textToHighlight={c.label}
+        />
+      ),
+      value: c.id,
+    }));
   }
 
   function handleChangeProduct(key: string, val: any): void {
@@ -84,13 +78,13 @@ export function ProductForm(props: ProductFormProps) {
   function handleAddCategory(id: string): void {
     setProduct({
       ...product,
-      categories: [...product.categories, id],
+      category: categories.find((c) => c.id === id),
     });
 
     setCategorySearch("");
   }
 
-  function handleRemoveCategory(id: string): void {
+  function handleRemoveCategory(): void {
     Modal.confirm({
       icon: <ExclamationCircleOutlined />,
       content: (
@@ -100,10 +94,19 @@ export function ProductForm(props: ProductFormProps) {
       onOk: () => {
         setProduct({
           ...product,
-          categories: product.categories.filter((catId) => catId !== id),
+          category: undefined,
         });
       },
     });
+  }
+
+  function handleChangeUnlimited(unlimited: boolean): void {
+    const data: any = { unlimited };
+    if (unlimited) {
+      data.quantity = 1;
+    }
+
+    setProduct({ ...product, ...data });
   }
 
   function handleSubmit(): void {
@@ -169,13 +172,22 @@ export function ProductForm(props: ProductFormProps) {
             rules={[{ required: true, message: "Informe a quantidade" }]}
             initialValue={product.quantity}
           >
-            <InputNumber
-              size="large"
-              value={product.quantity}
-              min={1}
-              step={1}
-              onChange={(val) => handleChangeProduct("quantity", val)}
+            <Switch
+              checkedChildren="Limitado"
+              unCheckedChildren="Ilimitado"
+              defaultChecked={!product.unlimited}
+              onChange={(checked) => handleChangeUnlimited(!checked)}
             />
+            &nbsp;
+            {!product.unlimited && (
+              <InputNumber
+                size="large"
+                value={product.quantity}
+                min={1}
+                step={1}
+                onChange={(val) => handleChangeProduct("quantity", val)}
+              />
+            )}
           </Form.Item>
           <Form.Item
             label="Preço"
@@ -189,8 +201,21 @@ export function ProductForm(props: ProductFormProps) {
               placeholder="R$ 1,00"
             />
           </Form.Item>
-          <Form.Item label="Categorias">
+          <Form.Item
+            label="Categorias"
+            name="category"
+            rules={[
+              {
+                validator() {
+                  if (product.category) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject('Informe uma categoria.');
+                },
+              },
+            ]}>
             <AutoComplete
+              disabled={Boolean(product.category)}
               options={getCategoryOptions()}
               onSelect={(val) => handleAddCategory(val)}
               onSearch={setCategorySearch}
@@ -198,20 +223,18 @@ export function ProductForm(props: ProductFormProps) {
             >
               <Input.Search placeholder="Categorias" />
             </AutoComplete>
-          </Form.Item>
-          <div style={{ marginBottom: 25 }}>
-            {categories
-              .filter((c) => product.categories.includes(c.id!))
-              .map((item, index) => (
+            {product.category && (
+              <div style={{ marginTop: 10, marginBottom: 25 }}>
                 <Tag
-                  key={index}
+                  style={{ cursor: "pointer" }}
                   icon={<CloseCircleOutlined />}
-                  onClick={() => handleRemoveCategory(item.id!)}
+                  onClick={() => handleRemoveCategory()}
                 >
-                  {item.label}
+                  {product.category.label}
                 </Tag>
-              ))}
-          </div>
+              </div>
+            )}
+          </Form.Item>
           <div>
             <Button type="primary" size="large" onClick={handleSubmit}>
               {product.id ? "Salvar" : "Criar"}

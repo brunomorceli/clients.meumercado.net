@@ -44,10 +44,8 @@ export function Companies() {
         message.success("Empresa removido com sucesso.");
         handleSearch();
       })
-      .catch((e) => {
-        message.error(e);
-        setProcessing(false);
-      });
+      .catch((e) => message.error(e))
+      .finally(() => setProcessing(false));
   }
 
   function handleSave(company: ICompany): void {
@@ -63,10 +61,8 @@ export function Companies() {
         setCompanyForm(null);
         handleSearch();
       })
-      .catch((e) => {
-        setProcessing(false);
-        message.error(e);
-      });
+      .catch((e) => message.error(e))
+      .finally(() => setProcessing(false));
   }
 
   return (

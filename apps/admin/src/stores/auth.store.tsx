@@ -15,7 +15,8 @@ interface useAuthStoreProps {
   signin: (data: ISignin) => Promise<void>;
   confirm: (data: IConfirm) => Promise<void>;
   signout: () => void;
-  updateCompanies: () => void;
+  updateCompanies: () => Promise<void>;
+  setSelectedCompany: (companyId: string) => void;
 }
 
 function getSelectedCompany(
@@ -45,7 +46,10 @@ export const useAuthStore = create(
             .then((d) => {
               set({
                 ...get(),
-                auth: d,
+                auth: {
+                  ...d,
+                  selectedCompany: getSelectedCompany(null, d.companies),
+                },
                 authenticated: true,
               });
 
@@ -81,6 +85,23 @@ export const useAuthStore = create(
             ),
           },
         });
+
+        return Promise.resolve();
+      },
+
+      setSelectedCompany: (companyId: string): void => {
+        const cache: any = get();
+        if (!cache.authenticated) {
+          return;
+        }
+
+        const selectedCompany = cache.auth.companies.find((c: ICompany) => c.id === companyId);
+        if (!selectedCompany) {
+          return;
+        }
+
+        cache.auth.selectedCompany = selectedCompany;
+        set({ ...cache });
       },
     }),
     { name: "auth-store" }

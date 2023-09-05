@@ -3,6 +3,7 @@ import { ListItem } from "../Categories/List/styles";
 import { useState } from "react";
 import { v4 as Uuid } from "uuid";
 import {
+  CheckCircleOutlined,
   CloseCircleOutlined,
   ExclamationCircleOutlined,
   PlusCircleOutlined,
@@ -31,19 +32,39 @@ function CategoryItem(props: CategoryItemProps) {
   const marginLeft = (category.level || 0) * 20;
   const { name, edition } = category;
 
+  function handleSave(): void {
+    if (!name || name.length < 3) {
+      message.error('O nome da categoria deve conter pelo menos 3 caracteres');
+      return;
+    }
+
+    onChange({ ...category, edition: false });
+  }
+
   return (
     <>
       <ListItem
         style={{ marginLeft }}
         actions={[
-          <Button
-            key="addBtn"
-            type="text"
-            size="large"
-            onClick={() => onAdd(category)}
-          >
-            <PlusCircleOutlined />
-          </Button>,
+          !edition ? (
+            <Button
+              key="addBtn"
+              type="text"
+              size="large"
+              onClick={() => onAdd(category)}
+            >
+              <PlusCircleOutlined />
+            </Button>
+          ) : (
+            <Button
+              key="addBtn"
+              type="text"
+              size="large"
+              onClick={() => handleSave()}
+            >
+              <CheckCircleOutlined />
+            </Button>
+          ),
           <Button
             key="rmvBtn"
             type="text"
@@ -136,6 +157,7 @@ export function CategoryThree(props: CategoriesProps) {
     iterateItems(newParent, (cat) => {
       if (cat.id === category.id) {
         cat.name = category.name;
+        cat.edition = category.edition;
       }
     });
 
@@ -148,21 +170,19 @@ export function CategoryThree(props: CategoriesProps) {
     Modal.confirm({
       icon: <ExclamationCircleOutlined />,
       content: (
-        <Typography>
-          Deseja realmente remover esta categoria?
-        </Typography>
+        <Typography>Deseja realmente remover esta categoria?</Typography>
       ),
       cancelText: "Cancelar",
       onOk: () => {
-
         iterateItems(newParent, (cat) => {
           if (cat.id === category.id) {
-
-            const index: any = cat.parent?.children.findIndex((c) => c.id === cat.id);
+            const index: any = cat.parent?.children.findIndex(
+              (c) => c.id === cat.id
+            );
             cat.parent!.children.splice(index, 1);
           }
         });
-    
+
         setParent(newParent);
       },
     });
@@ -171,16 +191,15 @@ export function CategoryThree(props: CategoriesProps) {
   function handleSave(): void {
     const newParent = { ...parent };
 
-
     let isEmpty = false;
     iterateItems(newParent, (category) => {
-      if (category.name === '' && category.id !== parent.id) {
+      if (category.name === "" && category.id !== parent.id) {
         isEmpty = true;
       }
     });
 
     if (isEmpty) {
-      message.error('É necessário informar o nome de todas as categorias.')
+      message.error("É necessário informar o nome de todas as categorias.");
       return;
     }
 

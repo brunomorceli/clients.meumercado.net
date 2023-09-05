@@ -1,17 +1,15 @@
 import { AuthGuard } from "@/components";
 import { CategoryThree } from "@/components/CategoryTree";
-import { Button } from "antd";
+import { Card } from "antd";
 
 export default function Home() {
   return (
     <AuthGuard>
-      <h3>hello world</h3>
-      <Button>Hello world</Button>
-      <div>
+      <Card>
         <CategoryThree
           categories={[]}
         />
-      </div>
+      </Card>
     </AuthGuard>
   )
 }

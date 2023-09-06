@@ -5,6 +5,7 @@ import type { AppProps } from "next/app";
 import { Masterpage } from "@/components";
 
 import '../middlewares/axios.middleware';
+import 'rsuite/dist/rsuite.min.css';
 import 'react-quill/dist/quill.snow.css';
 import "@/styles/globals.css";
 

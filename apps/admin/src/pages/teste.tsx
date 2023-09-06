@@ -1,44 +1,21 @@
 import { Dropdown, IconButton, Tree } from "rsuite";
-import { useCallback, useEffect, useState } from "react";
-import { Typography, Card, Modal, Input, Button, message } from "antd";
+import { useState } from "react";
+import { Typography, Card, Modal, Input, Button } from "antd";
 import { v4 as Uuild } from "uuid";
 import { ExclamationCircleOutlined, MoreOutlined } from "@ant-design/icons";
 import PlusIcon from "@rsuite/icons/Plus";
 import EditIcon from "@rsuite/icons/Edit";
 import TrashIcon from "@rsuite/icons/Trash";
 import { ItemDataType } from "rsuite/esm/@types/common";
-import { useStore } from "zustand";
-import { useCategoryStore } from "@/stores";
 
 interface CustomItemDataType extends ItemDataType {
   edit?: boolean;
 }
 
-export function Categories() {
-  const categoryStore = useStore(useCategoryStore);
+export default function CategorySelector() {
   const [nodeForm, setNodeForm] = useState<CustomItemDataType | null>(null);
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const [items, setItems] = useState<CustomItemDataType[]>([]);
-  const [processing, setProcessing] = useState<boolean>(false);
-
-  const loadCategories = useCallback((): void => {
-    setProcessing(true);
-
-    categoryStore
-      .list()
-      .then((categories) => {
-        setItems(categories.map((c) => ({
-          label: c.label,
-          value: c.id,
-          children: [],
-        })));
-        console.log(categories);
-      })
-      .catch((e) => message.error(e))
-      .finally(() => setProcessing(false));    
-  }, [categoryStore]);
-
-  useEffect(() => { loadCategories(); }, [loadCategories]);
 
   function iterateItems(
     item: any,

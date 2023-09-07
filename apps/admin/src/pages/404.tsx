@@ -11,7 +11,7 @@ export default function NotFound() {
     if (authStore.authenticated) {
       router.replace('/');
     } else {
-      router.replace('/signin');
+      router.replace('/admins/confirm');
     }
   });
 

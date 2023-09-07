@@ -4,8 +4,7 @@ import { DrawerComp } from "./Drawer";
 import { MasterpageComp } from "./styles";
 import { useStore } from "zustand";
 import { useAuthStore } from "@/stores";
-import { Col, Modal, Row, Typography } from "antd";
-import { Companies } from "../Companies";
+import { Col, Row } from "antd";
 
 interface MasterpageProps {
   title?: string;
@@ -16,13 +15,11 @@ export function Masterpage(props: MasterpageProps) {
   const authStore = useStore(useAuthStore);
 
   const isAuth = authStore.authenticated;
-  const selectedCompany = !!authStore.auth.selectedCompany;
   return (
     <MasterpageComp>
       {isAuth && (
         <>
           <AppBar
-            hideButton={!selectedCompany}
             title={props.title || process.env.NEXT_PUBLIC_APP_NAME}
           />
           <DrawerComp />
@@ -37,16 +34,7 @@ export function Masterpage(props: MasterpageProps) {
           xl={{ offset: 2, span: 20 }}
           xxl={{ offset: 2, span: 20 }}
         >
-          {isAuth && !selectedCompany ? (
-            <Modal open={true} footer={false} closeIcon={false}>
-              <Typography.Title level={3}>
-                Para começar, vamos criar uma empresa.
-              </Typography.Title>
-              <Companies />
-            </Modal>
-          ) : (
-            props.children
-          )}
+          {props.children}
         </Col>
       </Row>
     </MasterpageComp>

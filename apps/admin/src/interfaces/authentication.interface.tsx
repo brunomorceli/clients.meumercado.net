@@ -5,8 +5,7 @@ export interface IAuthentication {
   token: string;
   userName: string;
   type: EUserType;
-  companies: ICompany[];
-  selectedCompany: ICompany | null;
+  company: ICompany | null;
 }
 
 export class IAuthenticationHandler {
@@ -15,8 +14,7 @@ export class IAuthenticationHandler {
       token: '',
       userName: '',
       type: EUserType.ADMIN,
-      companies: [],
-      selectedCompany: null,
+      company: null,
     };
   }
 }

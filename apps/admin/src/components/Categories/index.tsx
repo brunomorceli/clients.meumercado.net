@@ -1,5 +1,5 @@
 import { Dropdown, IconButton, Tree } from "rsuite";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Typography, Card, Modal, Input, Button, message } from "antd";
 import { v4 as Uuild } from "uuid";
 import { ExclamationCircleOutlined, MoreOutlined } from "@ant-design/icons";
@@ -8,37 +8,28 @@ import EditIcon from "@rsuite/icons/Edit";
 import TrashIcon from "@rsuite/icons/Trash";
 import { ItemDataType } from "rsuite/esm/@types/common";
 import { useStore } from "zustand";
-import { useCategoryStore } from "@/stores";
+import { useAuthStore, useCompanyStore } from "@/stores";
 
 interface CustomItemDataType extends ItemDataType {
   edit?: boolean;
 }
 
 export function Categories() {
-  const categoryStore = useStore(useCategoryStore);
+  const authStore = useStore(useAuthStore);
+  const companyStore = useStore(useCompanyStore);
   const [nodeForm, setNodeForm] = useState<CustomItemDataType | null>(null);
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
-  const [items, setItems] = useState<CustomItemDataType[]>([]);
+  const [items, setItems] = useState<CustomItemDataType[]>(authStore.auth.company?.categories as any);
   const [processing, setProcessing] = useState<boolean>(false);
 
-  const loadCategories = useCallback((): void => {
-    setProcessing(true);
+  function updateCategories(categories: CustomItemDataType[]): void {
+    const company = authStore.auth.company;
 
-    categoryStore
-      .list()
-      .then((categories) => {
-        setItems(categories.map((c) => ({
-          label: c.label,
-          value: c.id,
-          children: [],
-        })));
-        console.log(categories);
-      })
-      .catch((e) => message.error(e))
-      .finally(() => setProcessing(false));    
-  }, [categoryStore]);
-
-  useEffect(() => { loadCategories(); }, [loadCategories]);
+    companyStore
+      .upsert({ id: company?.id, categories: categories })
+      .then(authStore.setCompany)
+      .catch((e) => message.error(e));
+  }
 
   function iterateItems(
     item: any,
@@ -101,6 +92,8 @@ export function Categories() {
     setItems(newData);
     setNodeForm(null);
     expandItem(parentNode.value as string);
+
+    updateCategories(newData);
   }
 
   function handleEditItem(node: CustomItemDataType): void {
@@ -114,6 +107,7 @@ export function Categories() {
 
     setItems(newData);
     setNodeForm(null);
+    updateCategories(newData);
   }
 
   function handleRemoveItem(node: any): void {
@@ -139,6 +133,7 @@ export function Categories() {
 
         setExpandedItems([...expandedItems.filter((i) => i !== node.value)]);
         setItems(newData);
+        updateCategories(newData);
       },
     });
   }
@@ -221,6 +216,7 @@ export function Categories() {
           />
         )}
       </Modal>
+      {JSON.stringify(items)}
     </>
   );
 }

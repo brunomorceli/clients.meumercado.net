@@ -2,21 +2,22 @@ import { ECompanyStatusType } from "@/enums";
 
 export interface ICompany {
   id?: string;
-  label: string;
+  label?: string;
   slug?: string;
-  subdomain: string;
+  subdomain?: string;
   subdomainCheck?: boolean;
-  address: string;
+  address?: string;
   description?: string;
   addressComplement?: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-  addressNumber: string;
-  cep: string;
-  phoneNumber: string;
+  neighborhood?: string;
+  city?: string;
+  state?: string;
+  addressNumber?: string;
+  cep?: string;
+  phoneNumber?: string;
   logo?: string;
-  status: ECompanyStatusType;
+  categories: any[],
+  status?: ECompanyStatusType;
   createdAt?: string;
   deletedAt?: string;
 }
@@ -34,6 +35,7 @@ export class ICompanyHandler {
       addressNumber: '',
       cep: '',
       phoneNumber: '',
+      categories: [],
       status: ECompanyStatusType.ACTIVE,
     };
   }

@@ -65,7 +65,7 @@ export function ProductsAdmin() {
     setProcessing(true);
 
     productStore
-      .upsert({ ...product, companyId: authStore.auth.selectedCompany?.id })
+      .upsert({ ...product, companyId: authStore.auth.company?.id })
       .then(() => {
         message.success('Produto salvo com sucesso');
 

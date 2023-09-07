@@ -1,5 +1,5 @@
 export * from './Shared'
 export * from './Masterpage';
-export * from './Signin';
+export * from './Confirm';
 export * from './Categories';
 export * from './Products';

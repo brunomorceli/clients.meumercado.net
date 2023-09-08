@@ -4,8 +4,8 @@ export interface ICompany {
   id?: string;
   label?: string;
   slug?: string;
-  subdomain?: string;
-  subdomainCheck?: boolean;
+  tenantId?: string;
+  tenantIdCheck?: boolean;
   address?: string;
   description?: string;
   addressComplement?: string;
@@ -23,11 +23,11 @@ export interface ICompany {
 }
 
 export class ICompanyHandler {
-  static empty(subdomainCheck: boolean = false): ICompany {
+  static empty(tenantIdCheck: boolean = false): ICompany {
     return {
       label: '',
-      subdomain: '',
-      subdomainCheck,
+      tenantId: '',
+      tenantIdCheck,
       address: '',
       neighborhood: '',
       city: '',

@@ -1,17 +1,15 @@
 import { useAuthStore } from "@/stores";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useStore } from "zustand";
 
 export function AuthGuard(props: any) {
   const authStore = useStore(useAuthStore);
-  const router = useRouter();
 
   useEffect(() => {
     if (!authStore.authenticated) {
-      router.replace('/signin');
+      window.location.assign(`${process.env.NEXT_PUBLIC_LANDINGPAGE_URL}/sair`);
     }
-  }, [authStore, router]);
+  }, [authStore]);
   
   return authStore.authenticated ? props.children : null;
 }

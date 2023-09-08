@@ -23,7 +23,7 @@ interface CompanyFormProps {
   onClose: () => void;
 }
 
-const subdomainCache: any = {};
+const tenantIdCache: any = {};
 export function CompanyForm(props: CompanyFormProps) {
   const companyStore = useStore(useCompanyStore);
   const { onSave, onClose } = props;
@@ -34,7 +34,7 @@ export function CompanyForm(props: CompanyFormProps) {
   useEffect(() => {
     const data: any = props.company || ICompanyHandler.empty();
 
-    companyRef.current = { ...data, subdomainCheck: Boolean(data.id) };
+    companyRef.current = { ...data, tenantIdCheck: Boolean(data.id) };
     setCompany(companyRef.current);
 
     Object.keys(data).forEach((key) => {
@@ -42,39 +42,39 @@ export function CompanyForm(props: CompanyFormProps) {
     });
   }, [props.company]);
 
-  function setSubdomainError(msg?: string): void {
+  function setTenantIdError(msg?: string): void {
     const errorMsg = msg || "O subodmínio já se encontra em uso";
     const errors = formHandler
-      .getFieldError("subdomain")
+      .getFieldError("tenantId")
       .filter((e: string) => e !== errorMsg);
 
     formHandler.setFields([
-      { name: "subdomain", errors: [errorMsg, ...errors] },
+      { name: "tenantId", errors: [errorMsg, ...errors] },
     ]);
   }
 
-  function checkSubdomain(subdomain: string, id?: string): void {
-    if (subdomain.length < 3) {
+  function checkTenantId(tenantId: string, id?: string): void {
+    if (tenantId.length < 3) {
       return;
     }
 
-    if (subdomainCache[subdomain]) {
-      const available= subdomainCache[subdomain];
+    if (tenantIdCache[tenantId]) {
+      const available= tenantIdCache[tenantId];
 
-      companyRef.current = { ...companyRef.current, subdomainCheck: available };
+      companyRef.current = { ...companyRef.current, tenantIdCheck: available };
       setCompany(companyRef.current);
-      !available && setSubdomainError();
+      !available && setTenantIdError();
 
       return;
     }
 
     companyStore
-      .checkSubdomain(subdomain, id)
+      .checkTenantId(tenantId, id)
       .then((available) => {
-        subdomainCache[subdomain] = available;
-        companyRef.current = { ...companyRef.current, subdomainCheck: available };
+        tenantIdCache[tenantId] = available;
+        companyRef.current = { ...companyRef.current, tenantIdCheck: available };
         setCompany(companyRef.current);
-        !available && setSubdomainError();
+        !available && setTenantIdError();
       })
       .catch((e) => message.error(e));
   }
@@ -84,18 +84,18 @@ export function CompanyForm(props: CompanyFormProps) {
     setCompany(companyRef.current);
   }
 
-  function handleChangeSubdomain(val: string): void {
-    const subdomain = val
+  function handleChangeTenantId(val: string): void {
+    const tenantId = val
       .toLowerCase()
       .replace(/^[^a-z]+/, "")
       .replace(/[^a-z0-9]/g, "")
       .replace(/[ ]/g, '');
 
-    companyRef.current = { ...companyRef.current, subdomain, subdomainCheck: false };
+    companyRef.current = { ...companyRef.current, tenantId, tenantIdCheck: false };
     setCompany(companyRef.current);
-    formHandler.setFieldValue("subdomain", subdomain);
+    formHandler.setFieldValue("tenantId", tenantId);
 
-    checkSubdomain(subdomain, company.id);
+    checkTenantId(tenantId, company.id);
   }
 
   function handleChangeLogo(logo?: string | null | undefined): void {
@@ -180,8 +180,8 @@ export function CompanyForm(props: CompanyFormProps) {
           </Form.Item>
           <Form.Item
             label="Subdomínio"
-            name="subdomain"
-            validateStatus={!companyRef.current.subdomainCheck ? "error" : "success"}
+            name="tenantId"
+            validateStatus={!companyRef.current.tenantIdCheck ? "error" : "success"}
             hasFeedback
             rules={[
               { required: true, message: "Informe um subdomínio." },
@@ -194,11 +194,11 @@ export function CompanyForm(props: CompanyFormProps) {
                 message: "O subdomínio deve conter pelo menos 3 caracteres.",
               },
             ]}
-            initialValue={companyRef.current.subdomain}
+            initialValue={companyRef.current.tenantId}
           >
             <Input
-              value={companyRef.current.subdomain}
-              onChange={(e) => handleChangeSubdomain(e.target.value || "")}
+              value={companyRef.current.tenantId}
+              onChange={(e) => handleChangeTenantId(e.target.value || "")}
             />
           </Form.Item>
           <Form.Item

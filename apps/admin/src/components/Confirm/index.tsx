@@ -6,7 +6,12 @@ import { useStore } from "zustand";
 import { ConfirmForm } from "./ConfirmForm";
 import { useRouter } from "next/router";
 
-export function Confirm() {
+interface ConfirmProps {
+  authId: string;
+  onCancel?: () => void;
+}
+
+export function Confirm(props: ConfirmProps) {
   const router = useRouter();
   const authStore = useStore(useAuthStore);
   const [processing, setProcessing] = useState<boolean>(false);
@@ -25,5 +30,5 @@ export function Confirm() {
 
   }
 
-  return <ConfirmForm onSubmit={handleConfirm} />
+  return <ConfirmForm authId={props.authId} onSubmit={handleConfirm} onCancel={props.onCancel} />
 }

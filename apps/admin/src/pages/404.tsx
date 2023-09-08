@@ -1,4 +1,5 @@
 import { useAuthStore } from "@/stores";
+import { Typography } from "antd";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useStore } from "zustand";
@@ -11,7 +12,7 @@ export default function NotFound() {
     if (authStore.authenticated) {
       router.replace('/');
     } else {
-      router.replace('/admins/confirm');
+      window.location.assign(`${process.env.NEXT_PUBLIC_LANDINGPAGE_URL}/entrar`);
     }
   });
 

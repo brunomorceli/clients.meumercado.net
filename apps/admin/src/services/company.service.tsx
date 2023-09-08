@@ -18,10 +18,10 @@ class CompanyServiceClass {
     return this.instance;
   }
 
-  checkSubdomain(subdomain: string, companyId?: string): Promise<boolean> {
+  checkTenantId(tenantId: string, companyId?: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       const companyIdParam = companyId ? `&companyId=${companyId}` : '';
-      const url = `${this.baseURL}/companies/check-subdomain?subdomain=${subdomain}${companyIdParam}`;
+      const url = `${this.baseURL}/companies/check-tenantId?tenantId=${tenantId}${companyIdParam}`;
 
       console.log(url)
       axios

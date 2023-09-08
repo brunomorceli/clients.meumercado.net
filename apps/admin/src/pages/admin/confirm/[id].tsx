@@ -4,13 +4,20 @@ import { useRouter } from "next/router";
 import { useStore } from "zustand";
 
 export default function ConfirmPage() {
-  const router = useRouter();
   const authStore = useStore(useAuthStore);
+  const router = useRouter();
+  const { id } = router.query;
+  const cancelURL = `${process.env.NEXT_PUBLIC_LANDINGPAGE_URL}/sair`;
 
   if (authStore.authenticated) {
-    router.replace('/');
+    router.replace("/");
     return null;
   }
 
-  return <Confirm />;
+  return (
+    <Confirm
+      authId={id as string}
+      onCancel={() => window.location.assign(cancelURL)}
+    />
+  );
 }

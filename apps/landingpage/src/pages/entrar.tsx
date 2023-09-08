@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/stores";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Container, Schema, Form, ButtonToolbar } from "rsuite";
 import { useStore } from "zustand";
 
@@ -31,6 +31,16 @@ export default function Entrar() {
     label: null,
   });
 
+  useEffect(() => {
+    if (authStore.tenantId) {
+      window.location.assign(getTenantBaseUrl(authStore.tenantId));
+    }
+  }, []);
+
+  function getTenantBaseUrl(tenantId: string): string {
+    return process.env.NEXT_PUBLIC_TENANT_BASE_URL!.replace("{tenant}", tenantId);
+  }
+
   function handleSubmit(): void {
     if (!formRef.current.check()) {
       return;
@@ -39,19 +49,15 @@ export default function Entrar() {
     authStore
       .authenticate(formValue.email, formValue.label)
       .then((res: any) => {
-        const { subdomain } = res;
+        const { tenantId, authId } = res;
 
-        if (!subdomain) {
+        if (!tenantId) {
           setFormValue({ ...formValue, label: "" });
           return;
         }
 
-        window.location.assign(
-          (process.env.NEXT_PUBLIC_TENANT_BASE_URL as string).replace(
-            "{tenant}",
-            subdomain
-          )
-        );
+        authStore.setTenantId(tenantId);
+        window.location.assign(`${getTenantBaseUrl(tenantId)}/admin/confirm/${authId}`);
       })
       .catch((e) => console.log(e));
   }

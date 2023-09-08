@@ -1,13 +1,19 @@
 import { IConfirm } from "@/interfaces";
 import { Button, Card, Form, Input, Result, Typography } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface ConfirmFormProps {
+  authId: string;
   onSubmit: (data: IConfirm) => void;
+  onCancel?: () => void;
 }
 export function ConfirmForm(props: ConfirmFormProps) {
-  const [form, setForm] = useState<IConfirm>({ confirmationCode: '' });
+  const [form, setForm] = useState<IConfirm>({ confirmationCode: '', authId: props.authId });
   const [formHandler] = Form.useForm();
+
+  useEffect(() => {
+    setForm({ ...form, authId: props.authId });
+  }, [props.authId]);
 
   function handleChangeForm(key: string, value: any): void {
     setForm({ ...form, [key]: value });
@@ -43,6 +49,14 @@ export function ConfirmForm(props: ConfirmFormProps) {
               />
             </Form.Item>
             <Form.Item>
+              {props.onCancel &&
+                <>
+                  <Button size="large" onClick={props.onCancel}>
+                    Cancelar
+                  </Button>
+                  &nbsp;
+                </>
+              }
               <Button type="primary" size="large" onClick={handleSubmit}>
                 Confirmar
               </Button>

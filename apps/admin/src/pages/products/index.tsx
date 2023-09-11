@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
-import { ICategory, IProduct, IProductHandler, IProductSearch } from "@/interfaces";
+import {
+  ICategory,
+  IProduct,
+  IProductHandler,
+  IProductSearch,
+} from "@/interfaces";
 import { useStore } from "zustand";
 import { useProductStore } from "@/stores/product.store";
 import { Button, Card, List, Pagination, Typography, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Spin, Search, Backdrop } from "@/components";
-import { ProductAdminList } from "./List";
-import { ProductForm } from "./Form";
 import { useAuthStore, useCategoryStore } from "@/stores";
 
-export function ProductsAdmin() {
+export function ProductsCreate() {
   const authStore = useStore(useAuthStore);
   const productStore = useStore(useProductStore);
   const categoryStore = useStore(useCategoryStore);
-  const [search, setSearch] = useState<string>('');
+  const [search, setSearch] = useState<string>("");
   const size = 20;
   const [total, setTotal] = useState<number>(0);
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -22,7 +25,9 @@ export function ProductsAdmin() {
   const [processing, setProcessing] = useState<boolean>(false);
   const [searching, setSearching] = useState<boolean>(false);
 
-  useEffect(() => { handleSearch(); }, []);
+  useEffect(() => {
+    handleSearch();
+  }, []);
 
   useEffect(() => {
     categoryStore
@@ -52,7 +57,7 @@ export function ProductsAdmin() {
       .then(() => {
         message.success("Produto removido com sucesso.");
 
-        setSearch('');
+        setSearch("");
         handleSearch();
       })
       .catch((e) => {
@@ -67,11 +72,11 @@ export function ProductsAdmin() {
     productStore
       .upsert({ ...product, companyId: authStore.auth.company?.id })
       .then(() => {
-        message.success('Produto salvo com sucesso');
+        message.success("Produto salvo com sucesso");
 
         setProcessing(false);
         setProductForm(null);
-        setSearch('');
+        setSearch("");
         handleSearch();
       })
       .catch((e) => {
@@ -82,13 +87,17 @@ export function ProductsAdmin() {
 
   return (
     <>
-      <Card>
-        <Typography.Title level={4}>
-          Produtos &nbsp;
-          <Button onClick={() => setProductForm(IProductHandler.getEmptyProduct())}>
+      <Card
+        title={<Typography>Produtos</Typography>}
+        extra={[
+          <Button
+            key="btnAdd"
+            onClick={() => setProductForm(IProductHandler.getEmptyProduct())}
+          >
             <PlusOutlined />
-          </Button>
-        </Typography.Title>
+          </Button>,
+        ]}
+      >
         <List>
           <List.Item>
             <Search
@@ -97,12 +106,12 @@ export function ProductsAdmin() {
               onSearch={(label) => handleSearch(label ? { label } : undefined)}
             />
           </List.Item>
-          <ProductAdminList
+          <ProductList
             products={products}
             onEdit={(p) => setProductForm(p)}
             onRemove={handleRemove}
           />
-          {products.length >= size &&
+          {products.length >= size && (
             <Pagination
               defaultCurrent={1}
               defaultPageSize={size}
@@ -110,7 +119,7 @@ export function ProductsAdmin() {
               onChange={(page) => handleSearch({ page })}
               showSizeChanger={false}
             />
-          }
+          )}
         </List>
         <ProductForm
           product={productForm}

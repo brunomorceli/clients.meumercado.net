@@ -12,7 +12,7 @@ export default function NotFound() {
     if (authStore.authenticated) {
       router.replace('/');
     } else {
-      window.location.assign(`${process.env.NEXT_PUBLIC_LANDINGPAGE_URL}/entrar`);
+      router.replace('/entrar');
     }
   });
 

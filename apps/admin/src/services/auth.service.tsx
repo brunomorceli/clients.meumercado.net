@@ -1,4 +1,4 @@
-import { IAuthentication, IConfirm, ISignin } from "@/interfaces";
+import { IAuthenticate, IAuthentication, IConfirm } from "@/interfaces";
 import axios from "axios";
 
 class AuthServiceClass {
@@ -16,12 +16,13 @@ class AuthServiceClass {
 
     return this.instance;
   }
-  signin(data: ISignin): Promise<void> {
+
+  authenticate(data: IAuthenticate): Promise<void> {
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/users/authenticate`;
       axios
         .post(url, data)
-        .then(() => resolve())
+        .then((res) => resolve(res.data))
         .catch(() => reject('Erro ao tentar autenticar usuário.'));
     });
   }

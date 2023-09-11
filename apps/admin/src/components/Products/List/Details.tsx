@@ -5,12 +5,12 @@ import { ListImage, CustomTypo } from "./styles";
 import { GeneralUtils } from "@/utils";
 import { FireOutlined, ShoppingOutlined } from "@ant-design/icons";
 
-interface ProductAdminDetailsProps {
+interface ProductDetailsProps {
   product: IProduct | null | undefined;
   onClose: () => void;
 }
 
-export function ProductAdminDetails(props: ProductAdminDetailsProps) {
+export function ProductDetails(props: ProductDetailsProps) {
   const { onClose } = props;
   const [product, setProduct] = useState<IProduct>(createEmptyProduct());
   const { discount } = product;

@@ -2,10 +2,12 @@ import { FloatButton, Upload } from "antd";
 import ImgCrop from "antd-img-crop";
 import { ImageCustom } from "./styles";
 import { DeleteOutlined } from "@ant-design/icons";
+import { ReactNode } from "react";
 
 interface ImageCropProps {
   aspect?: "square" | "cover" | "jumbotrom" | "dynamic";
   src?: string | null | undefined;
+  children?: ReactNode | null | undefined;
   onChange: (src?: string | null | undefined) => void;
 }
 
@@ -34,6 +36,35 @@ export function ImageCrop(props: ImageCropProps) {
 
   const selectedAspectRatio = aspectRatio[props.aspect || "square"];
   const selectedAspectPercent = aspectPercent[props.aspect || "square"];
+
+  const Content = () => (
+    <ImgCrop
+      aspect={selectedAspectRatio}
+      modalOk="Confirmar"
+      modalCancel="Cancelar"
+      aspectSlider={props.aspect === 'dynamic'}
+      quality={0.7}
+    >
+      <Upload
+        beforeUpload={handleBeforeUpload}
+        onRemove={() => onChange()}
+        multiple={false}
+        showUploadList={false}
+      >
+        {props.children ||
+          <ImageCustom
+            src={"images/no-image.png"}
+            heightPercent={selectedAspectPercent}
+          />
+        }
+      </Upload>
+    </ImgCrop>
+  );
+
+  if (props.children) {
+    return <Content />;
+  }
+
   return (
     <>
       {src && (
@@ -52,26 +83,7 @@ export function ImageCrop(props: ImageCropProps) {
           />
         </ImageCustom>
       )}
-      {!src && (
-        <ImgCrop
-          aspect={selectedAspectRatio}
-          modalOk="Confirmar"
-          modalCancel="Cancelar"
-          aspectSlider={props.aspect === 'dynamic'}
-        >
-          <Upload
-            beforeUpload={handleBeforeUpload}
-            onRemove={() => onChange()}
-            multiple={false}
-            showUploadList={false}
-          >
-            <ImageCustom
-              src={"images/no-image.png"}
-              heightPercent={selectedAspectPercent}
-            />
-          </Upload>
-        </ImgCrop>
-      )}
+      { !src && <Content /> }
     </>
   );
 }

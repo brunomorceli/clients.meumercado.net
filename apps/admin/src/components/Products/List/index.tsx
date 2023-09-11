@@ -1,17 +1,17 @@
 import { IProduct } from "@/interfaces";
 import { Col } from "antd";
 import { CardRow } from "./styles";
-import { ProductAdminListItem } from "./Item";
+import { ProductListItem } from "./Item";
 import { useState } from "react";
-import { ProductAdminDetails } from "./Details";
+import { ProductDetails } from "./Details";
 
-interface ProductAdminListProps {
+interface ProductListProps {
   products: IProduct[];
   onEdit: (product: IProduct) => void;
   onRemove: (product: IProduct) => void;
 }
 
-export function ProductAdminList(props: ProductAdminListProps) {
+export function ProductList(props: ProductListProps) {
   const { products, onEdit, onRemove } = props;
   const [productDetails, setProductDetails] = useState<IProduct | null>(null);
 
@@ -20,7 +20,7 @@ export function ProductAdminList(props: ProductAdminListProps) {
       <CardRow>
         {products.map((item, index) => (
           <Col xs={24} sm={24} md={12} lg={8} xl={6} xxl={4} key={index}>
-            <ProductAdminListItem
+            <ProductListItem
               product={item}
               onEdit={onEdit}
               onRemove={onRemove}
@@ -29,7 +29,7 @@ export function ProductAdminList(props: ProductAdminListProps) {
           </Col>
         ))}
       </CardRow>
-      <ProductAdminDetails
+      <ProductDetails
         product={productDetails}
         onClose={() => setProductDetails(null)}
       />

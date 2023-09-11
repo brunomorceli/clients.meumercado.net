@@ -8,14 +8,14 @@ import {
 } from "@ant-design/icons";
 import { Card, Modal, Typography } from "antd";
 
-interface ProductAdminListItemProps {
+interface ProductListItemProps {
   product: IProduct;
   onEdit: (product: IProduct) => void;
   onRemove: (product: IProduct) => void;
   onDetails: (product: IProduct) => void;
 }
 
-export function ProductAdminListItem(props: ProductAdminListItemProps) {
+export function ProductListItem(props: ProductListItemProps) {
   const { product, onEdit, onRemove, onDetails } = props;
 
   function handleRemove(): void {

@@ -5,13 +5,13 @@ export interface IProduct {
   companyId?: string;
   label: string;
   description?: string;
-  cover?: string;
-  blob?: string;
+  pictures: string[],
+  showPrice: boolean;
   price: number;
+  discountPrice?: number;
   unlimited: boolean;
   quantity: number;
   category?: ICategory;
-  discount?: IDiscount;
 }
 
 export class IProductHandler {
@@ -19,6 +19,8 @@ export class IProductHandler {
     return {
       label: '',
       description: '',
+      pictures: [],
+      showPrice: true,
       price: 0,
       unlimited: false,
       quantity: 1,

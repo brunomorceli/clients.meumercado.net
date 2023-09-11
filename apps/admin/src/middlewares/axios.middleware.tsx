@@ -38,7 +38,7 @@ axios.interceptors.request.use((config: any) => {
       const status = error.response.status;
       if (status === 401) {
         authStore.signout();
-        window.location.assign(`${process.env.NEXT_PUBLIC_LANDINGPAGE_URL}/sair`);
+        router.replace('/entrar');
       }
     
       if (status === 403) {

@@ -1,4 +1,5 @@
 import {
+  IAuthenticate,
   IAuthentication,
   IAuthenticationHandler,
   ICompany,
@@ -11,6 +12,7 @@ import { persist } from "zustand/middleware";
 interface useAuthStoreProps {
   authenticated: boolean;
   auth: IAuthentication;
+  authenticate:(data: IAuthenticate) => Promise<any>;
   confirm: (data: IConfirm) => Promise<void>;
   setCompany: (company: ICompany) => void,
   
@@ -22,6 +24,7 @@ export const useAuthStore = create(
     (set, get) => ({
       authenticated: false,
       auth: IAuthenticationHandler.empty(),
+      authenticate: (data: IAuthenticate) => AuthService.authenticate(data),
       confirm: (data: IConfirm) => {
         return new Promise((resolve, reject) => {
           AuthService.confirm(data)

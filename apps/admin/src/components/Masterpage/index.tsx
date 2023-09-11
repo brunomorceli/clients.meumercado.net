@@ -30,9 +30,9 @@ export function Masterpage(props: MasterpageProps) {
           xs={{ offset: 0, span: 24 }}
           sm={{ offset: 0, span: 24 }}
           md={{ offset: 0, span: 24 }}
-          lg={{ offset: 2, span: 20 }}
-          xl={{ offset: 2, span: 20 }}
-          xxl={{ offset: 2, span: 20 }}
+          lg={{ offset: 6, span: 12 }}
+          xl={{ offset: 6, span: 12 }}
+          xxl={{ offset: 6, span: 12 }}
         >
           {props.children}
         </Col>

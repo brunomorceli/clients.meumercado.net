@@ -1,5 +1,6 @@
-export * from './pagination.interface';
+export * from './authenticate.interface';
 export * from './confirm.interface';
+export * from './pagination.interface';
 export * from './authentication.interface';
 export * from './category.interface';
 export * from './discount.interface';

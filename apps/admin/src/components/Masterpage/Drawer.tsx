@@ -43,9 +43,9 @@ export function DrawerComp() {
       onClose={masterpageStore.toggleDrawer}
     >
       <List size="small">
-        <DrawerListItem onClick={() => handleGoTo('companies')}>
+        <DrawerListItem onClick={() => handleGoTo('company')}>
           <Typography.Title level={4}>
-            <ShopOutlined /> Empresas
+            <ShopOutlined /> Empresa
           </Typography.Title>
         </DrawerListItem>
 

@@ -1,13 +1,12 @@
-import { AuthGuard } from "@/components";
-import { Card } from "antd";
+import { AuthGuard, Products } from "@/components";
 import { Categories } from "../components/Categories";
 
 export default function Home() {
   return (
     <AuthGuard>
-      <Card>
-        <Categories />
-      </Card>
+      <Categories />
+      <div style={{ height: 50}}></div>
+      <Products />
     </AuthGuard>
   )
 }

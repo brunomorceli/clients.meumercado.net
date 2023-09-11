@@ -216,7 +216,6 @@ export function Categories() {
           />
         )}
       </Modal>
-      {JSON.stringify(items)}
     </>
   );
 }

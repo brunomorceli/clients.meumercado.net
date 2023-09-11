@@ -7,7 +7,6 @@ export default function ConfirmPage() {
   const authStore = useStore(useAuthStore);
   const router = useRouter();
   const { id } = router.query;
-  const cancelURL = `${process.env.NEXT_PUBLIC_LANDINGPAGE_URL}/sair`;
 
   if (authStore.authenticated) {
     router.replace("/");
@@ -17,7 +16,7 @@ export default function ConfirmPage() {
   return (
     <Confirm
       authId={id as string}
-      onCancel={() => window.location.assign(cancelURL)}
+      onCancel={() => router.replace('/entrar')}
     />
   );
 }

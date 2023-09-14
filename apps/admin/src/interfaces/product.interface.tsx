@@ -8,7 +8,7 @@ export enum EProductMeasureType {
 export interface IProductMesarure {
   label: string;
   type: EProductMeasureType;
-  unitText: string;
+  unitText?: string;
   options: string[];
   value?: any;
   id: string;
@@ -20,7 +20,6 @@ export class IProductMeasureHandler {
       label: '',
       type: EProductMeasureType.NUMBER,
       options: [],
-      unitText: '',
       id: Uuid(),
     };
   }
@@ -31,6 +30,7 @@ export interface IProduct {
   companyId?: string;
   label: string;
   description?: string;
+  videos: [],
   pictures: string[],
   showPrice: boolean;
   price: number;
@@ -49,6 +49,7 @@ export class IProductHandler {
     return {
       label: '',
       description: '',
+      videos: [],
       pictures: [],
       showPrice: true,
       price: 0,
@@ -56,9 +57,9 @@ export class IProductHandler {
       quantity: 1,
       categories: [],
       measures: [
-        { id: Uuid(), label: 'Peso', type: EProductMeasureType.OPTION, unitText: 'G', options: ['A', 'B', 'C'], },
+        { id: Uuid(), label: 'Peso', type: EProductMeasureType.NUMBER, unitText: 'CM', options: [], },
         { id: Uuid(), label: 'Comprimento', type: EProductMeasureType.NUMBER, unitText: 'CM', options: [], },
-        { id: Uuid(), label: 'Comprimento', type: EProductMeasureType.NUMBER, unitText: 'CM', options: [], },
+        { id: Uuid(), label: 'Largura', type: EProductMeasureType.NUMBER, unitText: 'CM', options: [], },
         { id: Uuid(), label: 'Altura', type: EProductMeasureType.NUMBER, unitText: 'CM', options: [], },
       ],
       type: EProductType.PHYSIC,

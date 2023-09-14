@@ -1,15 +1,15 @@
 "use client";
 
-import { IProduct, IProductHandler } from "@/interfaces";
+import { IProduct, IProductHandler, IProductMesarure } from "@/interfaces";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ImageCrop, ImageGalery, InputBase } from "@/components";
+import { Categories, ImageCrop, ImageGalery, InputBase } from "@/components";
 import { FlexboxGrid, Form, Schema, TagPicker, Toggle } from "rsuite";
 import { useStore } from "zustand";
 import { useAuthStore, useProductStore } from "@/stores";
-import { Button, List, Select, Typography, message } from "antd";
+import { Button, List, Modal, Row, Select, Typography, message } from "antd";
 import { Editor } from "@tinymce/tinymce-react";
 import { CardCustom } from "./styles";
-import { PlusOutlined } from "@ant-design/icons";
+import { FormOutlined, PlusOutlined, SaveOutlined, TagsOutlined } from "@ant-design/icons";
 import { EProductType } from "@/enums";
 import { Measures } from "./Measures";
 import { MaskedInput } from "antd-mask-input";
@@ -31,19 +31,28 @@ export function ProductForm(props: ProductFormProps) {
   const editorRef = useRef<any>();
   const [product, setProduct] = useState<IProduct>({
     ...IProductHandler.empty(),
-    pictures: [],
   });
+  const productRef = useRef(product);
+  const [toggleModalCategories, setToggleModalCategories] =
+    useState<boolean>(false);
   const model = Schema.Model({
-    label:  Schema.Types.StringType()
-      .isRequired("Este campo é obrigatório."),
-    price:  Schema.Types.NumberType('Este campo deve ser um número.')
-      .addRule((price) => !product.showPrice || Number(price) > 0, 'Este campo é obrigatório'),
-    quantity: Schema.Types.NumberType('Este campo deve ser um número.')
-      .addRule((quantity) => product.unlimited || Number(quantity) > 0, 'Este campo é obrigatório'),
-    sku: Schema.Types.StringType()
-      .minLength(3, 'O SKU deve conter pelo menos 3 letras'),
-    barcode: Schema.Types.StringType()
-      .minLength(3, 'O Código de barras deve conter pelo menos 3 letras'),
+    label: Schema.Types.StringType().isRequired("Este campo é obrigatório."),
+    price: Schema.Types.NumberType("Este campo deve ser um número.").addRule(
+      (price) => !product.showPrice || Number(price) > 0,
+      "Este campo é obrigatório"
+    ),
+    quantity: Schema.Types.NumberType("Este campo deve ser um número.").addRule(
+      (quantity) => product.unlimited || Number(quantity) > 0,
+      "Este campo é obrigatório"
+    ),
+    sku: Schema.Types.StringType().minLength(
+      3,
+      "O SKU deve conter pelo menos 3 letras"
+    ),
+    barcode: Schema.Types.StringType().minLength(
+      3,
+      "O Código de barras deve conter pelo menos 3 letras"
+    ),
   });
   const loadProduct = useCallback(
     (id: string) => {
@@ -51,7 +60,7 @@ export function ProductForm(props: ProductFormProps) {
 
       productStore
         .get(id)
-        .then(setProduct)
+        .then(handleChangeProduct)
         .catch((e) => message.error(e))
         .finally(() => setProcessing(false));
     },
@@ -62,8 +71,14 @@ export function ProductForm(props: ProductFormProps) {
     productId && loadProduct(productId);
   }, [productId, loadProduct]);
 
-  function handleChangeProduct(key: string, val: any): void {
-    setProduct({ ...product, [key]: val });
+  function handleChangeProductKey(key: string, val: any): void {
+    productRef.current = { ...productRef.current, [key]: val };
+    setProduct(productRef.current);
+  }
+
+  function handleChangeProduct(data: any): void {
+    productRef.current = data;
+    setProduct(productRef.current);
   }
 
   function getFlatCategories(item: any, dst?: any[]) {
@@ -87,7 +102,24 @@ export function ProductForm(props: ProductFormProps) {
   }
 
   function handleAddPicture(img?: string | null | undefined): void {
-    img && setProduct({ ...product, pictures: [...product.pictures, img] });
+    if (!img) {
+      return;
+    }
+
+    productRef.current = {
+      ...productRef.current,
+      pictures: [...productRef.current.pictures, img],
+    };
+
+    setProduct(productRef.current);
+  }
+
+  function handleChangeMeasure(measure: IProductMesarure): void {
+    const measures = [...productRef.current.measures];
+    const index = measures.findIndex((m) => m.id === measure.id);
+    measures[index] = measure;
+
+    handleChangeProduct({ ...productRef.current, measures });
   }
 
   function handleSubmit(): void {
@@ -98,37 +130,40 @@ export function ProductForm(props: ProductFormProps) {
     setProcessing(true);
 
     productStore
-      .upsert(product)
-      .then(() => loadProduct(product.id!))
+      .upsert(productRef.current)
+      .then((prod) => {
+        message.success("Produto salvo com sucesso.");
+        loadProduct(prod.id!);
+      })
       .catch((e) => message.error(e))
       .finally(() => setProcessing(false));
   }
 
   const flatCategories = getFlatCategories(categories);
-
   return (
     <Form
       fluid={true}
       ref={formRef}
       model={model}
-      formValue={product}
+      formValue={productRef.current}
       formError={formError}
-      onChange={(p) => { setProduct(p as any); }}
+      onChange={handleChangeProduct}
       onError={setFormError}
       onSubmit={handleSubmit}
     >
       <Typography.Title level={2}>
-        {productId ? "Editar" : "Criar"} produto
+        <TagsOutlined />
+        &nbsp; Formulário de produto
       </Typography.Title>
       <CardCustom title="Informações gerais">
         <InputBase name="label" label="Nome" />
         <Form.Group>
           <Form.ControlLabel>
-            Descrição ({(product.description || "").length}/{2048})
+            Descrição ({(productRef.current.description || "").length}/{2048})
           </Form.ControlLabel>
           <Editor
             onInit={(evt, editor) => (editorRef.current = editor)}
-            initialValue={product.description}
+            initialValue={productRef.current.description}
             init={{
               height: 500,
               menubar: false,
@@ -157,7 +192,7 @@ export function ProductForm(props: ProductFormProps) {
               max_height: 2024,
             }}
             onChange={(e: any) =>
-              handleChangeProduct("description", e.level.content || "")
+              handleChangeProductKey("description", e.level.content || "")
             }
           />
         </Form.Group>
@@ -170,18 +205,18 @@ export function ProductForm(props: ProductFormProps) {
             onChange={(img) => handleAddPicture(img)}
             aspect="dynamic"
           >
-            <Button>
-              Adicionar Imagem <PlusOutlined />
+            <Button icon={<PlusOutlined />}>
+              Adicionar Imagem
             </Button>
           </ImageCrop>,
         ]}
       >
-        {product.pictures.length === 0 ? (
+        {productRef.current.pictures.length === 0 ? (
           <Typography>Nenhuma imagem adicionada.</Typography>
         ) : (
           <ImageGalery
-            images={product.pictures}
-            onChange={(p) => handleChangeProduct("pictures", p)}
+            images={productRef.current.pictures}
+            onChange={(p) => handleChangeProductKey("pictures", p)}
           />
         )}
       </CardCustom>
@@ -194,9 +229,9 @@ export function ProductForm(props: ProductFormProps) {
                 checkedChildren="Mostrar"
                 unCheckedChildren="Não Mostrar"
                 key="togglePrice"
-                checked={product.showPrice}
+                checked={productRef.current.showPrice}
                 onChange={(checked) =>
-                  handleChangeProduct("showPrice", checked)
+                  handleChangeProductKey("showPrice", checked)
                 }
               />,
             ]}
@@ -204,22 +239,25 @@ export function ProductForm(props: ProductFormProps) {
             <Typography.Text
               style={{ cursor: "pointer" }}
               onClick={() =>
-                handleChangeProduct("showPrice", !product.showPrice)
+                handleChangeProductKey(
+                  "showPrice",
+                  !productRef.current.showPrice
+                )
               }
             >
               Mostrar o preço
             </Typography.Text>
           </List.Item>
         </List>
-        {product.showPrice && (
+        {productRef.current.showPrice && (
           <FlexboxGrid justify="space-between">
             <FlexboxGrid.Item colspan={11}>
               <Form.Group style={{ width: "100%" }}>
                 <Form.ControlLabel>Preço</Form.ControlLabel>
                 <Currency
-                  cents={product.price}
+                  cents={productRef.current.price}
                   placeholder="R$ 100,00"
-                  onChange={(c) => handleChangeProduct("price", c)}
+                  onChange={(c) => handleChangeProductKey("price", c)}
                 />
                 <Form.ErrorMessage show={formError.price}>
                   {formError.price}
@@ -230,9 +268,9 @@ export function ProductForm(props: ProductFormProps) {
               <Form.Group style={{ width: "100%" }}>
                 <Form.ControlLabel>Preço de desconto</Form.ControlLabel>
                 <Currency
-                  cents={product.discountPrice!}
+                  cents={productRef.current.discountPrice!}
                   placeholder="R$ 89,99"
-                  onChange={(c) => handleChangeProduct("discountPrice", c)}
+                  onChange={(c) => handleChangeProductKey("discountPrice", c)}
                 />
                 <Form.ErrorMessage show={formError.discountPrice}>
                   {formError.price}
@@ -249,7 +287,7 @@ export function ProductForm(props: ProductFormProps) {
             { label: "Físico", value: EProductType.PHYSIC },
             { label: "Digital ou serviço", value: EProductType.DIGITAL },
           ]}
-          defaultValue={product.type}
+          defaultValue={productRef.current.type}
         />
       </CardCustom>
       <CardCustom title="Estoque">
@@ -261,9 +299,9 @@ export function ProductForm(props: ProductFormProps) {
                 checkedChildren="Limitado"
                 unCheckedChildren="Ilimitado"
                 key="toggleUnlimited"
-                checked={!product.unlimited}
+                checked={!productRef.current.unlimited}
                 onChange={(checked) =>
-                  handleChangeProduct("unlimited", !checked)
+                  handleChangeProductKey("unlimited", !checked)
                 }
               />,
             ]}
@@ -271,20 +309,25 @@ export function ProductForm(props: ProductFormProps) {
             <Typography.Text
               style={{ cursor: "pointer" }}
               onClick={() =>
-                handleChangeProduct("unlimited", !product.unlimited)
+                handleChangeProductKey(
+                  "unlimited",
+                  !productRef.current.unlimited
+                )
               }
             >
               Limite
             </Typography.Text>
           </List.Item>
-          {!product.unlimited && (
+          {!productRef.current.unlimited && (
             <List.Item>
               <Form.Group style={{ width: "100%" }}>
                 <Form.ControlLabel>Quantidade</Form.ControlLabel>
                 <MaskedInput
-                  value={`${product.quantity || ''}`}
+                  value={`${productRef.current.quantity || ""}`}
                   mask={/^[0-9]+$/}
-                  onChange={(e) => handleChangeProduct("quantity", Number(e.target.value))}
+                  onChange={(e) =>
+                    handleChangeProductKey("quantity", Number(e.target.value))
+                  }
                 />
                 <Form.ErrorMessage show={formError.quantity}>
                   {formError.quantity}
@@ -307,21 +350,43 @@ export function ProductForm(props: ProductFormProps) {
       <CardCustom title="Medidas do produto">
         <Measures
           measures={product.measures}
-          onChange={(m) => handleChangeProduct("measures", m)}
+          onChange={(m) => handleChangeMeasure(m)}
         />
       </CardCustom>
       <CardCustom title="Categorias">
         <TagPicker
           size="lg"
-          defaultValue={product.categories}
+          defaultValue={productRef.current.categories}
+          value={productRef.current.categories}
           placeholder="Selecione as categorias"
           data={flatCategories}
           style={{ width: "100% " }}
-          onChange={(selected) => handleChangeProduct("categories", selected)}
+          onChange={(selected) =>
+            handleChangeProductKey("categories", selected)
+          }
         />
+        <Button
+          type="link"
+          icon={<FormOutlined />}
+          onClick={() => setToggleModalCategories(!toggleModalCategories)}
+        >
+          Gerenciar categorias
+        </Button>
+        <Modal
+          closeIcon={null}
+          open={toggleModalCategories}
+          onCancel={() => setToggleModalCategories(!toggleModalCategories)}
+          okText="Concluir"
+          onOk={() => setToggleModalCategories(!toggleModalCategories)}
+        >
+          <Categories />
+        </Modal>
       </CardCustom>
-      <CardCustom title="Outras opções"></CardCustom>
-      <Button color="primary" onClick={handleSubmit}>Salvar</Button>
+      <Row justify={"end"}>
+        <Button type="primary" onClick={handleSubmit} icon={<SaveOutlined />}>
+          Salvar
+        </Button>
+      </Row>
     </Form>
   );
 }

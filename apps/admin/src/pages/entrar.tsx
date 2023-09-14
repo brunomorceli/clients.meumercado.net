@@ -1,6 +1,6 @@
 import { IAuthenticate } from "@/interfaces";
 import { useAuthStore } from "@/stores";
-import { message } from "antd";
+import { Typography, message } from "antd";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { Container, Schema, Form, ButtonToolbar, Button } from "rsuite";
@@ -14,11 +14,12 @@ const model = Schema.Model({
 });
 
 function TextField(props: any) {
-  const { name, label, accepter, ...rest } = props;
+  const { name, label, accepter, error, ...rest } = props;
   return (
     <Form.Group controlId={`${name}-3`}>
       <Form.ControlLabel>{label} </Form.ControlLabel>
       <Form.Control name={name} accepter={accepter} {...rest} />
+      <Form.ErrorMessage show={Boolean(error)}>{error}</Form.ErrorMessage>
     </Form.Group>
   );
 }
@@ -40,7 +41,13 @@ export default function Entrar() {
 
     authStore
       .authenticate(value)
-      .then((res: any) => router.replace(`/confirm/${res.authId}`))
+      .then((res: any) => {
+        if (!res.tenantId) {
+          setValue({ ...value, label: "" });
+        } else {
+          router.replace(`/confirm/${res.authId}`);
+        }
+      })
       .catch((e) => message.error(e));
   }
 
@@ -57,7 +64,13 @@ export default function Entrar() {
         onSubmit={handleSubmit}
       >
         {value.label !== null && (
-          <TextField name="label" label="Nome da empresa" />
+          <>
+            <TextField
+              name="label"
+              label="Nome da empresa"
+              error="Por favor, informe o nome da empresa"
+            />
+          </>
         )}
         <TextField name="email" label="Email" />
         <Form.Group>

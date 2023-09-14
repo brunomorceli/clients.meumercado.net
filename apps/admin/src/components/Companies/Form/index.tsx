@@ -299,7 +299,7 @@ export function CompanyForm(props: CompanyFormProps) {
             initialValue={company.phoneNumber}
             rules={[
               {
-                required: company.phoneNumber.length !== 0,
+                required: (company.phoneNumber || '').length !== 0,
                 pattern: /^\d{10,11}$/,
                 message: "Telefone inválido",
               },
@@ -307,7 +307,7 @@ export function CompanyForm(props: CompanyFormProps) {
           >
             <PhoneNumber
               onChange={(value) => handleChangeCompany("phoneNumber", value)}
-              value={company.phoneNumber}
+              value={company.phoneNumber || ''}
             />
           </Form.Item>
           <div>

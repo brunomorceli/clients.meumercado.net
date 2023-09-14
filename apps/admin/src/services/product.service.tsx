@@ -18,12 +18,9 @@ class ProductServiceClass {
     return this.instance;
   }
   upsert(product: IProduct): Promise<IProduct> {
-    const data: any = {...product, categoryId: product.category?.id };
-    delete data.category;
-
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/products`;
-      axios[data.id ? 'patch' : 'post'](url, data)
+      axios[product.id ? 'patch' : 'post'](url, product)
         .then((res) => resolve(res.data))
         .catch((e) => reject(GeneralUtils.getErrorMessage(e, 'Erro ao tentar salvar produto.')));
     });
@@ -42,7 +39,7 @@ class ProductServiceClass {
   
   get(id: string): Promise<IProduct> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/products/${id}`;
+      const url = `${this.baseURL}/products/${id}/get`;
       axios
         .get(url)
         .then((res) => resolve(res.data))

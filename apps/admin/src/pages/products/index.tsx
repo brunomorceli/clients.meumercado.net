@@ -92,7 +92,7 @@ export function ProductsCreate() {
         extra={[
           <Button
             key="btnAdd"
-            onClick={() => setProductForm(IProductHandler.getEmptyProduct())}
+            onClick={() => setProductForm(IProductHandler.empty())}
           >
             <PlusOutlined />
           </Button>,

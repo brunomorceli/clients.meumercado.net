@@ -2,10 +2,12 @@ import { FloatButton, Upload } from "antd";
 import ImgCrop from "antd-img-crop";
 import { ImageCustom } from "./styles";
 import { DeleteOutlined } from "@ant-design/icons";
+import { ReactNode } from "react";
 
 interface ImageCropProps {
   aspect?: "square" | "cover" | "jumbotrom";
   src?: string | null | undefined;
+  children?: ReactNode | null | undefined;
   onChange: (src?: string | null | undefined) => void;
 }
 
@@ -62,10 +64,12 @@ export function ImageCrop(props: ImageCropProps) {
             multiple={false}
             showUploadList={false}
           >
-            <ImageCustom
-              src={"images/no-image.png"}
-              heightPercent={selectedAspectPercent}
-            />
+            {props.children ||
+              <ImageCustom
+                src={"images/no-image.png"}
+                heightPercent={selectedAspectPercent}
+              />
+            }
           </Upload>
         </ImgCrop>
       )}

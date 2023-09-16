@@ -1,9 +1,8 @@
 import { IProduct } from "@/interfaces";
-import { Col } from "antd";
-import { CardRow } from "./styles";
-import { ProductListItem } from "./Item";
+import { Avatar, Button, FlexboxGrid, IconButton, List, Modal } from "rsuite";
+import TrashIcon from "@rsuite/icons/Trash";
+import EditIcon from "@rsuite/icons/Edit";
 import { useState } from "react";
-import { ProductDetails } from "./Details";
 
 interface ProductListProps {
   products: IProduct[];
@@ -13,26 +12,71 @@ interface ProductListProps {
 
 export function ProductList(props: ProductListProps) {
   const { products, onEdit, onRemove } = props;
-  const [productDetails, setProductDetails] = useState<IProduct | null>(null);
+  const [product, setProduct] = useState<IProduct | null>(null);
+
+  function handleRemove() {
+    onRemove(product!);
+    setProduct(null);
+  }
 
   return (
     <>
-      <CardRow>
+      <List hover>
         {products.map((item, index) => (
-          <Col xs={24} sm={24} md={12} lg={8} xl={6} xxl={4} key={index}>
-            <ProductListItem
-              product={item}
-              onEdit={onEdit}
-              onRemove={onRemove}
-              onDetails={setProductDetails}
-            />
-          </Col>
+          <List.Item key={index} index={index + 1}>
+            <FlexboxGrid>
+              <FlexboxGrid.Item colspan={2} style={{}}>
+                <Avatar
+                  src={
+                    item.pictures.length !== 0 ? item.pictures[0] : undefined
+                  }
+                />
+              </FlexboxGrid.Item>
+              <FlexboxGrid.Item
+                colspan={18}
+                style={{
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  overflow: "hidden",
+                }}
+              >
+                <div>{item.label}</div>
+                <div style={{ fontSize: 15 }}>{item.description || "-"}</div>
+              </FlexboxGrid.Item>
+              <FlexboxGrid.Item colspan={4}>
+                <IconButton
+                  circle
+                  icon={<EditIcon />}
+                  size="sm"
+                  onClick={() => onEdit(item)}
+                />
+                &nbsp;
+                <IconButton
+                  circle
+                  icon={<TrashIcon />}
+                  size="sm"
+                  onClick={() => setProduct(item)}
+                />
+              </FlexboxGrid.Item>
+            </FlexboxGrid>
+          </List.Item>
         ))}
-      </CardRow>
-      <ProductDetails
-        product={productDetails}
-        onClose={() => setProductDetails(null)}
-      />
+      </List>
+      <Modal role="dialog" open={Boolean(product)} backdrop="static">
+        <Modal.Header closeButton={false}>
+          <Modal.Title>Remover atributo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Deseja realmente remover o atributo &nbsp;
+          <strong>{(product || {}).label || ""}</strong>?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => setProduct(null)}>Cancelar</Button>
+          <Button appearance="primary" onClick={handleRemove}>
+            Confirmar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

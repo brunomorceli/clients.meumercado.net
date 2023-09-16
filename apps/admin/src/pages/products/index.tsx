@@ -1,40 +1,27 @@
 import { useEffect, useState } from "react";
-import {
-  ICategory,
-  IProduct,
-  IProductHandler,
-  IProductSearch,
-} from "@/interfaces";
+import { IProduct, IProductSearch } from "@/interfaces";
 import { useStore } from "zustand";
 import { useProductStore } from "@/stores/product.store";
-import { Button, Card, List, Pagination, Typography, message } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import { Spin, Search, Backdrop } from "@/components";
-import { useAuthStore, useCategoryStore } from "@/stores";
+import { Search } from "@/components";
+import { ProductList } from "@/components/Products/List";
+import { useRouter } from "next/router";
+import { Pagination, message } from "antd";
+import { Button, ButtonGroup, Divider, FlexboxGrid, List, Panel, Stack } from "rsuite";
+import PlusIcon from "@rsuite/icons/Plus";
 
-export function ProductsCreate() {
-  const authStore = useStore(useAuthStore);
+export default function ProductListPage() {
+  const router = useRouter();
   const productStore = useStore(useProductStore);
-  const categoryStore = useStore(useCategoryStore);
   const [search, setSearch] = useState<string>("");
   const size = 20;
   const [total, setTotal] = useState<number>(0);
   const [products, setProducts] = useState<IProduct[]>([]);
-  const [productForm, setProductForm] = useState<IProduct | null>(null);
-  const [categories, setCategories] = useState<ICategory[]>([]);
   const [processing, setProcessing] = useState<boolean>(false);
   const [searching, setSearching] = useState<boolean>(false);
 
   useEffect(() => {
     handleSearch();
   }, []);
-
-  useEffect(() => {
-    categoryStore
-      .list()
-      .then((list) => setCategories(list))
-      .catch((e) => message.error(e));
-  }, [categoryStore]);
 
   function handleSearch(search: IProductSearch = {}): void {
     setSearching(true);
@@ -66,69 +53,58 @@ export function ProductsCreate() {
       });
   }
 
-  function handleSave(product: IProduct): void {
-    setProcessing(true);
-
-    productStore
-      .upsert({ ...product, companyId: authStore.auth.company?.id })
-      .then(() => {
-        message.success("Produto salvo com sucesso");
-
-        setProcessing(false);
-        setProductForm(null);
-        setSearch("");
-        handleSearch();
-      })
-      .catch((e) => {
-        setProcessing(false);
-        message.error(e);
-      });
-  }
-
   return (
     <>
-      <Card
-        title={<Typography>Produtos</Typography>}
-        extra={[
-          <Button
-            key="btnAdd"
-            onClick={() => setProductForm(IProductHandler.empty())}
-          >
-            <PlusOutlined />
-          </Button>,
-        ]}
+      <Panel
+        bordered
+        shaded
+        style={{ backgroundColor: "white" }}
+        header={
+          <>
+            <Stack justifyContent="space-between">
+              <h5>Produtos</h5>
+              <ButtonGroup>
+                <Button
+                  appearance="default"
+                  startIcon={<PlusIcon />}
+                  onClick={() => router.replace("/products/create")}
+                >
+                  Adicionar
+                </Button>
+              </ButtonGroup>
+            </Stack>
+            <Divider />
+          </>
+        }
       >
-        <List>
-          <List.Item>
+        <FlexboxGrid justify="space-between">
+          <FlexboxGrid.Item colspan={24}>
             <Search
               loading={searching}
               placeholder="Buscar produto"
               onSearch={(label) => handleSearch(label ? { label } : undefined)}
             />
-          </List.Item>
-          <ProductList
-            products={products}
-            onEdit={(p) => setProductForm(p)}
-            onRemove={handleRemove}
-          />
-          {products.length >= size && (
-            <Pagination
-              defaultCurrent={1}
-              defaultPageSize={size}
-              total={total}
-              onChange={(page) => handleSearch({ page })}
-              showSizeChanger={false}
+          </FlexboxGrid.Item>
+          <FlexboxGrid.Item colspan={24}>
+            <ProductList
+              products={products}
+              onEdit={(p) => router.replace(`/products/${p.id}`)}
+              onRemove={handleRemove}
             />
-          )}
-        </List>
-        <ProductForm
-          product={productForm}
-          categories={categories}
-          onSave={handleSave}
-          onClose={() => setProductForm(null)}
-        />
-      </Card>
-      <Backdrop open={processing} />
+          </FlexboxGrid.Item>
+          <FlexboxGrid.Item colspan={24}>
+            {products.length >= size && (
+              <Pagination
+                defaultCurrent={1}
+                defaultPageSize={size}
+                total={total}
+                onChange={(page) => handleSearch({ page })}
+                showSizeChanger={false}
+              />
+            )}
+          </FlexboxGrid.Item>
+        </FlexboxGrid>
+      </Panel>
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { AuthGuard, Products } from "@/components";
+import { AuthGuard } from "@/components";
 import { Categories } from "../components/Categories";
 
 export default function Home() {
@@ -6,7 +6,6 @@ export default function Home() {
     <AuthGuard>
       <Categories />
       <div style={{ height: 50}}></div>
-      <Products />
     </AuthGuard>
   )
 }

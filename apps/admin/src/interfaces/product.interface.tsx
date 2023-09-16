@@ -1,29 +1,5 @@
 import { EProductType } from "@/enums";
-import { v4 as Uuid } from 'uuid';
-
-export enum EProductMeasureType {
-  NUMBER='NUMBER',
-  OPTION='OPTION',
-}
-export interface IProductMesarure {
-  label: string;
-  type: EProductMeasureType;
-  unitText?: string;
-  options: string[];
-  value?: any;
-  id: string;
-}
-
-export class IProductMeasureHandler {
-  static empty(): IProductMesarure {
-    return {
-      label: '',
-      type: EProductMeasureType.NUMBER,
-      options: [],
-      id: Uuid(),
-    };
-  }
-}
+import { IAttribute, IMeasure, IMeasureHandler } from ".";
 
 export interface IProduct {
   id?: string;
@@ -40,7 +16,8 @@ export interface IProduct {
   unlimited: boolean;
   quantity: number;
   categories: string[];
-  measures: IProductMesarure[];
+  measures: IMeasure[];
+  attributes: IAttribute[];
   type: EProductType;
 }
 
@@ -56,12 +33,8 @@ export class IProductHandler {
       unlimited: false,
       quantity: 1,
       categories: [],
-      measures: [
-        { id: Uuid(), label: 'Peso', type: EProductMeasureType.NUMBER, unitText: 'CM', options: [], },
-        { id: Uuid(), label: 'Comprimento', type: EProductMeasureType.NUMBER, unitText: 'CM', options: [], },
-        { id: Uuid(), label: 'Largura', type: EProductMeasureType.NUMBER, unitText: 'CM', options: [], },
-        { id: Uuid(), label: 'Altura', type: EProductMeasureType.NUMBER, unitText: 'CM', options: [], },
-      ],
+      measures: IMeasureHandler.getProductDefault(),
+      attributes: [],
       type: EProductType.PHYSIC,
     };
   }

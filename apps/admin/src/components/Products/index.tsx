@@ -113,22 +113,7 @@ export function Products() {
             onEdit={(p) => setProductForm(p)}
             onRemove={handleRemove}
           />
-          {products.length >= size && (
-            <Pagination
-              defaultCurrent={1}
-              defaultPageSize={size}
-              total={total}
-              onChange={(page) => handleSearch({ page })}
-              showSizeChanger={false}
-            />
-          )}
         </List>
-        <ProductForm
-          product={productForm}
-          categories={categories}
-          onSave={handleSave}
-          onClose={() => setProductForm(null)}
-        />
       </Card>
       <Backdrop open={processing} />
     </>

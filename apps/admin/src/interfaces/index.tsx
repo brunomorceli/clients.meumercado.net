@@ -11,3 +11,6 @@ export * from './cart-product.interface';
 export * from './company.interface';
 export * from './company-search.interface';
 export * from './company-search-result.interface';
+export * from './select-option.iterface';
+export * from './measure.interface';
+export * from './attribute.interface';

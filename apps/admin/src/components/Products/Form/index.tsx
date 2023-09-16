@@ -1,20 +1,40 @@
 "use client";
 
-import { IProduct, IProductHandler, IProductMesarure } from "@/interfaces";
+import { IProduct, IProductHandler, IMeasure } from "@/interfaces";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Categories, ImageCrop, ImageGalery, InputBase } from "@/components";
+import {
+  Categories,
+  ImageCrop,
+  ImageGalery,
+  InputBase,
+} from "@/components";
 import { FlexboxGrid, Form, Schema, TagPicker, Toggle } from "rsuite";
 import { useStore } from "zustand";
 import { useAuthStore, useProductStore } from "@/stores";
-import { Button, List, Modal, Row, Select, Typography, message } from "antd";
+import {
+  Button,
+  List,
+  Modal,
+  Row,
+  Select,
+  Typography,
+  message,
+} from "antd";
 import { Editor } from "@tinymce/tinymce-react";
 import { CardCustom } from "./styles";
-import { FormOutlined, PlusOutlined, SaveOutlined, TagsOutlined } from "@ant-design/icons";
+import {
+  FormOutlined,
+  PlusOutlined,
+  SaveOutlined,
+  TagsOutlined,
+} from "@ant-design/icons";
 import { EProductType } from "@/enums";
-import { Measures } from "./Measures";
+import { FormMeasures } from "./Measures";
 import { MaskedInput } from "antd-mask-input";
 import React from "react";
 import { Currency } from "@/components/Shared/Inputs/Currency";
+import { Attributes } from "./Attributes";
+import { useRouter } from "next/router";
 
 interface ProductFormProps {
   productId?: string;
@@ -22,6 +42,7 @@ interface ProductFormProps {
 
 export function ProductForm(props: ProductFormProps) {
   const { productId } = props;
+  const router = useRouter();
   const authStore = useStore(useAuthStore);
   const productStore = useStore(useProductStore);
   const categories = authStore.auth.company?.categories;
@@ -114,7 +135,7 @@ export function ProductForm(props: ProductFormProps) {
     setProduct(productRef.current);
   }
 
-  function handleChangeMeasure(measure: IProductMesarure): void {
+  function handleChangeMeasure(measure: IMeasure): void {
     const measures = [...productRef.current.measures];
     const index = measures.findIndex((m) => m.id === measure.id);
     measures[index] = measure;
@@ -133,7 +154,7 @@ export function ProductForm(props: ProductFormProps) {
       .upsert(productRef.current)
       .then((prod) => {
         message.success("Produto salvo com sucesso.");
-        loadProduct(prod.id!);
+        router.replace(`/products/${prod.id}`);
       })
       .catch((e) => message.error(e))
       .finally(() => setProcessing(false));
@@ -205,9 +226,7 @@ export function ProductForm(props: ProductFormProps) {
             onChange={(img) => handleAddPicture(img)}
             aspect="dynamic"
           >
-            <Button icon={<PlusOutlined />}>
-              Adicionar Imagem
-            </Button>
+            <Button icon={<PlusOutlined />}>Adicionar Imagem</Button>
           </ImageCrop>,
         ]}
       >
@@ -348,7 +367,7 @@ export function ProductForm(props: ProductFormProps) {
         </List>
       </CardCustom>
       <CardCustom title="Medidas do produto">
-        <Measures
+        <FormMeasures
           measures={product.measures}
           onChange={(m) => handleChangeMeasure(m)}
         />
@@ -382,6 +401,12 @@ export function ProductForm(props: ProductFormProps) {
           <Categories />
         </Modal>
       </CardCustom>
+      <Attributes
+        attributes={product.attributes}
+        onChange={(attributes) =>
+          handleChangeProductKey("attributes", attributes)
+        }
+      />
       <Row justify={"end"}>
         <Button type="primary" onClick={handleSubmit} icon={<SaveOutlined />}>
           Salvar

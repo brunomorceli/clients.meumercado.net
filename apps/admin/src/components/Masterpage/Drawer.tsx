@@ -43,49 +43,49 @@ export function DrawerComp() {
       onClose={masterpageStore.toggleDrawer}
     >
       <List size="small">
-        <DrawerListItem onClick={() => handleGoTo('company')}>
+        <DrawerListItem onClick={() => handleGoTo('/company')}>
           <Typography.Title level={4}>
             <ShopOutlined /> Empresa
           </Typography.Title>
         </DrawerListItem>
 
-        <DrawerListItem onClick={() => handleGoTo('products')}>
+        <DrawerListItem onClick={() => handleGoTo('/products')}>
           <Typography.Title level={4}>
             <ShoppingOutlined /> Produtos
           </Typography.Title>
         </DrawerListItem>
 
-        <DrawerListItem onClick={() => handleGoTo('clients')}>
+        <DrawerListItem onClick={() => handleGoTo('/clients')}>
           <Typography.Title level={4}>
             <TeamOutlined /> Clientes
           </Typography.Title>
         </DrawerListItem>
 
-        <DrawerListItem onClick={() => handleGoTo('categories')}>
+        <DrawerListItem onClick={() => handleGoTo('/categories')}>
           <Typography.Title level={4}>
             <TagsOutlined /> Categorias
           </Typography.Title>
         </DrawerListItem>
 
-        <DrawerListItem onClick={() => handleGoTo('employees')}>
+        <DrawerListItem onClick={() => handleGoTo('/employees')}>
           <Typography.Title level={4}>
             <IdcardOutlined /> Colaboradores
           </Typography.Title>
         </DrawerListItem>
 
-        <DrawerListItem onClick={() => handleGoTo('carts')}>
+        <DrawerListItem onClick={() => handleGoTo('/carts')}>
           <Typography.Title level={4}>
             <ShoppingCartOutlined /> Pedidos
           </Typography.Title>
         </DrawerListItem>
 
-        <DrawerListItem onClick={() => handleGoTo('deliveries')}>
+        <DrawerListItem onClick={() => handleGoTo('/deliveries')}>
           <Typography.Title level={4}>
             <FontAwesomeIcon icon={faTruck} /> Entregas
           </Typography.Title>
         </DrawerListItem>
 
-        <DrawerListItem onClick={() => handleGoTo('stock')}>
+        <DrawerListItem onClick={() => handleGoTo('/stock')}>
           <Typography.Title level={4}>
             <FontAwesomeIcon icon={faDolly} /> Estoque
           </Typography.Title>

@@ -1,20 +1,21 @@
 "use client";
 
-import { EProductMeasureType, IProductMesarure } from "@/interfaces";
+import { EMeasureType } from "@/enums";
+import { IMeasure } from "@/interfaces";
 import { MaskedInput } from "antd-mask-input";
 import { FlexboxGrid, Form, InputGroup, SelectPicker } from "rsuite";
 
 interface ProductFormProps {
-  measures: IProductMesarure[];
-  onChange: (measure: IProductMesarure) => void;
+  measures: IMeasure[];
+  onChange: (measure: IMeasure) => void;
 }
 
-export function Measures(props: ProductFormProps) {
+export function FormMeasures(props: ProductFormProps) {
   return (
     <FlexboxGrid justify="space-between">
       {props.measures.map((item, index) => (
         <FlexboxGrid.Item colspan={5} key={index}>
-          {item.type !== EProductMeasureType.OPTION ? (
+          {item.type !== EMeasureType.OPTION ? (
             <Form.Group style={{ width: "100%" }}>
               <Form.ControlLabel>{item.label}</Form.ControlLabel>
               <InputGroup>
@@ -37,7 +38,7 @@ export function Measures(props: ProductFormProps) {
                 <SelectPicker
                   value={item.value}
                   onChange={(value) => props.onChange({ ...item, value })}
-                  data={item.options.map((i) => ({ label: i, value: i }))}
+                  data={item.options}
                   style={{ width: "100%" }}
                   size="sm"
                 />

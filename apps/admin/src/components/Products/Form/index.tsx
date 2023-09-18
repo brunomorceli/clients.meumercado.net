@@ -52,7 +52,6 @@ export function ProductForm(props: ProductFormProps) {
   const [product, setProduct] = useState<IProduct>({
     ...IProductHandler.empty(),
   });
-  const productRef = useRef(product);
   const [toggleModalCategories, setToggleModalCategories] =
     useState<boolean>(false);
   const model = Schema.Model({
@@ -92,13 +91,11 @@ export function ProductForm(props: ProductFormProps) {
   }, [productId, loadProduct]);
 
   function handleChangeProductKey(key: string, val: any): void {
-    productRef.current = { ...productRef.current, [key]: val };
-    setProduct(productRef.current);
+    setProduct({ ...product, [key]: val });
   }
 
   function handleChangeProduct(data: any): void {
-    productRef.current = data;
-    setProduct(productRef.current);
+    setProduct(data);
   }
 
   function getFlatCategories(item: any, dst?: any[]) {
@@ -126,20 +123,18 @@ export function ProductForm(props: ProductFormProps) {
       return;
     }
 
-    productRef.current = {
-      ...productRef.current,
-      pictures: [...productRef.current.pictures, img],
-    };
-
-    setProduct(productRef.current);
+    setProduct({
+      ...product,
+      pictures: [...product.pictures, img],
+    });
   }
 
   function handleChangeMeasure(measure: IMeasure): void {
-    const measures = [...productRef.current.measures];
+    const measures = [...product.measures];
     const index = measures.findIndex((m) => m.id === measure.id);
     measures[index] = measure;
 
-    handleChangeProduct({ ...productRef.current, measures });
+    handleChangeProduct({ ...product, measures });
   }
 
   function handleSubmit(): void {
@@ -150,7 +145,7 @@ export function ProductForm(props: ProductFormProps) {
     setProcessing(true);
 
     productStore
-      .upsert(productRef.current)
+      .upsert(product)
       .then(() => {
         message.success("Produto salvo com sucesso.");
         router.replace("/products");
@@ -165,7 +160,7 @@ export function ProductForm(props: ProductFormProps) {
       fluid={true}
       ref={formRef}
       model={model}
-      formValue={productRef.current}
+      formValue={product}
       formError={formError}
       onChange={handleChangeProduct}
       onError={setFormError}
@@ -176,6 +171,7 @@ export function ProductForm(props: ProductFormProps) {
         onBack={() => router.replace("/products")}
       />
       <PanelBase title="Informações gerais">
+        <InputBase name="label" label="Nome" />
         <RichText
           value={product.description || ""}
           onChange={(value) => handleChangeProductKey("description", value)}
@@ -190,11 +186,11 @@ export function ProductForm(props: ProductFormProps) {
           <Button startIcon={<PlusOutlined />}>Adicionar Imagem</Button>
         </ImageCrop>
 
-        {productRef.current.pictures.length === 0 ? (
+        {product.pictures.length === 0 ? (
           <Typography>Nenhuma imagem adicionada.</Typography>
         ) : (
           <ImageGalery
-            images={productRef.current.pictures}
+            images={product.pictures}
             onChange={(p) => handleChangeProductKey("pictures", p)}
           />
         )}
@@ -203,7 +199,7 @@ export function ProductForm(props: ProductFormProps) {
         <Stack
           justifyContent="space-between"
           onClick={() =>
-            handleChangeProductKey("showPrice", !productRef.current.showPrice)
+            handleChangeProductKey("showPrice", !product.showPrice)
           }
           style={{ cursor: "pointer" }}
         >
@@ -213,18 +209,18 @@ export function ProductForm(props: ProductFormProps) {
             checkedChildren="Mostrar"
             unCheckedChildren="Não Mostrar"
             key="togglePrice"
-            checked={productRef.current.showPrice}
+            checked={product.showPrice}
             onChange={() =>
-              handleChangeProductKey("showPrice", !productRef.current.showPrice)
+              handleChangeProductKey("showPrice", !product.showPrice)
             }
           />
         </Stack>
-        {productRef.current.showPrice && (
+        {product.showPrice && (
           <FlexboxGrid justify="space-between">
             <Col xs={24} sm={24} md={12} lg={12} xl={11}>
               <Currency
                 label="Preço"
-                cents={productRef.current.price}
+                cents={product.price}
                 placeholder="R$ 100,00"
                 error={formError.price}
                 onChange={(c) => handleChangeProductKey("price", c)}
@@ -233,7 +229,7 @@ export function ProductForm(props: ProductFormProps) {
             <Col xs={24} sm={24} md={12} lg={12} xl={11}>
               <Currency
                 label="Preço de desconto"
-                cents={productRef.current.discountPrice!}
+                cents={product.discountPrice!}
                 placeholder="R$ 89,99"
                 error={formError.discountPrice}
                 onChange={(c) => handleChangeProductKey("discountPrice", c)}
@@ -260,7 +256,7 @@ export function ProductForm(props: ProductFormProps) {
         <Stack
           justifyContent="space-between"
           onClick={() =>
-            handleChangeProductKey("unlimited", !productRef.current.unlimited)
+            handleChangeProductKey("unlimited", !product.unlimited)
           }
           style={{ cursor: "pointer" }}
         >
@@ -270,14 +266,14 @@ export function ProductForm(props: ProductFormProps) {
             checkedChildren="Limitado"
             unCheckedChildren="Ilimitado"
             key="toggleUnlimited"
-            checked={!productRef.current.unlimited}
+            checked={!product.unlimited}
             onChange={(checked) => handleChangeProductKey("unlimited", checked)}
           />
         </Stack>
-        {!productRef.current.unlimited && (
+        {!product.unlimited && (
           <InputNumber
             label="Quantidade"
-            value={productRef.current.quantity || ""}
+            value={product.quantity || ""}
             error={formError.quantity}
             onChange={(value) => handleChangeProductKey("quantity", value)}
           />
@@ -302,8 +298,8 @@ export function ProductForm(props: ProductFormProps) {
       <PanelBase title="Categorias">
         <TagPicker
           size="lg"
-          defaultValue={productRef.current.categories}
-          value={productRef.current.categories}
+          defaultValue={product.categories}
+          value={product.categories}
           placeholder="Selecione as categorias"
           data={flatCategories}
           style={{ width: "100% " }}

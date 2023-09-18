@@ -10,7 +10,7 @@ import {
 } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { CardCustom } from "./styles";
-import { ImageCrop, Cep, PhoneNumber } from "@/components";
+import { ImageCrop, Cep, PhoneNumber, PanelBase } from "@/components";
 import { IFindAddressResult } from "@/interfaces/find-address-result.interface";
 import { useStore } from "zustand";
 import { useCompanyStore } from "@/stores";
@@ -82,20 +82,6 @@ export function CompanyForm(props: CompanyFormProps) {
     setCompany(companyRef.current);
   }
 
-  function handleChangeTenantId(val: string): void {
-    const tenantId = val
-      .toLowerCase()
-      .replace(/^[^a-z]+/, "")
-      .replace(/[^a-z0-9]/g, "")
-      .replace(/[ ]/g, '');
-
-    companyRef.current = { ...companyRef.current, tenantId, tenantIdCheck: false };
-    setCompany(companyRef.current);
-    formHandler.setFieldValue("tenantId", tenantId);
-
-    checkTenantId(tenantId, company.id);
-  }
-
   function handleChangeLogo(logo?: string | null | undefined): void {
     companyRef.current = { ...companyRef.current, logo: logo || undefined };
     setCompany(companyRef.current);
@@ -115,31 +101,14 @@ export function CompanyForm(props: CompanyFormProps) {
     });
   }
 
-  function handleSubmit(): void {
-    formHandler
-      .validateFields()
-      .then(() => onSave(company))
-      .catch(() => null);
-  }
 
   return (
-      <CardCustom
-        style={{ margin: 5 }}
-        cover={
-          <ImageCrop
-            src={company.logo}
-            onChange={handleChangeLogo}
-            aspect="dynamic"
-          />
-        }
-      >
-        <Form form={formHandler}>
-          <Form.Item
-            label="Nome"
-            name="label"
-            rules={[{ required: true, message: "Informe um nome válido" }]}
-            initialValue={company.label}
-          >
+    <>
+      <PanelBase title="Dados da empresa">
+
+      </PanelBase>
+    </>
+/*
             <Input
               size="large"
               value={company.label}
@@ -148,13 +117,6 @@ export function CompanyForm(props: CompanyFormProps) {
                 handleChangeCompany("label", e.target.value || "")
               }
             />
-          </Form.Item>
-          <Form.Item
-            label="Descrição"
-            name="description"
-            style={{ marginBottom: 0 }}
-            initialValue={company.description}
-          >
             <Input.TextArea
               size="large"
               rows={5}
@@ -308,6 +270,6 @@ export function CompanyForm(props: CompanyFormProps) {
             </Button>
           </div>
         </Form>
-      </CardCustom>
+      </CardCustom>*/
   );
 }

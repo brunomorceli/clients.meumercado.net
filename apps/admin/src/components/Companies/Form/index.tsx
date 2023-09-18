@@ -1,90 +1,75 @@
 import { ICompany, ICompanyHandler } from "@/interfaces";
-import {
-  Button,
-  Form,
-  Input,
-  InputNumber,
-  Select,
-  Typography,
-  message,
-} from "antd";
 import { useEffect, useRef, useState } from "react";
-import { CardCustom } from "./styles";
-import { ImageCrop, Cep, PhoneNumber, PanelBase } from "@/components";
+import {
+  BrazilianState,
+  CategoryForm,
+  Cep,
+  ImageGalery,
+  InputBase,
+  InputNumber,
+  PanelBase,
+  PhoneNumber,
+  RichText,
+  SaveButton,
+} from "@/components";
 import { IFindAddressResult } from "@/interfaces/find-address-result.interface";
-import { useStore } from "zustand";
-import { useCompanyStore } from "@/stores";
-import { GeneralUtils } from "@/utils";
+import { message } from "antd";
+import { Col, FlexboxGrid, Form, Row, Schema } from "rsuite";
+import { faLink } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const model = Schema.Model({
+  label: Schema.Types.StringType()
+    .isRequired("Este campo é obrigatório.")
+    .minLength(3, "Este campo deve conter pelo menos 3 caracteres"),
+  cep: Schema.Types.StringType()
+    .isRequired("Este campo é obrigatório.")
+    .minLength(8, "CEP inválido"),
+  address: Schema.Types.StringType()
+    .isRequired("Este campo é obrigatório.")
+    .minLength(3, "Este campo deve conter pelo menos 3 caracteres"),
+  addressNumber: Schema.Types.NumberType().isRequired(
+    "Este campo é obrigatório."
+  ),
+  neighborhood: Schema.Types.StringType()
+    .isRequired("Este campo é obrigatório.")
+    .minLength(3, "Este campo deve conter pelo menos 3 caracteres"),
+  city: Schema.Types.StringType()
+    .isRequired("Este campo é obrigatório.")
+    .minLength(3, "Este campo deve conter pelo menos 3 caracteres"),
+  state: Schema.Types.StringType().isRequired("Este campo é obrigatório."),
+  email: Schema.Types.StringType().isEmail("Email inválido"),
+  phoneNumber: Schema.Types.StringType().minLength(11, "Telefone Inválido"),
+  sponsor: Schema.Types.StringType().minLength(
+    3,
+    "Este campo deve conter pelo menos 3 caracteres"
+  ),
+});
 
 interface CompanyFormProps {
   company?: ICompany | null | undefined;
   onSave: (company: ICompany) => void;
 }
 
-const tenantIdCache: any = {};
 export function CompanyForm(props: CompanyFormProps) {
-  const companyStore = useStore(useCompanyStore);
-  const { onSave } = props;
-  const [formHandler] = Form.useForm();
   const [company, setCompany] = useState<ICompany>(ICompanyHandler.empty());
-  const companyRef = useRef(company);
+  const formRef = useRef<any>();
+  const [formError, setFormError] = useState<any>({});
 
   useEffect(() => {
     const data: any = props.company || ICompanyHandler.empty();
-
-    companyRef.current = { ...data, tenantIdCheck: Boolean(data.id) };
-    setCompany(companyRef.current);
-
-    Object.keys(data).forEach((key) => {
-      formHandler.setFieldValue(key, data[key]);
-    });
+    setCompany({ ...data, tenantIdCheck: Boolean(data.id) });
   }, [props.company]);
 
-  function setTenantIdError(msg?: string): void {
-    const errorMsg = msg || "O subodmínio já se encontra em uso";
-    const errors = formHandler
-      .getFieldError("tenantId")
-      .filter((e: string) => e !== errorMsg);
-
-    formHandler.setFields([
-      { name: "tenantId", errors: [errorMsg, ...errors] },
-    ]);
-  }
-
-  function checkTenantId(tenantId: string, id?: string): void {
-    if (tenantId.length < 3) {
+  function handleSubmit(): void {
+    if (!formRef.current.check()) {
       return;
     }
-
-    if (tenantIdCache[tenantId]) {
-      const available= tenantIdCache[tenantId];
-
-      companyRef.current = { ...companyRef.current, tenantIdCheck: available };
-      setCompany(companyRef.current);
-      !available && setTenantIdError();
-
-      return;
-    }
-
-    companyStore
-      .checkTenantId(tenantId, id)
-      .then((available) => {
-        tenantIdCache[tenantId] = available;
-        companyRef.current = { ...companyRef.current, tenantIdCheck: available };
-        setCompany(companyRef.current);
-        !available && setTenantIdError();
-      })
-      .catch((e) => message.error(e));
+    props.onSave(company);
   }
 
-  function handleChangeCompany(key: string, val: any): void {
-    companyRef.current = { ...companyRef.current, [key]: val };
-    setCompany(companyRef.current);
-  }
-
-  function handleChangeLogo(logo?: string | null | undefined): void {
-    companyRef.current = { ...companyRef.current, logo: logo || undefined };
-    setCompany(companyRef.current);
+  function handleChangeCompanyKey(key: string, val: any): void {
+    setCompany({ ...company, [key]: val });
   }
 
   function handleChangeCep(address: IFindAddressResult | null): void {
@@ -93,183 +78,148 @@ export function CompanyForm(props: CompanyFormProps) {
       return;
     }
 
-    companyRef.current = { ...companyRef.current, ...address };
-    setCompany(companyRef.current);
-
-    Object.keys(address).forEach((key) => {
-      formHandler.setFieldValue(key, (address as any)[key]);
-    });
+    setCompany({ ...company, ...address });
   }
 
-
+  const subdomain = (process.env.NEXT_PUBLIC_TENANT_URL as string).replace(
+    "{tenant}",
+    company.tenantId!
+  );
   return (
-    <>
+    <Form
+      fluid={true}
+      ref={formRef}
+      model={model}
+      formValue={company}
+      formError={formError}
+      onChange={(data: any) => setCompany(data)}
+      onError={setFormError}
+      onSubmit={handleSubmit}
+    >
       <PanelBase title="Dados da empresa">
+        <InputBase
+          label="Nome"
+          value={company.label || ""}
+          onChange={(val) => handleChangeCompanyKey("label", val)}
+          error={formError.label}
+        />
+        <Row>
+          <Form.ControlLabel>Subdomínio</Form.ControlLabel>
+        </Row>
+        <Row style={{ marginLeft: 3, marginBottom: 20 }}>
+          <a href={subdomain} target="_blank">
+            <h6>
+              <FontAwesomeIcon icon={faLink} /> {subdomain}
+            </h6>
+          </a>
+        </Row>
 
+        <Row>
+          <Form.ControlLabel>Logo</Form.ControlLabel>
+        </Row>
+        <Row style={{ marginBottom: 20 }}>
+          <ImageGalery
+            images={company.logo ?  [company.logo] : []}
+            onChange={(images) => handleChangeCompanyKey('logo', images?.[0] || null)}
+            disableAdd={Boolean(company.logo)}
+          />
+        </Row>
+
+        <RichText
+          value={company.description || ""}
+          onChange={(value) => handleChangeCompanyKey("description", value)}
+        />
       </PanelBase>
-    </>
-/*
-            <Input
-              size="large"
-              value={company.label}
-              autoComplete="off"
-              onChange={(e: any) =>
-                handleChangeCompany("label", e.target.value || "")
-              }
-            />
-            <Input.TextArea
-              size="large"
-              rows={5}
-              maxLength={2048}
-              value={company.description}
-              onChange={(e: any) =>
-                handleChangeCompany("description", e.target.value || "")
-              }
-            />
-            <div style={{ textAlign: "right", marginBottom: 15 }}>
-              <Typography.Text disabled>
-                {(company.description || "").length}/{2048}
-              </Typography.Text>
-            </div>
-          </Form.Item>
-          <Form.Item
-            label="Subdomínio"
-            name="tenantId"
-            validateStatus={!companyRef.current.tenantIdCheck ? "error" : "success"}
-            hasFeedback
-            rules={[
-              { required: true, message: "Informe um subdomínio." },
-              {
-                pattern: /^[a-z]+/,
-                message: "O subdomínio deve iniciar com letras.",
-              },
-              {
-                min: 3,
-                message: "O subdomínio deve conter pelo menos 3 caracteres.",
-              },
-            ]}
-            initialValue={companyRef.current.tenantId}
-          >
-            <Input
-              value={companyRef.current.tenantId}
-              onChange={(e) => handleChangeTenantId(e.target.value || "")}
-            />
-          </Form.Item>
-          <Form.Item
-            label="CEP"
-            name="cep"
-            rules={[{ required: true, message: "Informe o CEP." }]}
-            initialValue={company.cep}
-          >
-            <Cep onSearch={(address) => handleChangeCep(address)} />
-          </Form.Item>
-          <Form.Item
-            label="Endereço"
-            name="address"
-            initialValue={company.address}
-            rules={[{ required: true, message: "Informe o endereço." }]}
-          >
-            <Input
-              size="large"
+
+      <PanelBase title="Lacalização">
+        <Cep
+          value={company.cep}
+          error={formError.cep}
+          onSearch={(address) => handleChangeCep(address)}
+        />
+        <FlexboxGrid justify="space-between">
+          <Col xs={24} sm={24} md={20} lg={20} xl={20}>
+            <InputBase
+              label="Logradouro"
               value={company.address}
-              onChange={(e: any) =>
-                handleChangeCompany("address", e.target.value || "")
-              }
+              onChange={(val) => handleChangeCompanyKey("address", val)}
+              error={formError.address}
             />
-          </Form.Item>
-          <Form.Item
-            label="Número"
-            name="addressNumber"
-            initialValue={company.addressNumber}
-            rules={[{ required: true, message: "Informe o número." }]}
-          >
+          </Col>
+          <Col xs={24} sm={24} md={4} lg={4} xl={4}>
             <InputNumber
-              size="large"
-              min="0"
-              step={1}
-              value={(company.addressNumber || "").toString()}
-              onChange={(e) => handleChangeCompany("addressNumber", e)}
+              label="Número"
+              value={company.addressNumber}
+              onChange={(val) => handleChangeCompanyKey("addressNumber", val)}
+              error={formError.addressNumber}
             />
-          </Form.Item>
-          <Form.Item
-            label="Bairro"
-            name="neighborhood"
-            initialValue={company.neighborhood}
-            rules={[{ required: true, message: "Informe o bairro." }]}
-          >
-            <Input
-              size="large"
-              value={company.address}
-              onChange={(e: any) =>
-                handleChangeCompany("neighborhood", e.target.value || "")
+          </Col>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+            <InputBase
+              label="Bairro"
+              value={company.neighborhood}
+              onChange={(val) => handleChangeCompanyKey("neighborhood", val)}
+              error={formError.neighborhood}
+            />
+          </Col>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+            <InputBase
+              label="Complemento"
+              value={company.addressComplement}
+              onChange={(val) =>
+                handleChangeCompanyKey("addressComplement", val)
               }
+              error={formError.addressComplement}
             />
-          </Form.Item>
-          <Form.Item
-            label="Complemento"
-            name="addressComplement"
-            initialValue={company.addressComplement}
-          >
-            <Input
-              size="large"
-              value={company.address}
-              onChange={(e: any) =>
-                handleChangeCompany("addressComplement", e.target.value || "")
-              }
+          </Col>
+          <Col xs={24} sm={24} md={16} lg={16} xl={16}>
+            <InputBase
+              label="Cidade"
+              value={company.city}
+              onChange={(val) => handleChangeCompanyKey("city", val)}
+              error={formError.city}
             />
-          </Form.Item>
-          <Form.Item
-            label="Cidade"
-            name="city"
-            initialValue={company.city}
-            rules={[{ required: true, message: "Informe a cidade." }]}
-          >
-            <Input
-              size="large"
-              value={company.address}
-              onChange={(e: any) =>
-                handleChangeCompany("city", e.target.value || "")
-              }
-            />
-          </Form.Item>
-          <Form.Item
-            label="Estado"
-            name="state"
-            initialValue={company.state}
-            rules={[{ required: true, message: "Informe o estado." }]}
-          >
-            <Select
-              options={[
-                { label: "Selecione", value: "" },
-                ...GeneralUtils.brazilianStates(),
-              ]}
-              onChange={(value) => handleChangeCompany("state", value)}
+          </Col>
+          <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+            <BrazilianState
+              label="Estado"
               value={company.state}
+              error={formError.state}
+              onChange={(val) => handleChangeCompanyKey("state", val)}
             />
-          </Form.Item>
-          <Form.Item
-            label="Telefone"
-            name="phoneNumber"
-            initialValue={company.phoneNumber}
-            rules={[
-              {
-                required: (company.phoneNumber || '').length !== 0,
-                pattern: /^\d{10,11}$/,
-                message: "Telefone inválido",
-              },
-            ]}
-          >
-            <PhoneNumber
-              onChange={(value) => handleChangeCompany("phoneNumber", value)}
-              value={company.phoneNumber || ''}
-            />
-          </Form.Item>
-          <div>
-            <Button type="primary" size="large" onClick={handleSubmit}>
-              {company.id ? "Salvar" : "Criar"}
-            </Button>
-          </div>
-        </Form>
-      </CardCustom>*/
+          </Col>
+        </FlexboxGrid>
+      </PanelBase>
+      <PanelBase title="Contato">
+        <InputBase
+          label="Email"
+          value={company.email || ""}
+          onChange={(val) => handleChangeCompanyKey("email", val)}
+          error={formError.email}
+        />
+        <PhoneNumber
+          value={company.phoneNumber}
+          error={formError.phoneNumber}
+          onChange={(val) => handleChangeCompanyKey("phoneNumber", val)}
+        />
+        <InputBase
+          label="Responsável"
+          value={company.manager || ""}
+          onChange={(val) => handleChangeCompanyKey("manager", val)}
+          error={formError.manager}
+        />
+      </PanelBase>
+
+      <CategoryForm
+        categories={company.categories}
+        onChange={(categories) =>
+          handleChangeCompanyKey("categories", categories)
+        }
+      />
+
+      <FlexboxGrid justify="end">
+        <SaveButton onClick={handleSubmit} />
+      </FlexboxGrid>
+    </Form>
   );
 }

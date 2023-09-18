@@ -1,40 +1,29 @@
-import { MaskedInput } from "antd-mask-input";
-import { useMemo } from "react";
+import { Form, InputGroup, MaskedInput } from "rsuite";
 
 interface PhoneNumberProps {
-  value: string;
-  onChange: (val: string) => void;
+  value?: string | null | undefined;
+  label?: string;
+  error?: string;
+  onChange?: (value: string) => void;
 }
-
 export function PhoneNumber(props: PhoneNumberProps) {
-  const cellphoneMask = '(00) 0 0000-0000';
-  const phoneMask = '(00) 0000-0000';
-  const mask = useMemo(
-    () => [
-      {
-        mask: cellphoneMask,
-        lazy: false,
-      },
-      {
-        mask: phoneMask,
-        lazy: false,
-      },
-    ],
-    []
-  );
+  function handleChange(val: string): void {
+    props.onChange && props.onChange(val.replace(/[^0-9]/g, '').trim())
+  }
 
   return (
-    <MaskedInput
-      {...props}
-      mask={mask}
-      value={props.value}
-      onChange={(e) => props.onChange(e.unmaskedValue || '')}
-      maskOptions={{
-        dispatch: function (appended, dynamicMasked) {
-          const isCellPhone = dynamicMasked.unmaskedValue[2] === '9';
-          return dynamicMasked.compiledMasks[isCellPhone ? 0 : 1];
-        },
-      }}
-    />
+    <Form.Group style={{ width: "100%" }}>
+      <Form.ControlLabel>{props.label || 'Telefone'}</Form.ControlLabel>
+      <InputGroup>
+        <MaskedInput
+          mask={['(',/[0-9]/,/[0-9]/,')', ' ', /[0-9]/, ' ', /[0-9]/,/[0-9]/,/[0-9]/,/[0-9]/, '-' ,/[0-9]/,/[0-9]/,/[0-9]/,/[0-9]/]}
+          onChange={(val) => handleChange(val)}
+          placeholder="(00) 0 0000-0000"
+        />
+      </InputGroup>
+      <Form.ErrorMessage show={Boolean(props.error)}>
+        {props.error}
+      </Form.ErrorMessage>
+    </Form.Group>
   );
 }

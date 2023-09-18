@@ -9,6 +9,7 @@ import {
   InputBase,
   InputNumber,
   PanelBase,
+  PlusButton,
   RichText,
   SaveButton,
   TitleBase,
@@ -18,6 +19,7 @@ import {
   Col,
   FlexboxGrid,
   Form,
+  Row,
   Schema,
   SelectPicker,
   Stack,
@@ -33,8 +35,9 @@ import React from "react";
 import { Currency } from "@/components/Shared/Inputs/Currency";
 import { Attributes } from "./Attributes";
 import { useRouter } from "next/router";
-import { FormOutlined, PlusOutlined, SaveOutlined } from "@ant-design/icons";
-import { Modal, Row, Typography, message } from "antd";
+import { FormOutlined, PlusOutlined } from "@ant-design/icons";
+import { message } from "antd";
+import { FormModal } from "@/components/Shared/Modals";
 
 interface ProductFormProps {
   productId?: string;
@@ -171,29 +174,22 @@ export function ProductForm(props: ProductFormProps) {
         onBack={() => router.replace("/products")}
       />
       <PanelBase title="Informações gerais">
-        <InputBase name="label" label="Nome" />
+        <InputBase
+          label="Nome"
+          value={product.label}
+          error={formError.label}
+          onChange={(val) => handleChangeProductKey("label", val)}
+        />
         <RichText
           value={product.description || ""}
           onChange={(value) => handleChangeProductKey("description", value)}
         />
       </PanelBase>
       <PanelBase title="Imagens">
-        <ImageCrop
-          key="addBtn"
-          onChange={(img) => handleAddPicture(img)}
-          aspect="dynamic"
-        >
-          <Button startIcon={<PlusOutlined />}>Adicionar Imagem</Button>
-        </ImageCrop>
-
-        {product.pictures.length === 0 ? (
-          <Typography>Nenhuma imagem adicionada.</Typography>
-        ) : (
-          <ImageGalery
-            images={product.pictures}
-            onChange={(p) => handleChangeProductKey("pictures", p)}
-          />
-        )}
+        <ImageGalery
+          images={product.pictures}
+          onChange={(p) => handleChangeProductKey("pictures", p)}
+        />
       </PanelBase>
       <PanelBase title="Preços">
         <Stack
@@ -282,10 +278,20 @@ export function ProductForm(props: ProductFormProps) {
       <PanelBase title="Identificação">
         <FlexboxGrid justify="space-between">
           <Col xs={24} sm={24} md={12} lg={12} xl={11}>
-            <InputBase name="barcode" label="Código de barras" />
+            <InputBase
+              label="Código de barras"
+              value={product.barcode}
+              error={formError.barCode}
+              onChange={(val) => handleChangeProductKey("barCode", val)}
+            />
           </Col>
           <Col xs={24} sm={24} md={12} lg={12} xl={11}>
-            <InputBase name="sku" label="SKU" />
+            <InputBase
+              label="SKU"
+              value={product.sku}
+              error={formError.sku}
+              onChange={(val) => handleChangeProductKey("sku", val)}
+            />
           </Col>
         </FlexboxGrid>
       </PanelBase>
@@ -314,15 +320,14 @@ export function ProductForm(props: ProductFormProps) {
         >
           Gerenciar categorias
         </Button>
-        <Modal
-          closeIcon={null}
+        <FormModal
           open={toggleModalCategories}
-          onCancel={() => setToggleModalCategories(!toggleModalCategories)}
-          okText="Concluir"
-          onOk={() => setToggleModalCategories(!toggleModalCategories)}
+          onClose={() => setToggleModalCategories(!toggleModalCategories)}
+          onSave={() => setToggleModalCategories(!toggleModalCategories)}
+          saveText="Concluir"
         >
           <Categories />
-        </Modal>
+        </FormModal>
       </PanelBase>
       <Attributes
         attributes={product.attributes}
@@ -330,11 +335,9 @@ export function ProductForm(props: ProductFormProps) {
           handleChangeProductKey("attributes", attributes)
         }
       />
-      <Row justify={"end"} style={{ marginTop: 20, marginBottom: 20 }}>
-        <SaveButton
-          onClick={handleSubmit}
-        />
-      </Row>
+      <FlexboxGrid justify="end">
+        <SaveButton onClick={handleSubmit} />
+      </FlexboxGrid>
     </Form>
   );
 }

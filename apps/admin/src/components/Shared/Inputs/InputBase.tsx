@@ -1,13 +1,22 @@
-import { Form } from "rsuite";
-import React from "react";
+import { Form, Input } from "rsuite";
 
-export function InputBase(props: any) {
-  const { name, label, accepter, style, message, ...rest } = props;
+interface InputBaseProps {
+  label?: string;
+  value?: string;
+  error?: string | null | undefined;
+  options?: any;
+  onChange?: (value: string) => void;
+}
+
+export function InputBase(props: InputBaseProps) {
   return (
-    <Form.Group controlId={`${name}-3`} style={style || { width: "100%" }}>
-      <Form.ControlLabel>{label} </Form.ControlLabel>
-      <Form.Control name={name} accepter={accepter} {...rest} />
-      <Form.HelpText>{message}</Form.HelpText>
+    <Form.Group style={{ width: "100%" }}>
+      {props.label && <Form.ControlLabel>{props.label}</Form.ControlLabel>}
+      <Input
+        value={props.value}
+        onChange={props.onChange}
+        {...props.options || {}}
+      />
       <Form.ErrorMessage show={Boolean(props.error)}>
         {props.error}
       </Form.ErrorMessage>

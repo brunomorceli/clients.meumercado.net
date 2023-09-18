@@ -15,7 +15,9 @@ export interface ICompany {
   addressNumber?: string;
   cep?: string;
   phoneNumber?: string;
-  logo?: string;
+  email?: string;
+  manager?: string;
+  logo?: string | null | undefined;
   categories: any[],
   status?: ECompanyStatusType;
   createdAt?: string;
@@ -35,6 +37,9 @@ export class ICompanyHandler {
       addressNumber: '',
       cep: '',
       phoneNumber: '',
+      email: '',
+      manager: '',
+      logo: null,
       categories: [],
       status: ECompanyStatusType.ACTIVE,
     };

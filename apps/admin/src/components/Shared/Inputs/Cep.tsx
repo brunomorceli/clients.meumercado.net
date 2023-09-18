@@ -1,12 +1,15 @@
 import { useStore } from "zustand";
 import { useExternalApiStore } from "@/stores";
 import { useEffect, useState } from "react";
-import { MaskedInput } from "antd-mask-input";
-import { IFindAddressResult, IFindAddressResultHandler } from "@/interfaces/find-address-result.interface";
+import { IFindAddressResult } from "@/interfaces/find-address-result.interface";
 import { message } from "antd";
+import { Form, InputGroup, MaskedInput } from "rsuite";
+import ReloadIcon from '@rsuite/icons/Reload';
 
 interface CepProps {
   value?: string | null | undefined;
+  label?: string;
+  error?: string;
   onSearch: (address: IFindAddressResult | null) => void;
 }
 
@@ -28,7 +31,7 @@ export function Cep(props: CepProps) {
       return;
     }
 
-    setProcessing(false);
+    setProcessing(true);
 
     externalApiStore
       .findAddress(cep)
@@ -41,19 +44,35 @@ export function Cep(props: CepProps) {
   }
 
   function handleChange(val: string): void {
-    if (val.length > 8) {
+    const cep = val.replace(/[^0-9]/g, '').trim();
+    if (cep.length > 8) {
       return;
     }
 
-    setValue(val);
-    handleSearch(val);
+    setValue(cep);
+    handleSearch(cep);
   }
 
   return (
-    <MaskedInput
-      disabled={processing}
-      mask={'00000-000'}
-      onChange={(e: any) => handleChange(e.unmaskedValue || '')}
-    />
+    <Form.Group style={{ width: "100%" }}>
+      <Form.ControlLabel>{props.label || 'CEP'}</Form.ControlLabel>
+      <InputGroup>
+        <MaskedInput
+          disabled={processing}
+          mask={[/[0-9]/,/[0-9]/,/[0-9]/,/[0-9]/,/[0-9]/,'-',/[0-9]/,/[0-9]/,/[0-9]/]}
+          onChange={(val) => handleChange(val)}
+          placeholder="00000-000"
+          readOnly={processing}
+        />
+        {processing &&
+          <InputGroup.Addon>
+            <ReloadIcon spin />
+          </InputGroup.Addon>
+        }
+      </InputGroup>
+      <Form.ErrorMessage show={Boolean(props.error)}>
+        {props.error}
+      </Form.ErrorMessage>
+    </Form.Group>
   );
 }

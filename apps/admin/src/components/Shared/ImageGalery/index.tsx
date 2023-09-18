@@ -1,17 +1,18 @@
-import { Button, Modal, Typography, Image, Card } from "antd";
+import { Modal, Typography, Image, Card } from "antd";
 import { CardCustom, Container } from "./style";
 import {
   CaretLeftOutlined,
   CaretRightOutlined,
   DeleteOutlined,
-  EditOutlined,
-  EllipsisOutlined,
   ExclamationCircleOutlined,
-  SettingOutlined,
 } from "@ant-design/icons";
+import { ImageCrop } from "../Inputs/ImageCrop";
+import PlusIcon from "@rsuite/icons/Plus";
+import { Button } from "rsuite";
 
 interface ImageEditorProps {
   images: string[];
+  disableAdd?: boolean;
   onChange?: (images: string[]) => void;
 }
 
@@ -63,6 +64,17 @@ export function ImageGalery(props: ImageEditorProps) {
         >
         </CardCustom>
       ))}
+      {!props.disableAdd &&
+        <ImageCrop
+          key="addBtn"
+          onChange={(img) => img && props.onChange && props.onChange([...props.images, img!])}
+          aspect="dynamic"
+        >
+          <Button style={{ height: 150, width: 110, borderStyle: 'dotted', borderColor: '#dfdfdf' }}>
+            <PlusIcon /> Adicionar
+          </Button>
+        </ImageCrop>
+      }
     </Container>
   );
 }

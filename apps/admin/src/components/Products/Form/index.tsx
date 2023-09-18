@@ -7,34 +7,34 @@ import {
   ImageCrop,
   ImageGalery,
   InputBase,
+  InputNumber,
+  PanelBase,
+  RichText,
+  SaveButton,
+  TitleBase,
 } from "@/components";
-import { FlexboxGrid, Form, Schema, TagPicker, Toggle } from "rsuite";
-import { useStore } from "zustand";
-import { useAuthStore, useProductStore } from "@/stores";
 import {
   Button,
-  List,
-  Modal,
-  Row,
-  Select,
-  Typography,
-  message,
-} from "antd";
-import { Editor } from "@tinymce/tinymce-react";
-import { CardCustom } from "./styles";
-import {
-  FormOutlined,
-  PlusOutlined,
-  SaveOutlined,
-  TagsOutlined,
-} from "@ant-design/icons";
+  Col,
+  FlexboxGrid,
+  Form,
+  Schema,
+  SelectPicker,
+  Stack,
+  TagPicker,
+  Toggle,
+} from "rsuite";
+import { useStore } from "zustand";
+import { useAuthStore, useProductStore } from "@/stores";
+
 import { EProductType } from "@/enums";
 import { FormMeasures } from "./Measures";
-import { MaskedInput } from "antd-mask-input";
 import React from "react";
 import { Currency } from "@/components/Shared/Inputs/Currency";
 import { Attributes } from "./Attributes";
 import { useRouter } from "next/router";
+import { FormOutlined, PlusOutlined, SaveOutlined } from "@ant-design/icons";
+import { Modal, Row, Typography, message } from "antd";
 
 interface ProductFormProps {
   productId?: string;
@@ -49,7 +49,6 @@ export function ProductForm(props: ProductFormProps) {
   const [processing, setProcessing] = useState<boolean>(false);
   const formRef = useRef<any>();
   const [formError, setFormError] = useState<any>({});
-  const editorRef = useRef<any>();
   const [product, setProduct] = useState<IProduct>({
     ...IProductHandler.empty(),
   });
@@ -152,9 +151,9 @@ export function ProductForm(props: ProductFormProps) {
 
     productStore
       .upsert(productRef.current)
-      .then((prod) => {
+      .then(() => {
         message.success("Produto salvo com sucesso.");
-        router.replace(`/products/${prod.id}`);
+        router.replace("/products");
       })
       .catch((e) => message.error(e))
       .finally(() => setProcessing(false));
@@ -172,64 +171,25 @@ export function ProductForm(props: ProductFormProps) {
       onError={setFormError}
       onSubmit={handleSubmit}
     >
-      <Typography.Title level={2}>
-        <TagsOutlined />
-        &nbsp; Formulário de produto
-      </Typography.Title>
-      <CardCustom title="Informações gerais">
-        <InputBase name="label" label="Nome" />
-        <Form.Group>
-          <Form.ControlLabel>
-            Descrição ({(productRef.current.description || "").length}/{2048})
-          </Form.ControlLabel>
-          <Editor
-            onInit={(evt, editor) => (editorRef.current = editor)}
-            initialValue={productRef.current.description}
-            init={{
-              height: 500,
-              menubar: false,
-              plugins: [
-                "advlist",
-                "autolink",
-                "lists",
-                "link",
-                "image",
-                "charmap",
-                "preview",
-                "anchor",
-                "searchreplace",
-                "visualblocks",
-                "code",
-                "fullscreen",
-                "insertdatetime",
-              ],
-              toolbar:
-                "undo redo | blocks | " +
-                "bold italic forecolor | alignleft aligncenter " +
-                "alignright alignjustify | bullist numlist outdent indent | " +
-                "removeformat | help",
-              content_style:
-                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-              max_height: 2024,
-            }}
-            onChange={(e: any) =>
-              handleChangeProductKey("description", e.level.content || "")
-            }
-          />
-        </Form.Group>
-      </CardCustom>
-      <CardCustom
-        title="Imagens"
-        extra={[
-          <ImageCrop
-            key="addBtn"
-            onChange={(img) => handleAddPicture(img)}
-            aspect="dynamic"
-          >
-            <Button icon={<PlusOutlined />}>Adicionar Imagem</Button>
-          </ImageCrop>,
-        ]}
-      >
+      <TitleBase
+        title="Formulário de produto"
+        onBack={() => router.replace("/products")}
+      />
+      <PanelBase title="Informações gerais">
+        <RichText
+          value={product.description || ""}
+          onChange={(value) => handleChangeProductKey("description", value)}
+        />
+      </PanelBase>
+      <PanelBase title="Imagens">
+        <ImageCrop
+          key="addBtn"
+          onChange={(img) => handleAddPicture(img)}
+          aspect="dynamic"
+        >
+          <Button startIcon={<PlusOutlined />}>Adicionar Imagem</Button>
+        </ImageCrop>
+
         {productRef.current.pictures.length === 0 ? (
           <Typography>Nenhuma imagem adicionada.</Typography>
         ) : (
@@ -238,141 +198,108 @@ export function ProductForm(props: ProductFormProps) {
             onChange={(p) => handleChangeProductKey("pictures", p)}
           />
         )}
-      </CardCustom>
-      <CardCustom title="Preços">
-        <List>
-          <List.Item
-            actions={[
-              <Toggle
-                size="lg"
-                checkedChildren="Mostrar"
-                unCheckedChildren="Não Mostrar"
-                key="togglePrice"
-                checked={productRef.current.showPrice}
-                onChange={(checked) =>
-                  handleChangeProductKey("showPrice", checked)
-                }
-              />,
-            ]}
-          >
-            <Typography.Text
-              style={{ cursor: "pointer" }}
-              onClick={() =>
-                handleChangeProductKey(
-                  "showPrice",
-                  !productRef.current.showPrice
-                )
-              }
-            >
-              Mostrar o preço
-            </Typography.Text>
-          </List.Item>
-        </List>
+      </PanelBase>
+      <PanelBase title="Preços">
+        <Stack
+          justifyContent="space-between"
+          onClick={() =>
+            handleChangeProductKey("showPrice", !productRef.current.showPrice)
+          }
+          style={{ cursor: "pointer" }}
+        >
+          <h6>Mostrar preço:</h6>
+          <Toggle
+            size="lg"
+            checkedChildren="Mostrar"
+            unCheckedChildren="Não Mostrar"
+            key="togglePrice"
+            checked={productRef.current.showPrice}
+            onChange={() =>
+              handleChangeProductKey("showPrice", !productRef.current.showPrice)
+            }
+          />
+        </Stack>
         {productRef.current.showPrice && (
           <FlexboxGrid justify="space-between">
-            <FlexboxGrid.Item colspan={11}>
-              <Form.Group style={{ width: "100%" }}>
-                <Form.ControlLabel>Preço</Form.ControlLabel>
-                <Currency
-                  cents={productRef.current.price}
-                  placeholder="R$ 100,00"
-                  onChange={(c) => handleChangeProductKey("price", c)}
-                />
-                <Form.ErrorMessage show={formError.price}>
-                  {formError.price}
-                </Form.ErrorMessage>
-              </Form.Group>
-            </FlexboxGrid.Item>
-            <FlexboxGrid.Item colspan={11}>
-              <Form.Group style={{ width: "100%" }}>
-                <Form.ControlLabel>Preço de desconto</Form.ControlLabel>
-                <Currency
-                  cents={productRef.current.discountPrice!}
-                  placeholder="R$ 89,99"
-                  onChange={(c) => handleChangeProductKey("discountPrice", c)}
-                />
-                <Form.ErrorMessage show={formError.discountPrice}>
-                  {formError.price}
-                </Form.ErrorMessage>
-              </Form.Group>
-            </FlexboxGrid.Item>
+            <Col xs={24} sm={24} md={12} lg={12} xl={11}>
+              <Currency
+                label="Preço"
+                cents={productRef.current.price}
+                placeholder="R$ 100,00"
+                error={formError.price}
+                onChange={(c) => handleChangeProductKey("price", c)}
+              />
+            </Col>
+            <Col xs={24} sm={24} md={12} lg={12} xl={11}>
+              <Currency
+                label="Preço de desconto"
+                cents={productRef.current.discountPrice!}
+                placeholder="R$ 89,99"
+                error={formError.discountPrice}
+                onChange={(c) => handleChangeProductKey("discountPrice", c)}
+              />
+            </Col>
           </FlexboxGrid>
         )}
-      </CardCustom>
-      <CardCustom title="Tipo de produto">
-        <Select
+      </PanelBase>
+      <PanelBase title="Tipo de produto">
+        <SelectPicker
+          searchable={false}
+          cleanable={false}
           style={{ width: "100%" }}
-          options={[
+          data={[
             { label: "Físico", value: EProductType.PHYSIC },
             { label: "Digital ou serviço", value: EProductType.DIGITAL },
           ]}
-          defaultValue={productRef.current.type}
+          value={product.type}
+          defaultValue={product.type}
+          onChange={(value) => handleChangeProductKey("type", value)}
         />
-      </CardCustom>
-      <CardCustom title="Estoque">
-        <List>
-          <List.Item
-            actions={[
-              <Toggle
-                size="lg"
-                checkedChildren="Limitado"
-                unCheckedChildren="Ilimitado"
-                key="toggleUnlimited"
-                checked={!productRef.current.unlimited}
-                onChange={(checked) =>
-                  handleChangeProductKey("unlimited", !checked)
-                }
-              />,
-            ]}
-          >
-            <Typography.Text
-              style={{ cursor: "pointer" }}
-              onClick={() =>
-                handleChangeProductKey(
-                  "unlimited",
-                  !productRef.current.unlimited
-                )
-              }
-            >
-              Limite
-            </Typography.Text>
-          </List.Item>
-          {!productRef.current.unlimited && (
-            <List.Item>
-              <Form.Group style={{ width: "100%" }}>
-                <Form.ControlLabel>Quantidade</Form.ControlLabel>
-                <MaskedInput
-                  value={`${productRef.current.quantity || ""}`}
-                  mask={/^[0-9]+$/}
-                  onChange={(e) =>
-                    handleChangeProductKey("quantity", Number(e.target.value))
-                  }
-                />
-                <Form.ErrorMessage show={formError.quantity}>
-                  {formError.quantity}
-                </Form.ErrorMessage>
-              </Form.Group>
-            </List.Item>
-          )}
-        </List>
-      </CardCustom>
-      <CardCustom title="Identificação">
-        <List>
-          <List.Item>
+      </PanelBase>
+      <PanelBase title="Estoque">
+        <Stack
+          justifyContent="space-between"
+          onClick={() =>
+            handleChangeProductKey("unlimited", !productRef.current.unlimited)
+          }
+          style={{ cursor: "pointer" }}
+        >
+          <h6>Limite:</h6>
+          <Toggle
+            size="lg"
+            checkedChildren="Limitado"
+            unCheckedChildren="Ilimitado"
+            key="toggleUnlimited"
+            checked={!productRef.current.unlimited}
+            onChange={(checked) => handleChangeProductKey("unlimited", checked)}
+          />
+        </Stack>
+        {!productRef.current.unlimited && (
+          <InputNumber
+            label="Quantidade"
+            value={productRef.current.quantity || ""}
+            error={formError.quantity}
+            onChange={(value) => handleChangeProductKey("quantity", value)}
+          />
+        )}
+      </PanelBase>
+      <PanelBase title="Identificação">
+        <FlexboxGrid justify="space-between">
+          <Col xs={24} sm={24} md={12} lg={12} xl={11}>
             <InputBase name="barcode" label="Código de barras" />
-          </List.Item>
-          <List.Item>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={11}>
             <InputBase name="sku" label="SKU" />
-          </List.Item>
-        </List>
-      </CardCustom>
-      <CardCustom title="Medidas do produto">
+          </Col>
+        </FlexboxGrid>
+      </PanelBase>
+      <PanelBase title="Medidas do produto">
         <FormMeasures
           measures={product.measures}
           onChange={(m) => handleChangeMeasure(m)}
         />
-      </CardCustom>
-      <CardCustom title="Categorias">
+      </PanelBase>
+      <PanelBase title="Categorias">
         <TagPicker
           size="lg"
           defaultValue={productRef.current.categories}
@@ -385,8 +312,8 @@ export function ProductForm(props: ProductFormProps) {
           }
         />
         <Button
-          type="link"
-          icon={<FormOutlined />}
+          appearance="link"
+          startIcon={<FormOutlined />}
           onClick={() => setToggleModalCategories(!toggleModalCategories)}
         >
           Gerenciar categorias
@@ -400,17 +327,17 @@ export function ProductForm(props: ProductFormProps) {
         >
           <Categories />
         </Modal>
-      </CardCustom>
+      </PanelBase>
       <Attributes
         attributes={product.attributes}
         onChange={(attributes) =>
           handleChangeProductKey("attributes", attributes)
         }
       />
-      <Row justify={"end"}>
-        <Button type="primary" onClick={handleSubmit} icon={<SaveOutlined />}>
-          Salvar
-        </Button>
+      <Row justify={"end"} style={{ marginTop: 20, marginBottom: 20 }}>
+        <SaveButton
+          onClick={handleSubmit}
+        />
       </Row>
     </Form>
   );

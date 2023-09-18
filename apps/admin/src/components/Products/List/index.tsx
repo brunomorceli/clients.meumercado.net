@@ -1,8 +1,7 @@
 import { IProduct } from "@/interfaces";
-import { Avatar, Button, FlexboxGrid, IconButton, List, Modal } from "rsuite";
-import TrashIcon from "@rsuite/icons/Trash";
-import EditIcon from "@rsuite/icons/Edit";
+import { Button, List, Modal } from "rsuite";
 import { useState } from "react";
+import { ProductListItem } from "./Item";
 
 interface ProductListProps {
   products: IProduct[];
@@ -23,44 +22,18 @@ export function ProductList(props: ProductListProps) {
     <>
       <List hover>
         {products.map((item, index) => (
-          <List.Item key={index} index={index + 1}>
-            <FlexboxGrid>
-              <FlexboxGrid.Item colspan={2} style={{}}>
-                <Avatar
-                  src={
-                    item.pictures.length !== 0 ? item.pictures[0] : undefined
-                  }
-                />
-              </FlexboxGrid.Item>
-              <FlexboxGrid.Item
-                colspan={18}
-                style={{
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                  overflow: "hidden",
-                }}
-              >
-                <div>{item.label}</div>
-                <div style={{ fontSize: 15 }}>{item.description || "-"}</div>
-              </FlexboxGrid.Item>
-              <FlexboxGrid.Item colspan={4}>
-                <IconButton
-                  circle
-                  icon={<EditIcon />}
-                  size="sm"
-                  onClick={() => onEdit(item)}
-                />
-                &nbsp;
-                <IconButton
-                  circle
-                  icon={<TrashIcon />}
-                  size="sm"
-                  onClick={() => setProduct(item)}
-                />
-              </FlexboxGrid.Item>
-            </FlexboxGrid>
-          </List.Item>
+          <ProductListItem
+            key={index}
+            product={item}
+            onPick={onEdit}
+            onRemove={setProduct}
+          />
         ))}
+        {products.length === 0 &&
+          <List.Item>
+            <strong>Nenhum resultado econtrado.</strong>
+          </List.Item>
+        }
       </List>
       <Modal role="dialog" open={Boolean(product)} backdrop="static">
         <Modal.Header closeButton={false}>

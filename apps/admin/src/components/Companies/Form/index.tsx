@@ -4,7 +4,6 @@ import {
   Form,
   Input,
   InputNumber,
-  Modal,
   Select,
   Typography,
   message,
@@ -20,13 +19,12 @@ import { GeneralUtils } from "@/utils";
 interface CompanyFormProps {
   company?: ICompany | null | undefined;
   onSave: (company: ICompany) => void;
-  onClose: () => void;
 }
 
 const tenantIdCache: any = {};
 export function CompanyForm(props: CompanyFormProps) {
   const companyStore = useStore(useCompanyStore);
-  const { onSave, onClose } = props;
+  const { onSave } = props;
   const [formHandler] = Form.useForm();
   const [company, setCompany] = useState<ICompany>(ICompanyHandler.empty());
   const companyRef = useRef(company);
@@ -125,12 +123,6 @@ export function CompanyForm(props: CompanyFormProps) {
   }
 
   return (
-    <Modal
-      open={Boolean(props.company)}
-      onCancel={onClose}
-      title={company.id ? "Editar empresa" : "Criar empresa"}
-      footer={null}
-    >
       <CardCustom
         style={{ margin: 5 }}
         cover={
@@ -317,6 +309,5 @@ export function CompanyForm(props: CompanyFormProps) {
           </div>
         </Form>
       </CardCustom>
-    </Modal>
   );
 }

@@ -1,12 +1,12 @@
 import { EBrazilianState, EBrazilianStateHandler } from "@/enums";
 import { Select } from "antd";
 
-interface CompanyFormProps {
+interface BrazilianStateProps {
   value?: EBrazilianState;
   onChange?: (state: EBrazilianState | string) => void;
 }
 
-export function CompanyForm(props: CompanyFormProps) {
+export function BrazilianState(props: BrazilianStateProps) {
   return (
     <Select
       options={[

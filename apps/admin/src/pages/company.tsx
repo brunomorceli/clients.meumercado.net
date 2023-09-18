@@ -1,10 +1,9 @@
-import { AuthGuard } from "@/components";
-import { Typography } from "antd";
+import { AuthGuard, Companies } from "@/components";
 
 export default function CompanyPage() {
   return (
     <AuthGuard>
-      <Typography>Company</Typography>
+      <Companies />
     </AuthGuard>
   )
 }

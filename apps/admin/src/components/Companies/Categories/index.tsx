@@ -1,6 +1,6 @@
 import { Dropdown, IconButton, Tree } from "rsuite";
-import { useEffect, useState } from "react";
-import { Typography, Card, Modal, Input, Button, message } from "antd";
+import { useState } from "react";
+import { Typography, Modal, Input, message } from "antd";
 import { v4 as Uuild } from "uuid";
 import { ExclamationCircleOutlined, MoreOutlined } from "@ant-design/icons";
 import PlusIcon from "@rsuite/icons/Plus";
@@ -9,6 +9,7 @@ import TrashIcon from "@rsuite/icons/Trash";
 import { ItemDataType } from "rsuite/esm/@types/common";
 import { useStore } from "zustand";
 import { useAuthStore, useCompanyStore } from "@/stores";
+import { PanelBase } from "@/components";
 
 interface CustomItemDataType extends ItemDataType {
   edit?: boolean;
@@ -19,7 +20,9 @@ export function Categories() {
   const companyStore = useStore(useCompanyStore);
   const [nodeForm, setNodeForm] = useState<CustomItemDataType | null>(null);
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
-  const [items, setItems] = useState<CustomItemDataType[]>(authStore.auth.company?.categories as any);
+  const [items, setItems] = useState<CustomItemDataType[]>(
+    authStore.auth.company?.categories as any
+  );
   const [processing, setProcessing] = useState<boolean>(false);
 
   function updateCategories(categories: CustomItemDataType[]): void {
@@ -140,16 +143,9 @@ export function Categories() {
 
   return (
     <>
-      <Card
-        title={<Typography>Categorias </Typography>}
-        extra={[
-          <Button
-            key="btnAdd"
-            onClick={() => setNodeForm({ label: "", children: [] })}
-          >
-            <PlusIcon />
-          </Button>,
-        ]}
+      <PanelBase
+        title="Categorias"
+        onAdd={() => setNodeForm({ label: "", children: [] })}
       >
         <Tree
           data={items}
@@ -196,7 +192,7 @@ export function Categories() {
             </>
           )}
         />
-      </Card>
+      </PanelBase>
       <Modal
         open={Boolean(nodeForm)}
         onCancel={() => setNodeForm(null)}

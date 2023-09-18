@@ -8,6 +8,9 @@ export function InputBase(props: any) {
       <Form.ControlLabel>{label} </Form.ControlLabel>
       <Form.Control name={name} accepter={accepter} {...rest} />
       <Form.HelpText>{message}</Form.HelpText>
+      <Form.ErrorMessage show={Boolean(props.error)}>
+        {props.error}
+      </Form.ErrorMessage>
     </Form.Group>
   );
 }

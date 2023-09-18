@@ -1,24 +1,16 @@
 import { IAttribute, IAttributeHandler } from "@/interfaces";
 import {
-  Button,
-  ButtonGroup,
-  Divider,
+  Col,
   FlexboxGrid,
   Form,
-  IconButton,
   Input,
-  InputGroup,
   Message,
-  Modal,
-  Panel,
-  Stack,
   useToaster,
 } from "rsuite";
 import { useState } from "react";
 import Slug from "slug";
-import PlusIcon from "@rsuite/icons/Plus";
-import TrashIcon from "@rsuite/icons/Trash";
-import EditIcon from "@rsuite/icons/Edit";
+import { ConfirmModal, FormModal } from "@/components/Shared/Modals";
+import { InputButton, PanelBase } from "@/components";
 
 interface AttributesProps {
   attributes: IAttribute[];
@@ -73,105 +65,53 @@ export function Attributes(props: AttributesProps) {
 
   return (
     <>
-      <Panel
-        bordered
-        shaded
-        style={{ backgroundColor: "white" }}
-        header={
-          <>
-            <Stack justifyContent="space-between">
-              <h5>Atributos ({props.attributes.length})</h5>
-              <ButtonGroup>
-                <Button
-                  appearance="default"
-                  startIcon={<PlusIcon />}
-                  onClick={() => setFormAttribute(IAttributeHandler.empty())}
-                >
-                  Adicionar
-                </Button>
-              </ButtonGroup>
-            </Stack>
-            <Divider />
-          </>
-        }
+      <PanelBase
+        title={`Atributos (${props.attributes.length})`}
+        onAdd={() => setFormAttribute(IAttributeHandler.empty())}
       >
         <FlexboxGrid justify="space-between">
           {props.attributes.map((item, index) => (
-            <FlexboxGrid.Item colspan={11} key={index}>
-              <Form.Group>
-                <Form.ControlLabel>{item.label}</Form.ControlLabel>
-                <InputGroup>
-                  <Input
-                    value={item.value}
-                    onChange={(value) => handleChangeValue(index, value)}
-                    size="sm"
-                  />
-                  <InputGroup.Addon>
-                    <IconButton
-                      icon={<EditIcon />}
-                      size="sm"
-                      onClick={() => setFormAttribute(item)}
-                    />
-                    <IconButton
-                      icon={<TrashIcon />}
-                      size="sm"
-                      onClick={() => setConfirmAttribute(item)}
-                    />
-                  </InputGroup.Addon>
-                </InputGroup>
-              </Form.Group>
-            </FlexboxGrid.Item>
+            <Col xs={24} sm={24} md={11} lg={11} xl={11} key={index}>
+              <InputButton
+                label={item.label}
+                value={item.value}
+                onChange={(value) => handleChangeValue(index, value)}
+                onEdit={() => setFormAttribute(item)}
+                onRemove={() => setConfirmAttribute(item)}
+              />
+            </Col>
           ))}
-          {props.attributes.length === 0 &&
-            <strong>Nenhum atributo cadastrado.</strong>
-          }
+          {props.attributes.length === 0 && (
+            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+              <strong>Nenhum atributo cadastrado.</strong>
+            </Col>
+          )}
         </FlexboxGrid>
-      </Panel>
-      <Modal
+      </PanelBase>
+
+      <FormModal
+        title="Formulário de atributo"
         open={Boolean(formAttribute)}
         onClose={() => setFormAttribute(null)}
-        backdrop="static"
+        onSave={handleSaveAttribute}
       >
-        <Modal.Header>
-          <Modal.Title>Atributo</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group style={{ width: "100%" }}>
-            <Form.ControlLabel>Atributo</Form.ControlLabel>
-            <Input
-              value={formAttribute?.label}
-              onChange={(label) =>
-                setFormAttribute({ ...formAttribute!, label })
-              }
-            />
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => setFormAttribute(null)}>Cancelar</Button>
-          <Button appearance="primary" onClick={handleSaveAttribute}>
-            Concluir
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      <Modal role="dialog" open={Boolean(confirmAttribute)} backdrop="static">
-        <Modal.Header closeButton={false}>
-          <Modal.Title>Remover atributo</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Deseja realmente remover o atributo
-          &nbsp;
-          <strong>{confirmAttribute?.label}</strong>?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => setConfirmAttribute(null)}>Cancelar</Button>
-          <Button
-            appearance="primary"
-            onClick={() => handleRemoveAttribute(confirmAttribute!)}
-          >
-            Confirmar
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        <Form.Group style={{ width: "100%" }}>
+          <Form.ControlLabel>Atributo</Form.ControlLabel>
+          <Input
+            value={formAttribute?.label}
+            onChange={(label) => setFormAttribute({ ...formAttribute!, label })}
+          />
+        </Form.Group>
+      </FormModal>
+      <ConfirmModal
+        open={Boolean(confirmAttribute)}
+        onConfirm={() => handleRemoveAttribute(confirmAttribute!)}
+        onClose={() => setConfirmAttribute(null)}
+        title="Remover atributo"
+      >
+        Deseja realmente remover o atributo &nbsp;
+        <strong>{confirmAttribute?.label}</strong>?
+      </ConfirmModal>
     </>
   );
 }

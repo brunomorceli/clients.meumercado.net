@@ -1,60 +1,59 @@
 /* eslint-disable @next/next/no-img-element */
 import { IProduct } from "@/interfaces";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  ExclamationCircleOutlined,
-  FileSearchOutlined,
-} from "@ant-design/icons";
-import { Card, Modal, Typography } from "antd";
-
+import { Avatar, FlexboxGrid, IconButton, List } from "rsuite";
+import TrashIcon from "@rsuite/icons/Trash";
+import { GeneralUtils } from "@/utils";
+import { PriceLabel } from "./styles";
 interface ProductListItemProps {
   product: IProduct;
-  onEdit: (product: IProduct) => void;
+  onPick: (product: IProduct) => void;
   onRemove: (product: IProduct) => void;
-  onDetails: (product: IProduct) => void;
 }
 
 export function ProductListItem(props: ProductListItemProps) {
-  const { product, onEdit, onRemove, onDetails } = props;
-
-  function handleRemove(): void {
-    Modal.confirm({
-      icon: <ExclamationCircleOutlined />,
-      content: (
-        <Typography>
-          Deseja realmente remover <b>{product.label}</b>?
-        </Typography>
-      ),
-      okText: "Remover",
-      cancelText: "Cancelar",
-      onOk: () => onRemove(product),
-    });
-  }
+  const { product, onPick, onRemove } = props;
 
   return (
-    <Card
-      style={{ margin: 5 }}
-      cover={
-        <img
-          alt={product.label}
-          src={product.cover || "images/no-image.png"}
-          onClick={() => onDetails(product)}
-          style={{cursor: 'pointer'}}
+    <List.Item>
+    <FlexboxGrid>
+      <FlexboxGrid.Item colspan={2} onClick={() => onPick(product)} style={{ cursor: 'pointer' }}>
+        <Avatar
+          src={
+            product.pictures.length !== 0 ? product.pictures[0] : undefined
+          }
         />
-      }
-      actions={[
-        <FileSearchOutlined
-          key="btDetails"
-          onClick={() => onDetails(product)}
-        />,
-        <EditOutlined key="btEdit" onClick={() => onEdit(product)} />,
-        <DeleteOutlined key="btRemove" onClick={handleRemove} />,
-      ]}
-    >
-      <Typography.Title level={5}>
-        {product.label.toUpperCase()}
-      </Typography.Title>
-    </Card>
-  );
+      </FlexboxGrid.Item>
+      <FlexboxGrid.Item
+        colspan={16}
+        style={{
+          flexDirection: "column",
+          alignItems: "flex-start",
+          overflow: "hidden",
+          cursor: 'pointer'
+        }}
+        onClick={() => onPick(product)}
+      >
+        <div>{product.label}</div>
+        <div>
+          <PriceLabel showPrice={product.showPrice}>
+            {product.showPrice ? GeneralUtils.getAmountLabel(product.price) : 'Não exibido'}
+          </PriceLabel>
+        </div>
+      </FlexboxGrid.Item>
+      <FlexboxGrid.Item colspan={4} onClick={() => onPick(product)} style={{ cursor: 'pointer' }}>
+         <PriceLabel showPrice={product.showPrice}>
+          {product.showPrice ? GeneralUtils.getAmountLabel(product.price) : 'Não exibido'}
+         </PriceLabel>
+      </FlexboxGrid.Item>
+      <FlexboxGrid.Item colspan={2}>
+        <IconButton
+          circle
+          icon={<TrashIcon />}
+          size="sm"
+          onClick={() => onRemove(product)}
+        />
+      </FlexboxGrid.Item>
+    </FlexboxGrid>
+  </List.Item>
+);
 }

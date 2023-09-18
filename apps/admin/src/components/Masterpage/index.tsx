@@ -7,7 +7,6 @@ import { useAuthStore } from "@/stores";
 import { Col, Row } from "antd";
 
 interface MasterpageProps {
-  title?: string;
   children: ReactNode | null | undefined;
 }
 
@@ -20,7 +19,7 @@ export function Masterpage(props: MasterpageProps) {
       {isAuth && (
         <>
           <AppBar
-            title={props.title || process.env.NEXT_PUBLIC_APP_NAME}
+            title={isAuth ? (authStore.auth.company || {}).label : process.env.NEXT_PUBLIC_APP_NAME}
           />
           <DrawerComp />
         </>

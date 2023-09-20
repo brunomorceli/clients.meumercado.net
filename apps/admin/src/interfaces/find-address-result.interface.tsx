@@ -5,6 +5,7 @@ export interface IFindAddressResult {
   city: string;
   state: string;
   cep: string;
+  addressNumber?: string;
 }
 
 export class IFindAddressResultHandler {
@@ -15,6 +16,7 @@ export class IFindAddressResultHandler {
       city: '',
       state: '',
       cep: '',
+      addressNumber: '',
     };
   }
 }

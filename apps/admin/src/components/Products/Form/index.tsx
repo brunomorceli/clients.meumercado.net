@@ -1,16 +1,19 @@
 "use client";
 
-import { IProduct, IProductHandler, IMeasure } from "@/interfaces";
+import {
+  IProduct,
+  IProductHandler,
+  IMeasure,
+  ICompany,
+  ICompanyHandler,
+} from "@/interfaces";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Categories,
-  ImageCrop,
   ImageGalery,
   InputBase,
   InputNumber,
   PanelBase,
-  PlusButton,
-  RichText,
   SaveButton,
   TitleBase,
 } from "@/components";
@@ -19,7 +22,6 @@ import {
   Col,
   FlexboxGrid,
   Form,
-  Row,
   Schema,
   SelectPicker,
   Stack,
@@ -27,7 +29,7 @@ import {
   Toggle,
 } from "rsuite";
 import { useStore } from "zustand";
-import { useAuthStore, useProductStore } from "@/stores";
+import { useAuthStore, useCompanyStore, useProductStore } from "@/stores";
 
 import { EProductType } from "@/enums";
 import { FormMeasures } from "./Measures";
@@ -35,7 +37,7 @@ import React from "react";
 import { Currency } from "@/components/Shared/Inputs/Currency";
 import { Attributes } from "./Attributes";
 import { useRouter } from "next/router";
-import { FormOutlined, PlusOutlined } from "@ant-design/icons";
+import { FormOutlined } from "@ant-design/icons";
 import { message } from "antd";
 import { FormModal } from "@/components/Shared/Modals";
 
@@ -48,7 +50,8 @@ export function ProductForm(props: ProductFormProps) {
   const router = useRouter();
   const authStore = useStore(useAuthStore);
   const productStore = useStore(useProductStore);
-  const categories = authStore.auth.company?.categories;
+  const companyStore = useStore(useCompanyStore);
+  const [company, setCompany] = useState<ICompany>(ICompanyHandler.empty());
   const [processing, setProcessing] = useState<boolean>(false);
   const formRef = useRef<any>();
   const [formError, setFormError] = useState<any>({});
@@ -57,6 +60,7 @@ export function ProductForm(props: ProductFormProps) {
   });
   const [toggleModalCategories, setToggleModalCategories] =
     useState<boolean>(false);
+
   const model = Schema.Model({
     label: Schema.Types.StringType().isRequired("Este campo é obrigatório."),
     price: Schema.Types.NumberType("Este campo deve ser um número.").addRule(
@@ -76,6 +80,19 @@ export function ProductForm(props: ProductFormProps) {
       "O Código de barras deve conter pelo menos 3 letras"
     ),
   });
+  const loadCompany = useCallback(
+    (companyId: string) => {
+      setProcessing(true);
+
+      companyStore
+        .get(companyId)
+        .then(setCompany)
+        .catch((e) => message.error(e))
+        .finally(() => setProcessing(false));
+    },
+    [companyStore]
+  );
+
   const loadProduct = useCallback(
     (id: string) => {
       setProcessing(true);
@@ -88,6 +105,10 @@ export function ProductForm(props: ProductFormProps) {
     },
     [productStore]
   );
+
+  useEffect(() => {
+    loadCompany(authStore.auth.company.id);
+  }, [loadCompany, authStore.auth.company.id]);
 
   useEffect(() => {
     productId && loadProduct(productId);
@@ -121,17 +142,6 @@ export function ProductForm(props: ProductFormProps) {
     return result;
   }
 
-  function handleAddPicture(img?: string | null | undefined): void {
-    if (!img) {
-      return;
-    }
-
-    setProduct({
-      ...product,
-      pictures: [...product.pictures, img],
-    });
-  }
-
   function handleChangeMeasure(measure: IMeasure): void {
     const measures = [...product.measures];
     const index = measures.findIndex((m) => m.id === measure.id);
@@ -157,7 +167,7 @@ export function ProductForm(props: ProductFormProps) {
       .finally(() => setProcessing(false));
   }
 
-  const flatCategories = getFlatCategories(categories);
+  const flatCategories = getFlatCategories(company.categories);
   return (
     <Form
       fluid={true}
@@ -180,9 +190,12 @@ export function ProductForm(props: ProductFormProps) {
           error={formError.label}
           onChange={(val) => handleChangeProductKey("label", val)}
         />
-        <RichText
+        <InputBase
+          label={`Descrição (${product.description?.length}/${2024})`}
           value={product.description || ""}
-          onChange={(value) => handleChangeProductKey("description", value)}
+          error={formError.description}
+          options={{ as: 'textarea', rows:5 }}
+          onChange={(value) => handleChangeProductKey("description", value.substring(0, 2024))}
         />
       </PanelBase>
       <PanelBase title="Imagens">
@@ -281,8 +294,8 @@ export function ProductForm(props: ProductFormProps) {
             <InputBase
               label="Código de barras"
               value={product.barcode}
-              error={formError.barCode}
-              onChange={(val) => handleChangeProductKey("barCode", val)}
+              error={formError.barcode}
+              onChange={(val) => handleChangeProductKey("barcode", val)}
             />
           </Col>
           <Col xs={24} sm={24} md={12} lg={12} xl={11}>
@@ -326,7 +339,7 @@ export function ProductForm(props: ProductFormProps) {
           onSave={() => setToggleModalCategories(!toggleModalCategories)}
           saveText="Concluir"
         >
-          <Categories />
+          <Categories onChange={setCompany} />
         </FormModal>
       </PanelBase>
       <Attributes

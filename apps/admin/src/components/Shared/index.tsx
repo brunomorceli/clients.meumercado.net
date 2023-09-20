@@ -7,3 +7,4 @@ export * from './AuthGuard';
 export * from './Inputs/Search';
 export * from './Panels';
 export * from './Titles';
+export * from './Forms';

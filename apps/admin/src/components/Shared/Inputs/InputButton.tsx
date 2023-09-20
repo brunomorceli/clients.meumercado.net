@@ -6,6 +6,7 @@ interface InputButtonProps {
   label?: string;
   value?: any;
   error?: string | null | undefined;
+  options?: any;
   onChange?: (value: string) => void;
   onEdit?: () => void;
   onRemove?: () => void;
@@ -20,6 +21,7 @@ export function InputButton(props: InputButtonProps) {
           value={props.value}
           onChange={(value) => props.onChange && props.onChange(value)}
           size="sm"
+          {...props.options || {}}
         />
         <InputGroup.Addon>
           {props.onEdit && (

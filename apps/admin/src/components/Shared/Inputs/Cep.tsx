@@ -1,6 +1,6 @@
 import { useStore } from "zustand";
 import { useExternalApiStore } from "@/stores";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IFindAddressResult } from "@/interfaces/find-address-result.interface";
 import { message } from "antd";
 import { Form, InputGroup, MaskedInput } from "rsuite";
@@ -10,16 +10,15 @@ interface CepProps {
   value?: string | null | undefined;
   label?: string;
   error?: string;
+  disabled?: boolean;
+  onChange: (cep: string) => void;
   onSearch: (address: IFindAddressResult | null) => void;
 }
 
 const cache: any = {};
 export function Cep(props: CepProps) {
   const externalApiStore = useStore(useExternalApiStore);
-  const [value, setValue] = useState<string>('');
   const [processing, setProcessing] = useState<boolean>(false);
-
-  useEffect(() => { setValue(props.value || ''); }, [props.value]);
 
   function handleSearch(cep: string): void {
     if (cep.length !== 8) {
@@ -49,7 +48,7 @@ export function Cep(props: CepProps) {
       return;
     }
 
-    setValue(cep);
+    props.onChange(cep);
     handleSearch(cep);
   }
 
@@ -58,11 +57,11 @@ export function Cep(props: CepProps) {
       <Form.ControlLabel>{props.label || 'CEP'}</Form.ControlLabel>
       <InputGroup>
         <MaskedInput
-          disabled={processing}
+          value={props.value || ''}
+          disabled={processing || props.disabled}
           mask={[/[0-9]/,/[0-9]/,/[0-9]/,/[0-9]/,/[0-9]/,'-',/[0-9]/,/[0-9]/,/[0-9]/]}
           onChange={(val) => handleChange(val)}
           placeholder="00000-000"
-          readOnly={processing}
         />
         {processing &&
           <InputGroup.Addon>

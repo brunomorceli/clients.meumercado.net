@@ -1,49 +1,36 @@
 import { ICompany, ICompanyHandler } from "@/interfaces";
 import { useEffect, useRef, useState } from "react";
 import {
-  BrazilianState,
+  AddressForm,
+  AddressFormSchema,
   CategoryForm,
-  Cep,
   ImageGalery,
   InputBase,
-  InputNumber,
   PanelBase,
   PhoneNumber,
-  RichText,
   SaveButton,
 } from "@/components";
 import { IFindAddressResult } from "@/interfaces/find-address-result.interface";
 import { message } from "antd";
-import { Col, FlexboxGrid, Form, Row, Schema } from "rsuite";
+import { FlexboxGrid, Form, Row, Schema } from "rsuite";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const model = Schema.Model({
   label: Schema.Types.StringType()
     .isRequired("Este campo é obrigatório.")
-    .minLength(3, "Este campo deve conter pelo menos 3 caracteres"),
-  cep: Schema.Types.StringType()
-    .isRequired("Este campo é obrigatório.")
-    .minLength(8, "CEP inválido"),
-  address: Schema.Types.StringType()
-    .isRequired("Este campo é obrigatório.")
-    .minLength(3, "Este campo deve conter pelo menos 3 caracteres"),
-  addressNumber: Schema.Types.NumberType().isRequired(
-    "Este campo é obrigatório."
-  ),
-  neighborhood: Schema.Types.StringType()
-    .isRequired("Este campo é obrigatório.")
-    .minLength(3, "Este campo deve conter pelo menos 3 caracteres"),
-  city: Schema.Types.StringType()
-    .isRequired("Este campo é obrigatório.")
-    .minLength(3, "Este campo deve conter pelo menos 3 caracteres"),
-  state: Schema.Types.StringType().isRequired("Este campo é obrigatório."),
+    .minLength(3, "Este campo deve conter pelo menos 3 caracteres")
+    .addRule((val, data) => {
+      console.log(val, '-', data);
+      return true;
+    }, 'error'),
   email: Schema.Types.StringType().isEmail("Email inválido"),
   phoneNumber: Schema.Types.StringType().minLength(11, "Telefone Inválido"),
-  sponsor: Schema.Types.StringType().minLength(
+  manager: Schema.Types.StringType().minLength(
     3,
     "Este campo deve conter pelo menos 3 caracteres"
   ),
+  ...AddressFormSchema,
 });
 
 interface CompanyFormProps {
@@ -124,71 +111,21 @@ export function CompanyForm(props: CompanyFormProps) {
             disableAdd={Boolean(company.logo)}
           />
         </Row>
-
-        <RichText
+        <InputBase
+          label={`Descrição (${company.description?.length}/${2024})`}
           value={company.description || ""}
-          onChange={(value) => handleChangeCompanyKey("description", value)}
+          error={formError.description}
+          options={{ as: 'textarea', rows:5 }}
+          onChange={(value) => handleChangeCompanyKey("description", value.substring(0, 2024))}
         />
       </PanelBase>
 
       <PanelBase title="Lacalização">
-        <Cep
-          value={company.cep}
-          error={formError.cep}
-          onSearch={(address) => handleChangeCep(address)}
+        <AddressForm
+          data={company as any}
+          error={formError}
+          onChange={(data: any) => setCompany({ ...company, ...data })}
         />
-        <FlexboxGrid justify="space-between">
-          <Col xs={24} sm={24} md={20} lg={20} xl={20}>
-            <InputBase
-              label="Logradouro"
-              value={company.address}
-              onChange={(val) => handleChangeCompanyKey("address", val)}
-              error={formError.address}
-            />
-          </Col>
-          <Col xs={24} sm={24} md={4} lg={4} xl={4}>
-            <InputNumber
-              label="Número"
-              value={company.addressNumber}
-              onChange={(val) => handleChangeCompanyKey("addressNumber", val)}
-              error={formError.addressNumber}
-            />
-          </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-            <InputBase
-              label="Bairro"
-              value={company.neighborhood}
-              onChange={(val) => handleChangeCompanyKey("neighborhood", val)}
-              error={formError.neighborhood}
-            />
-          </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-            <InputBase
-              label="Complemento"
-              value={company.addressComplement}
-              onChange={(val) =>
-                handleChangeCompanyKey("addressComplement", val)
-              }
-              error={formError.addressComplement}
-            />
-          </Col>
-          <Col xs={24} sm={24} md={16} lg={16} xl={16}>
-            <InputBase
-              label="Cidade"
-              value={company.city}
-              onChange={(val) => handleChangeCompanyKey("city", val)}
-              error={formError.city}
-            />
-          </Col>
-          <Col xs={24} sm={24} md={8} lg={8} xl={8}>
-            <BrazilianState
-              label="Estado"
-              value={company.state}
-              error={formError.state}
-              onChange={(val) => handleChangeCompanyKey("state", val)}
-            />
-          </Col>
-        </FlexboxGrid>
       </PanelBase>
       <PanelBase title="Contato">
         <InputBase

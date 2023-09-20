@@ -6,6 +6,7 @@ interface CurrencyProps {
   cents: number;
   placeholder?: string;
   error?: string;
+  options?: any;
   onChange: (cents: number) => void;
 }
 
@@ -49,6 +50,7 @@ export function Currency(props: CurrencyProps) {
         value={label}
         onChange={handleChange}
         placeholder={props.placeholder || ""}
+        {...props.options || {}}
       />
       <Form.ErrorMessage show={Boolean(props.error)}>
         {props.error}

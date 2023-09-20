@@ -3,6 +3,7 @@ import { Form, Input } from "rsuite";
 interface InputNumberProps {
   label?: string;
   value: any;
+  options?: any;
   error?: string | null | undefined;
   onChange: (value: number) => void;
 }
@@ -19,6 +20,7 @@ export function InputNumber(props: InputNumberProps) {
       <Input
         value={`${props.value || ""}`}
         onChange={(val) => handleChange(val)}
+        {...props.options || {}}
       />
       <Form.ErrorMessage show={Boolean(props.error)}>
         {props.error}

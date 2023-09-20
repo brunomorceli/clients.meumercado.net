@@ -5,6 +5,7 @@ interface BrazilianStateProps {
   label?: string;
   value?: string;
   error?: string;
+  options?: any;
   onChange?: (val: string) => void;
 }
 
@@ -20,9 +21,10 @@ export function BrazilianState(props: BrazilianStateProps) {
           { label: "Selecione", value: "" },
           ...EBrazilianStateHandler.getSelectOptions(),
         ]}
-        onChange={(state) => props.onChange && props.onChange(state.value)}
+        onChange={(state: any) => props.onChange && props.onChange(state.value)}
         value={props.value}
         defaultValue={props.value}
+        {...props.options || {}}
       />
       <Form.ErrorMessage show={Boolean(props.error)}>
         {props.error}

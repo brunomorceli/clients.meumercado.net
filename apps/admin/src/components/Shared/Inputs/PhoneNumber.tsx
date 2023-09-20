@@ -4,6 +4,7 @@ interface PhoneNumberProps {
   value?: string | null | undefined;
   label?: string;
   error?: string;
+  options?: any;
   onChange?: (value: string) => void;
 }
 export function PhoneNumber(props: PhoneNumberProps) {
@@ -19,6 +20,7 @@ export function PhoneNumber(props: PhoneNumberProps) {
           mask={['(',/[0-9]/,/[0-9]/,')', ' ', /[0-9]/, ' ', /[0-9]/,/[0-9]/,/[0-9]/,/[0-9]/, '-' ,/[0-9]/,/[0-9]/,/[0-9]/,/[0-9]/]}
           onChange={(val) => handleChange(val)}
           placeholder="(00) 0 0000-0000"
+          {...props.options || {}}
         />
       </InputGroup>
       <Form.ErrorMessage show={Boolean(props.error)}>

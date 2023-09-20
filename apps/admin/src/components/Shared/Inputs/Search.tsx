@@ -6,6 +6,7 @@ interface SearchProps {
   loading?: boolean;
   placeholder?: string;
   disableEnter?: boolean;
+  options?: any;
   onChange?: (search: string) => void;
   onSearch: (search: string) => void;
 }
@@ -32,6 +33,7 @@ export function Search(props: SearchProps) {
         onChange={(val) => handleChange(val || "")}
         onKeyDown={handleKeyDown}
         disabled={props.loading}
+        {...props.options || {}}
       />
       <InputGroup.Addon
         onClick={() => props.onSearch(search)}

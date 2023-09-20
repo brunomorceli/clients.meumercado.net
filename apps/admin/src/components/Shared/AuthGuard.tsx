@@ -9,7 +9,7 @@ export function AuthGuard(props: any) {
 
   useEffect(() => {
     if (!authStore.authenticated) {
-      router.replace('/entrar');
+      router.replace('/signin');
     }
   }, [authStore, router]);
   

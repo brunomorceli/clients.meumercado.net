@@ -35,10 +35,10 @@ class CompanyServiceClass {
     });
   }
 
-  upsert(data: ICompany): Promise<ICompany> {
+  update(data: ICompany): Promise<ICompany> {
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/companies`;
-      axios[data.id ? "patch" : "post"](url, data)
+      axios.patch(url, data)
         .then((res) => resolve(res.data))
         .catch((e) =>
           reject(
@@ -79,7 +79,7 @@ class CompanyServiceClass {
 
   get(id: string): Promise<ICompany> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/companies/${id}`;
+      const url = `${this.baseURL}/companies/${id}/get`;
       axios
         .get(url)
         .then((res) => resolve(res.data))

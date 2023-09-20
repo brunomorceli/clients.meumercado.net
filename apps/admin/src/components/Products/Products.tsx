@@ -6,8 +6,7 @@ import { PanelBase, Search, TitleBase } from "@/components";
 import { ProductList } from "./List";
 import { useRouter } from "next/router";
 import { Pagination, message } from "antd";
-import { Button, ButtonGroup, FlexboxGrid, Panel, Stack } from "rsuite";
-import PlusIcon from "@rsuite/icons/Plus";
+import { FlexboxGrid } from "rsuite";
 
 export function Products() {
   const router = useRouter();

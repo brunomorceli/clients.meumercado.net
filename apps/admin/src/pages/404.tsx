@@ -12,7 +12,7 @@ export default function NotFound() {
     if (authStore.authenticated) {
       router.replace('/');
     } else {
-      router.replace('/entrar');
+      router.replace('/signin');
     }
   });
 

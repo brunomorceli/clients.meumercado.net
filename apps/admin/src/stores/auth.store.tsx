@@ -1,21 +1,21 @@
 import {
-  IAuthenticate,
-  IAuthentication,
-  IAuthenticationHandler,
+  ISignup,
   ICompany,
   IConfirm,
+  IAuthentication,
+  IAuthenticationHandler,
 } from "@/interfaces";
-import { AuthService, CompanyService } from "@/services";
+import { ISigninResponse } from "@/interfaces/signin-response.interface";
+import { AuthService } from "@/services";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface useAuthStoreProps {
   authenticated: boolean;
   auth: IAuthentication;
-  authenticate:(data: IAuthenticate) => Promise<any>;
-  confirm: (data: IConfirm) => Promise<void>;
-  setCompany: (company: ICompany) => void,
-  
+  signin:(email: string) => Promise<ISigninResponse | null>;
+  signup:(data: ISignup) => Promise<any>;
+  confirm: (data: IConfirm) => Promise<void>;  
   signout: () => void;
 }
 
@@ -24,7 +24,8 @@ export const useAuthStore = create(
     (set, get) => ({
       authenticated: false,
       auth: IAuthenticationHandler.empty(),
-      authenticate: (data: IAuthenticate) => AuthService.authenticate(data),
+      signin: (email: string) => AuthService.signin(email),
+      signup: (data: ISignup) => AuthService.signup(data),
       confirm: (data: IConfirm) => {
         return new Promise((resolve, reject) => {
           AuthService.confirm(data)
@@ -45,18 +46,6 @@ export const useAuthStore = create(
           ...get(),
           authenticated: false,
           auth: IAuthenticationHandler.empty(),
-        });
-      },
-
-      setCompany: (company: ICompany) => {
-        const cache = get();
-        if (!cache.authenticated) {
-          return;
-        }
-
-        set({
-          ...cache,
-          auth: { ...cache.auth, company },
         });
       },
     }),

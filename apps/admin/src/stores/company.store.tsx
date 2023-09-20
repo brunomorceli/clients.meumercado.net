@@ -4,7 +4,7 @@ import { CompanyService } from "@/services";
 import { create } from "zustand";
 
 interface useCompanyStoreProps {
-  upsert: (data: ICompany) => Promise<ICompany>;
+  update: (data: ICompany) => Promise<ICompany>;
   find: (search: ICompanySearch) => Promise<ICompanySearchResult>;
   get: (id: string) => Promise<ICompany>;
   remove: (id: string) => Promise<void>;
@@ -12,7 +12,7 @@ interface useCompanyStoreProps {
 }
 
 export const useCompanyStore = create<useCompanyStoreProps>((set) => ({
-  upsert: (data: ICompany) => CompanyService.upsert(data),
+  update: (data: ICompany) => CompanyService.update(data),
   find: (search: ICompanySearch) => CompanyService.find(search),
   get: (id: string) => CompanyService.get(id),
   remove: (id: string) => CompanyService.remove(id),

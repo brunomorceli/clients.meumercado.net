@@ -1,7 +1,6 @@
-export * from './authenticate.interface';
+export * from './signup.iterface';
 export * from './confirm.interface';
 export * from './pagination.interface';
-export * from './authentication.interface';
 export * from './category.interface';
 export * from './discount.interface';
 export * from './product.interface';
@@ -14,3 +13,5 @@ export * from './company-search-result.interface';
 export * from './select-option.iterface';
 export * from './measure.interface';
 export * from './attribute.interface';
+export * from './role.interface';
+export * from './authentication.interface';

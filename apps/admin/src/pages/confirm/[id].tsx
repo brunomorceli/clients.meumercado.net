@@ -16,7 +16,7 @@ export default function ConfirmPage() {
   return (
     <Confirm
       authId={id as string}
-      onCancel={() => router.replace('/entrar')}
+      onCancel={() => router.replace('/signin')}
     />
   );
 }

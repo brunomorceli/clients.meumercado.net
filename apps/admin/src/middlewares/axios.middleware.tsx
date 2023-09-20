@@ -38,7 +38,7 @@ axios.interceptors.request.use((config: any) => {
       const status = error.response.status;
       if (status === 401) {
         authStore.signout();
-        router.replace('/entrar');
+        router.replace('/signin');
       }
     
       if (status === 403) {

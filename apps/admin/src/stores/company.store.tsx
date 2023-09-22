@@ -4,17 +4,17 @@ import { CompanyService } from "@/services";
 import { create } from "zustand";
 
 interface useCompanyStoreProps {
-  upsert: (data: ICompany) => Promise<ICompany>;
+  update: (data: ICompany) => Promise<ICompany>;
   find: (search: ICompanySearch) => Promise<ICompanySearchResult>;
   get: (id: string) => Promise<ICompany>;
   remove: (id: string) => Promise<void>;
-  checkSubdomain: (subdomain: string, clientId?: string) => Promise<boolean>;
+  checkTenantId: (tenantId: string, clientId?: string) => Promise<boolean>;
 }
 
 export const useCompanyStore = create<useCompanyStoreProps>((set) => ({
-  upsert: (data: ICompany) => CompanyService.upsert(data),
+  update: (data: ICompany) => CompanyService.update(data),
   find: (search: ICompanySearch) => CompanyService.find(search),
   get: (id: string) => CompanyService.get(id),
   remove: (id: string) => CompanyService.remove(id),
-  checkSubdomain: (subdomain: string, clientId?: string) => CompanyService.checkSubdomain(subdomain, clientId),
+  checkTenantId: (tenantId: string, clientId?: string) => CompanyService.checkTenantId(tenantId, clientId),
 }));

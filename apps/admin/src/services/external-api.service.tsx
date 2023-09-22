@@ -12,7 +12,7 @@ class ExternalApiServiceClass {
 
     return this.instance;
   }
-  findAddress(cep: string): Promise<IFindAddressResult | null> {
+  findAddress(cep: string): Promise<IFindAddressResult> {
     return new Promise((resolve, reject) => {
       const cleanCep = cep.trim().replace(/[^a-z0-9]/gi, "");
       const url = `https://viacep.com.br/ws/${cleanCep}/json`;
@@ -20,8 +20,9 @@ class ExternalApiServiceClass {
       axios
         .get(url)
         .then((res) => {
-          if (!res || !res.data || res.data.erro) {
-            return null;
+          if (res.data.erro) {
+            reject('Dados não encontrados.');
+            return;
           }
 
           const data = (res || {}).data || {};

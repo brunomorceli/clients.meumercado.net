@@ -2,31 +2,34 @@ import { ECompanyStatusType } from "@/enums";
 
 export interface ICompany {
   id?: string;
-  label: string;
+  name?: string;
   slug?: string;
-  subdomain: string;
-  subdomainCheck?: boolean;
-  address: string;
+  tenantId?: string;
+  tenantIdCheck?: boolean;
+  address?: string;
   description?: string;
   addressComplement?: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-  addressNumber: string;
-  cep: string;
-  phoneNumber: string;
-  logo?: string;
-  status: ECompanyStatusType;
+  neighborhood?: string;
+  city?: string;
+  state?: string;
+  addressNumber?: string;
+  cep?: string;
+  phoneNumber?: string;
+  email?: string;
+  responsible?: string;
+  logo?: string | null | undefined;
+  categories: any[],
+  status?: ECompanyStatusType;
   createdAt?: string;
   deletedAt?: string;
 }
 
 export class ICompanyHandler {
-  static empty(subdomainCheck: boolean = false): ICompany {
+  static empty(tenantIdCheck: boolean = false): ICompany {
     return {
-      label: '',
-      subdomain: '',
-      subdomainCheck,
+      name: '',
+      tenantId: '',
+      tenantIdCheck,
       address: '',
       neighborhood: '',
       city: '',
@@ -34,6 +37,10 @@ export class ICompanyHandler {
       addressNumber: '',
       cep: '',
       phoneNumber: '',
+      email: '',
+      responsible: '',
+      logo: null,
+      categories: [],
       status: ECompanyStatusType.ACTIVE,
     };
   }

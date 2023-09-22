@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { useStore } from "zustand";
 
 export function AuthGuard(props: any) {
-  const authStore = useStore(useAuthStore);
   const router = useRouter();
+  const authStore = useStore(useAuthStore);
 
   useEffect(() => {
     if (!authStore.authenticated) {

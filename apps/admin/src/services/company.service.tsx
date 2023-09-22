@@ -18,12 +18,11 @@ class CompanyServiceClass {
     return this.instance;
   }
 
-  checkSubdomain(subdomain: string, companyId?: string): Promise<boolean> {
+  checkTenantId(tenantId: string, companyId?: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       const companyIdParam = companyId ? `&companyId=${companyId}` : '';
-      const url = `${this.baseURL}/companies/check-subdomain?subdomain=${subdomain}${companyIdParam}`;
+      const url = `${this.baseURL}/companies/check-tenantId?tenantId=${tenantId}${companyIdParam}`;
 
-      console.log(url)
       axios
         .get(url)
         .then((res) => resolve(res.data.available))
@@ -35,10 +34,10 @@ class CompanyServiceClass {
     });
   }
 
-  upsert(data: ICompany): Promise<ICompany> {
+  update(data: ICompany): Promise<ICompany> {
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/companies`;
-      axios[data.id ? "patch" : "post"](url, data)
+      axios.patch(url, data)
         .then((res) => resolve(res.data))
         .catch((e) =>
           reject(
@@ -79,7 +78,7 @@ class CompanyServiceClass {
 
   get(id: string): Promise<ICompany> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/companies/${id}`;
+      const url = `${this.baseURL}/companies/${id}/get`;
       axios
         .get(url)
         .then((res) => resolve(res.data))

@@ -1,22 +1,27 @@
-import { EUserType } from "@/enums";
-import { ICompany } from "./company.interface";
+import { IRole } from ".";
 
 export interface IAuthentication {
   token: string;
+  type:   'OWNER' | 'EMPLOYEE' | 'CLIENT';
   userName: string;
-  type: EUserType;
-  companies: ICompany[];
-  selectedCompany: ICompany | null;
+  roles: IRole[];
+  companyId: string;
+  tenantId: string;
+  companyName: string;
+  logo?: string | null | undefined;
 }
 
 export class IAuthenticationHandler {
   static empty(): IAuthentication {
     return {
       token: '',
+      type: 'OWNER',
       userName: '',
-      type: EUserType.ADMIN,
-      companies: [],
-      selectedCompany: null,
-    };
+      roles: [],
+      companyId: '',
+      tenantId: '',
+      companyName: '',
+      logo: null,
+    }
   }
 }

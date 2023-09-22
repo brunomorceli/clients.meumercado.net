@@ -4,17 +4,10 @@ import {
   AppBarLeftActions,
   AppBarMenuBtn,
   AppBarTitle,
-  CustomSelect,
 } from "./styles";
-import {
-  HomeFilled,
-  HomeOutlined,
-  MenuOutlined,
-  RightOutlined,
-  ShopOutlined,
-} from "@ant-design/icons";
-import { useAuthStore, useMasterpageStore } from "@/stores";
-import { Button, Select } from "antd";
+import { HomeFilled, MenuOutlined } from "@ant-design/icons";
+import { useMasterpageStore } from "@/stores";
+import { Button } from "antd";
 import { useRouter } from "next/router";
 
 interface AppBarProps {
@@ -24,27 +17,8 @@ interface AppBarProps {
 
 export function AppBar(props: AppBarProps) {
   const router = useRouter();
-  const authStore = useStore(useAuthStore);
   const masterpageStore = useStore(useMasterpageStore);
 
-  const companies = authStore.auth.companies;
-  const selectedCompany = authStore.auth.selectedCompany;
-  console.log(router);
-  const routeTitles = {
-    "/": "",
-    "/companies": "Minhas empresas",
-  };
-
-  function getRouteTitle(pathname: string): string {
-    switch (pathname) {
-      case "/companies":
-        return "Empresas";
-      default:
-        return "";
-    }
-  }
-
-  const routeTitle = getRouteTitle(router.pathname);
   return (
     <AppBarComp>
       {!props.hideButton && (
@@ -63,25 +37,7 @@ export function AppBar(props: AppBarProps) {
         >
           {props.title}
         </Button>
-        <AppBarLeftActions>
-          {selectedCompany && (
-            <>
-              <ShopOutlined />
-              &nbsp;
-              <CustomSelect
-                style={{ backgroundColor: "inherit" }}
-                defaultValue={selectedCompany.id}
-                options={companies.map((c) => ({
-                  label: c.label,
-                  value: c.id,
-                }))}
-                onChange={(companyId: any) =>
-                  authStore.setSelectedCompany(companyId)
-                }
-              />
-            </>
-          )}
-        </AppBarLeftActions>
+        <AppBarLeftActions></AppBarLeftActions>
       </AppBarTitle>
     </AppBarComp>
   );

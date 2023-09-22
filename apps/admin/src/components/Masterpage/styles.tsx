@@ -10,7 +10,7 @@ export const AppBarComp = styled.div`
   position: fixed;
   left: 0px;
   top: 0px;
-  z-index: 1;
+  z-index: 999;
   vertical-align: middle !important;
 
   -webkit-box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.28);

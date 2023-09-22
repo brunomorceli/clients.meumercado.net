@@ -1,9 +1,12 @@
-import { Input } from "antd";
 import { useEffect, useState } from "react";
+import { Form, Input } from "rsuite";
 
 interface CurrencyProps {
+  label: string;
   cents: number;
   placeholder?: string;
+  error?: string;
+  options?: any;
   onChange: (cents: number) => void;
 }
 
@@ -33,18 +36,25 @@ export function Currency(props: CurrencyProps) {
     };
   }
 
-  function handleChange(event: any): void {
-    const onlyNumbers = (event.target.value || "").replace(/[^0-9]*/g, "");
-    const cents = parseInt(onlyNumbers.length !== 0 ? onlyNumbers : 0, 10);
+  function handleChange(value: string): void {
+    const onlyNumbers = (value || "").replace(/[^0-9]*/g, "");
+    const cents = Number(onlyNumbers.length !== 0 ? onlyNumbers : '0');
 
     props.onChange(cents);
   }
 
   return (
-    <Input
-      value={label}
-      onChange={handleChange}
-      placeholder={props.placeholder || ""}
-    />
+    <Form.Group style={{ width: "100%" }}>
+      <Form.ControlLabel>{props.label}</Form.ControlLabel>
+      <Input
+        value={label}
+        onChange={handleChange}
+        placeholder={props.placeholder || ""}
+        {...props.options || {}}
+      />
+      <Form.ErrorMessage show={Boolean(props.error)}>
+        {props.error}
+      </Form.ErrorMessage>
+    </Form.Group>
   );
 }

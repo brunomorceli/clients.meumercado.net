@@ -1,4 +1,5 @@
-import { IAuthentication, IConfirm, ISignin } from "@/interfaces";
+import { ISignup, IConfirm, IAuthentication } from "@/interfaces";
+import { ISigninResponse } from "@/interfaces/signin-response.interface";
 import axios from "axios";
 
 class AuthServiceClass {
@@ -16,13 +17,24 @@ class AuthServiceClass {
 
     return this.instance;
   }
-  signin(data: ISignin): Promise<void> {
+
+  signin(email: string): Promise<ISigninResponse | null> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/users/authenticate`;
+      const url = `${this.baseURL}/users/signin`;
+      axios
+        .post(url, { email })
+        .then((res) => resolve(res.status === 204 ? null : res.data))
+        .catch(() => reject('Erro ao tentar autenticar usuário.'));
+    });
+  }
+
+  signup(data: ISignup): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const url = `${this.baseURL}/users/signup`;
       axios
         .post(url, data)
-        .then(() => resolve())
-        .catch(() => reject('Erro ao tentar autenticar usuário.'));
+        .then((res) => resolve(res.data))
+        .catch(() => reject('Erro ao tentar criar usuário.'));
     });
   }
   

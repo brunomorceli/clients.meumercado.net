@@ -1,13 +1,11 @@
-import { AuthGuard } from "@/components";
-import { Card } from "antd";
-import { Categories } from "../components/Categories";
+import { AuthGuard, Categories, TitleBase } from "@/components";
 
 export default function Home() {
   return (
     <AuthGuard>
-      <Card>
-        <Categories />
-      </Card>
+      <TitleBase title="Home" />
+      <div style={{ height: 50}}></div>
+      <Categories />
     </AuthGuard>
   )
 }

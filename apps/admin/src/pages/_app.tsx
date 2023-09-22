@@ -8,6 +8,7 @@ import '../middlewares/axios.middleware';
 import 'rsuite/dist/rsuite.min.css';
 import 'react-quill/dist/quill.snow.css';
 import "@/styles/globals.css";
+import { Toaster } from "@/components/Shared/Toaster";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [isClient, setIsClient] = useState<boolean>(false);
@@ -20,6 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
     isClient && (
       <Masterpage>
         <Component {...pageProps} />
+        <Toaster />
       </Masterpage>
     )
   );

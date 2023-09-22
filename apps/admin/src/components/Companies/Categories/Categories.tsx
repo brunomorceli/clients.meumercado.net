@@ -1,6 +1,6 @@
 import { message } from "antd";
 import { useStore } from "zustand";
-import { useAuthStore, useCompanyStore } from "@/stores";
+import { useAuthStore, useCompanyStore, useToasterStore } from "@/stores";
 import { CategoryForm, CustomItemDataType } from "@/components";
 import { useCallback, useEffect, useState } from "react";
 import { ICompany, ICompanyHandler } from "@/interfaces";
@@ -12,17 +12,18 @@ interface CategoriesProps {
 export function Categories(props: CategoriesProps) {
   const authStore = useStore(useAuthStore);
   const companyStore = useStore(useCompanyStore);
+  const toasterStore = useStore(useToasterStore);
   const [company, setCompany] = useState<ICompany>(ICompanyHandler.empty());
   const loadCompany = useCallback((companyId: string) => {
     companyStore
       .get(companyId)
       .then(setCompany)
-      .catch(message.error);
+      .catch(toasterStore.error);
   },[companyStore]);
 
   useEffect(() => {
-    loadCompany(authStore.auth.company.id);
-  }, [loadCompany, authStore.auth.company.id]);
+    loadCompany(authStore.companyId);
+  }, [loadCompany, authStore.companyId]);
 
   function updateCategories(categories: CustomItemDataType[]): void {
     companyStore
@@ -31,7 +32,7 @@ export function Categories(props: CategoriesProps) {
         setCompany(updatedCompany);
         props.onChange && props.onChange(updatedCompany);
       })
-      .catch((e) => message.error(e));
+      .catch((e) => toasterStore.error(e));
   }
 
   return (

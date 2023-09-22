@@ -1,5 +1,5 @@
 import { useStore } from "zustand";
-import { useExternalApiStore } from "@/stores";
+import { useExternalApiStore, useToasterStore } from "@/stores";
 import { useState } from "react";
 import { IFindAddressResult } from "@/interfaces/find-address-result.interface";
 import { message } from "antd";
@@ -18,6 +18,7 @@ interface CepProps {
 const cache: any = {};
 export function Cep(props: CepProps) {
   const externalApiStore = useStore(useExternalApiStore);
+  const toasterStore = useStore(useToasterStore);
   const [processing, setProcessing] = useState<boolean>(false);
 
   function handleSearch(cep: string): void {
@@ -38,7 +39,7 @@ export function Cep(props: CepProps) {
         cache[cep] = res;
         props.onSearch(res);
       })
-      .catch(message.error)
+      .catch(toasterStore.error)
       .finally(() => setProcessing(false));
   }
 

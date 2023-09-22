@@ -21,7 +21,7 @@ export function CompanyDetails(props: CompanyDetailsProps) {
     <Modal open={Boolean(props.company)} onCancel={onClose} footer={null} title="Detalhes do empresa">
       <Card cover={<ListImage src={company.logo || "images/no-image.png"} />}>
         <Typography.Title level={5}>
-          {company.label.toUpperCase()}
+          {company.name.toUpperCase()}
         </Typography.Title>
         <Typography.Text disabled>{company.description}</Typography.Text>
 

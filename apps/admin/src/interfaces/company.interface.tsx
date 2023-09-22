@@ -2,7 +2,7 @@ import { ECompanyStatusType } from "@/enums";
 
 export interface ICompany {
   id?: string;
-  label?: string;
+  name?: string;
   slug?: string;
   tenantId?: string;
   tenantIdCheck?: boolean;
@@ -16,7 +16,7 @@ export interface ICompany {
   cep?: string;
   phoneNumber?: string;
   email?: string;
-  manager?: string;
+  responsible?: string;
   logo?: string | null | undefined;
   categories: any[],
   status?: ECompanyStatusType;
@@ -27,7 +27,7 @@ export interface ICompany {
 export class ICompanyHandler {
   static empty(tenantIdCheck: boolean = false): ICompany {
     return {
-      label: '',
+      name: '',
       tenantId: '',
       tenantIdCheck,
       address: '',
@@ -38,7 +38,7 @@ export class ICompanyHandler {
       cep: '',
       phoneNumber: '',
       email: '',
-      manager: '',
+      responsible: '',
       logo: null,
       categories: [],
       status: ECompanyStatusType.ACTIVE,

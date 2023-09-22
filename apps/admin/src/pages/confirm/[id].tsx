@@ -1,4 +1,5 @@
 import { Confirm } from "@/components/Confirm";
+import { PublicGuard } from "@/components/Shared/PublicGuard";
 import { useAuthStore } from "@/stores";
 import { useRouter } from "next/router";
 import { useStore } from "zustand";
@@ -14,9 +15,11 @@ export default function ConfirmPage() {
   }
 
   return (
-    <Confirm
-      authId={id as string}
-      onCancel={() => router.replace('/signin')}
-    />
+    <PublicGuard>
+      <Confirm
+        authId={id as string}
+        onCancel={() => router.replace('/signin')}
+      />
+    </PublicGuard>
   );
 }

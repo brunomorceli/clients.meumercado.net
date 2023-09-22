@@ -5,12 +5,14 @@ import { useProductStore } from "@/stores/product.store";
 import { PanelBase, Search, TitleBase } from "@/components";
 import { ProductList } from "./List";
 import { useRouter } from "next/router";
-import { Pagination, message } from "antd";
+import { Pagination } from "antd";
 import { FlexboxGrid } from "rsuite";
+import { useToasterStore } from "@/stores";
 
 export function Products() {
   const router = useRouter();
   const productStore = useStore(useProductStore);
+  const toasterStore = useStore(useToasterStore);
   const [search, setSearch] = useState<string>("");
   const size = 20;
   const [total, setTotal] = useState<number>(0);
@@ -31,7 +33,7 @@ export function Products() {
         setProducts(result.data);
         setTotal(result.total);
       })
-      .catch((e) => message.error(e))
+      .catch((e) => toasterStore.error(e))
       .finally(() => setSearching(false));
   }
 
@@ -41,13 +43,13 @@ export function Products() {
     productStore
       .remove(product.id!)
       .then(() => {
-        message.success("Produto removido com sucesso.");
+        toasterStore.success("Produto removido com sucesso.");
 
         setSearch("");
         handleSearch();
       })
       .catch((e) => {
-        message.error(e);
+        toasterStore.error(e);
         setProcessing(false);
       });
   }

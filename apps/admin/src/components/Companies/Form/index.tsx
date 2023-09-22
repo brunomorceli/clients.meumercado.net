@@ -10,23 +10,19 @@ import {
   PhoneNumber,
   SaveButton,
 } from "@/components";
-import { IFindAddressResult } from "@/interfaces/find-address-result.interface";
-import { message } from "antd";
 import { FlexboxGrid, Form, Row, Schema } from "rsuite";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useStore } from "zustand";
+import { useToasterStore } from "@/stores";
 
 const model = Schema.Model({
-  label: Schema.Types.StringType()
+  name: Schema.Types.StringType()
     .isRequired("Este campo é obrigatório.")
-    .minLength(3, "Este campo deve conter pelo menos 3 caracteres")
-    .addRule((val, data) => {
-      console.log(val, '-', data);
-      return true;
-    }, 'error'),
+    .minLength(3, "Este campo deve conter pelo menos 3 caracteres"),
   email: Schema.Types.StringType().isEmail("Email inválido"),
   phoneNumber: Schema.Types.StringType().minLength(11, "Telefone Inválido"),
-  manager: Schema.Types.StringType().minLength(
+  responsible: Schema.Types.StringType().minLength(
     3,
     "Este campo deve conter pelo menos 3 caracteres"
   ),
@@ -39,6 +35,7 @@ interface CompanyFormProps {
 }
 
 export function CompanyForm(props: CompanyFormProps) {
+  const toasterStore = useStore(useToasterStore);
   const [company, setCompany] = useState<ICompany>(ICompanyHandler.empty());
   const formRef = useRef<any>();
   const [formError, setFormError] = useState<any>({});
@@ -48,24 +45,16 @@ export function CompanyForm(props: CompanyFormProps) {
     setCompany({ ...data, tenantIdCheck: Boolean(data.id) });
   }, [props.company]);
 
-  function handleSubmit(): void {
-    if (!formRef.current.check()) {
-      return;
-    }
-    props.onSave(company);
-  }
-
   function handleChangeCompanyKey(key: string, val: any): void {
     setCompany({ ...company, [key]: val });
   }
 
-  function handleChangeCep(address: IFindAddressResult | null): void {
-    if (!address) {
-      message.error("CEP não encontrado.");
+  function handleSubmit(): void {
+    if (!formRef.current.check()) {
+      toasterStore.error('Por favor, preencha os campos obrigatórios.')
       return;
     }
-
-    setCompany({ ...company, ...address });
+    props.onSave(company);
   }
 
   const subdomain = (process.env.NEXT_PUBLIC_TENANT_URL as string).replace(
@@ -85,10 +74,10 @@ export function CompanyForm(props: CompanyFormProps) {
     >
       <PanelBase title="Dados da empresa">
         <InputBase
-          label="Nome"
-          value={company.label || ""}
-          onChange={(val) => handleChangeCompanyKey("label", val)}
-          error={formError.label}
+          label="Nome (obrigatório)"
+          value={company.name || ""}
+          onChange={(val) => handleChangeCompanyKey("name", val)}
+          error={formError.name}
         />
         <Row>
           <Form.ControlLabel>Subdomínio</Form.ControlLabel>
@@ -112,7 +101,7 @@ export function CompanyForm(props: CompanyFormProps) {
           />
         </Row>
         <InputBase
-          label={`Descrição (${company.description?.length}/${2024})`}
+          label={`Descrição (${company.description?.length || 0}/${2024})`}
           value={company.description || ""}
           error={formError.description}
           options={{ as: 'textarea', rows:5 }}
@@ -120,7 +109,7 @@ export function CompanyForm(props: CompanyFormProps) {
         />
       </PanelBase>
 
-      <PanelBase title="Lacalização">
+      <PanelBase title="Localização">
         <AddressForm
           data={company as any}
           error={formError}
@@ -141,9 +130,9 @@ export function CompanyForm(props: CompanyFormProps) {
         />
         <InputBase
           label="Responsável"
-          value={company.manager || ""}
-          onChange={(val) => handleChangeCompanyKey("manager", val)}
-          error={formError.manager}
+          value={company.responsible || ""}
+          onChange={(val) => handleChangeCompanyKey("responsible", val)}
+          error={formError.responsible}
         />
       </PanelBase>
 

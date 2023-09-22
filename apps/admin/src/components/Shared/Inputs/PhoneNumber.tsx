@@ -17,6 +17,7 @@ export function PhoneNumber(props: PhoneNumberProps) {
       <Form.ControlLabel>{props.label || 'Telefone'}</Form.ControlLabel>
       <InputGroup>
         <MaskedInput
+          value={props.value}
           mask={['(',/[0-9]/,/[0-9]/,')', ' ', /[0-9]/, ' ', /[0-9]/,/[0-9]/,/[0-9]/,/[0-9]/, '-' ,/[0-9]/,/[0-9]/,/[0-9]/,/[0-9]/]}
           onChange={(val) => handleChange(val)}
           placeholder="(00) 0 0000-0000"

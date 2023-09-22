@@ -1,10 +1,11 @@
-import { Col, FlexboxGrid, Schema, Stack } from "rsuite";
+import { Col, FlexboxGrid, Schema } from "rsuite";
 import { BrazilianState, Cep, InputBase, InputNumber, TrashButton } from "..";
 import {
   IFindAddressResult,
   IFindAddressResultHandler,
 } from "@/interfaces/find-address-result.interface";
-import { message } from "antd";
+import { useToasterStore } from "@/stores";
+import { useStore } from 'zustand';
 
 interface AddressFormProps {
   data: IFindAddressResult;
@@ -24,6 +25,7 @@ export const AddressFormSchema = {
 
 export function AddressForm(props: AddressFormProps) {
   const { data, error, onChange } = props;
+  const toasterStore = useStore(useToasterStore);
 
   function handleChangeKey(key: string, val: any): void {
     onChange({ ...data, [key]: val });
@@ -36,9 +38,11 @@ export function AddressForm(props: AddressFormProps) {
 
   function handleSearchCep(address: IFindAddressResult | null): void {
     if (!address) {
-      message.error("CEP não encontrado.");
+      toasterStore.error("CEP não encontrado.");
       return;
     }
+
+    toasterStore.success("CEP válido.");
 
     onChange({ ...data, ...address });
   }
@@ -47,6 +51,7 @@ export function AddressForm(props: AddressFormProps) {
   return (
     <>
       <Cep
+        label="CEP (obrigatório)"
         value={data.cep}
         error={error.cep}
         disabled={validated}
@@ -68,7 +73,7 @@ export function AddressForm(props: AddressFormProps) {
             <InputNumber
               label="Número"
               value={data.addressNumber}
-              onChange={(val) => handleChangeKey("addressNumber", val)}
+              onChange={(val) => handleChangeKey("addressNumber", val ? val.toString(10) : null)}
               error={error.addressNumber}
             />
           </Col>

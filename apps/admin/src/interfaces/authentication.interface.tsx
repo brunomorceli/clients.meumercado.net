@@ -3,15 +3,12 @@ import { IRole } from ".";
 export interface IAuthentication {
   token: string;
   type:   'OWNER' | 'EMPLOYEE' | 'CLIENT';
-  user: {
-    firstName: string;
-    lastName: string;
-    roles: IRole[];
-  };
-  company: {
-    id: string;
-    tenantId: string;
-  };
+  userName: string;
+  roles: IRole[];
+  companyId: string;
+  tenantId: string;
+  companyName: string;
+  logo?: string | null | undefined;
 }
 
 export class IAuthenticationHandler {
@@ -19,15 +16,12 @@ export class IAuthenticationHandler {
     return {
       token: '',
       type: 'OWNER',
-      user: {
-        firstName: '',
-        lastName: '',
-        roles: [],
-      },
-      company: {
-        id: '',
-        tenantId: '',
-      }
+      userName: '',
+      roles: [],
+      companyId: '',
+      tenantId: '',
+      companyName: '',
+      logo: null,
     }
   }
 }

@@ -29,16 +29,19 @@ import {
   Toggle,
 } from "rsuite";
 import { useStore } from "zustand";
-import { useAuthStore, useCompanyStore, useProductStore } from "@/stores";
+import {
+  useAuthStore,
+  useCompanyStore,
+  useProductStore,
+  useToasterStore,
+} from "@/stores";
 
 import { EProductType } from "@/enums";
-import { FormMeasures } from "./Measures";
 import React from "react";
 import { Currency } from "@/components/Shared/Inputs/Currency";
 import { Attributes } from "./Attributes";
 import { useRouter } from "next/router";
 import { FormOutlined } from "@ant-design/icons";
-import { message } from "antd";
 import { FormModal } from "@/components/Shared/Modals";
 
 interface ProductFormProps {
@@ -51,6 +54,7 @@ export function ProductForm(props: ProductFormProps) {
   const authStore = useStore(useAuthStore);
   const productStore = useStore(useProductStore);
   const companyStore = useStore(useCompanyStore);
+  const toasterStore = useStore(useToasterStore);
   const [company, setCompany] = useState<ICompany>(ICompanyHandler.empty());
   const [processing, setProcessing] = useState<boolean>(false);
   const formRef = useRef<any>();
@@ -87,7 +91,7 @@ export function ProductForm(props: ProductFormProps) {
       companyStore
         .get(companyId)
         .then(setCompany)
-        .catch((e) => message.error(e))
+        .catch((e) => toasterStore.error(e))
         .finally(() => setProcessing(false));
     },
     [companyStore]
@@ -100,15 +104,15 @@ export function ProductForm(props: ProductFormProps) {
       productStore
         .get(id)
         .then(handleChangeProduct)
-        .catch((e) => message.error(e))
+        .catch((e) => toasterStore.error(e))
         .finally(() => setProcessing(false));
     },
     [productStore]
   );
 
   useEffect(() => {
-    loadCompany(authStore.auth.company.id);
-  }, [loadCompany, authStore.auth.company.id]);
+    loadCompany(authStore.companyId);
+  }, [loadCompany, authStore.companyId]);
 
   useEffect(() => {
     productId && loadProduct(productId);
@@ -142,14 +146,6 @@ export function ProductForm(props: ProductFormProps) {
     return result;
   }
 
-  function handleChangeMeasure(measure: IMeasure): void {
-    const measures = [...product.measures];
-    const index = measures.findIndex((m) => m.id === measure.id);
-    measures[index] = measure;
-
-    handleChangeProduct({ ...product, measures });
-  }
-
   function handleSubmit(): void {
     if (!formRef.current.check()) {
       return;
@@ -160,10 +156,10 @@ export function ProductForm(props: ProductFormProps) {
     productStore
       .upsert(product)
       .then(() => {
-        message.success("Produto salvo com sucesso.");
+        toasterStore.success("Produto salvo com sucesso.");
         router.replace("/products");
       })
-      .catch((e) => message.error(e))
+      .catch((e) => toasterStore.error(e))
       .finally(() => setProcessing(false));
   }
 
@@ -185,7 +181,7 @@ export function ProductForm(props: ProductFormProps) {
       />
       <PanelBase title="Informações gerais">
         <InputBase
-          label="Nome"
+          label="Nome (obrigatório)"
           value={product.label}
           error={formError.label}
           onChange={(val) => handleChangeProductKey("label", val)}
@@ -194,8 +190,10 @@ export function ProductForm(props: ProductFormProps) {
           label={`Descrição (${product.description?.length}/${2024})`}
           value={product.description || ""}
           error={formError.description}
-          options={{ as: 'textarea', rows:5 }}
-          onChange={(value) => handleChangeProductKey("description", value.substring(0, 2024))}
+          options={{ as: "textarea", rows: 5 }}
+          onChange={(value) =>
+            handleChangeProductKey("description", value.substring(0, 2024))
+          }
         />
       </PanelBase>
       <PanelBase title="Imagens">
@@ -228,7 +226,7 @@ export function ProductForm(props: ProductFormProps) {
           <FlexboxGrid justify="space-between">
             <Col xs={24} sm={24} md={12} lg={12} xl={11}>
               <Currency
-                label="Preço"
+                label="Preço (obrigatório)"
                 cents={product.price}
                 placeholder="R$ 100,00"
                 error={formError.price}
@@ -281,7 +279,7 @@ export function ProductForm(props: ProductFormProps) {
         </Stack>
         {!product.unlimited && (
           <InputNumber
-            label="Quantidade"
+            label="Quantidade (obrigatório)"
             value={product.quantity || ""}
             error={formError.quantity}
             onChange={(value) => handleChangeProductKey("quantity", value)}
@@ -309,10 +307,36 @@ export function ProductForm(props: ProductFormProps) {
         </FlexboxGrid>
       </PanelBase>
       <PanelBase title="Medidas do produto">
-        <FormMeasures
-          measures={product.measures}
-          onChange={(m) => handleChangeMeasure(m)}
-        />
+        <FlexboxGrid justify="space-between">
+          <Col xs={24} sm={24} md={11} lg={11} xl={11}>
+            <InputBase
+              label="Largura"
+              value={product.width}
+              onChange={(val) => handleChangeProductKey("width", val || '')}
+            />
+          </Col>
+          <Col xs={24} sm={24} md={11} lg={11} xl={11}>
+            <InputBase
+              label="Altura"
+              value={product.height}
+              onChange={(val) => handleChangeProductKey("height", val || '')}
+            />
+          </Col>
+          <Col xs={24} sm={24} md={11} lg={11} xl={11}>
+            <InputBase
+              label="Comprimento"
+              value={product.length}
+              onChange={(val) => handleChangeProductKey("length", val || '')}
+            />
+          </Col>
+          <Col xs={24} sm={24} md={11} lg={11} xl={11}>
+            <InputBase
+              label="Peso"
+              value={product.weight}
+              onChange={(val) => handleChangeProductKey("weight", val || '')}
+            />
+          </Col>
+        </FlexboxGrid>
       </PanelBase>
       <PanelBase title="Categorias">
         <TagPicker

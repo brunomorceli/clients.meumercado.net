@@ -1,5 +1,5 @@
 import { InputBase, TitleBase } from "@/components";
-import { useAuthStore } from "@/stores";
+import { useAuthStore, useToasterStore } from "@/stores";
 import { message } from "antd";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
@@ -16,6 +16,7 @@ const model = Schema.Model({
 export default function SigninPage() {
   const router = useRouter();
   const authStore = useStore(useAuthStore);
+  const toasterStore = useStore(useToasterStore);
   const formRef = useRef<any>();
   const [formError, setFormError] = useState<any>({});
   const [formData, setFormData] = useState<any>({ email: "" });
@@ -35,7 +36,7 @@ export default function SigninPage() {
 
         router.replace(`/confirm/${res.authId}`);
       })
-      .catch((e) => message.error(e));
+      .catch((e) => toasterStore.error(e));
   }
 
   return (

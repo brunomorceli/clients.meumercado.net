@@ -1,6 +1,6 @@
 import { useStore } from "zustand";
 import { CompanyForm } from ".";
-import { useAuthStore, useCompanyStore } from "@/stores";
+import { useAuthStore, useCompanyStore, useToasterStore } from "@/stores";
 import { useEffect, useState } from "react";
 import { ICompany, ICompanyHandler } from "@/interfaces";
 import { TitleBase } from "..";
@@ -9,15 +9,16 @@ import { message } from "antd";
 
 export function Companies() {
   const router = useRouter();
+  const toasterStore = useStore(useToasterStore);
   const authStore = useStore(useAuthStore);
   const companyStore = useStore(useCompanyStore);
   const [company, setCompany] = useState<ICompany>(ICompanyHandler.empty());
 
   useEffect(() => {
     companyStore
-      .get(authStore.auth.company.id)
+      .get(authStore.companyId)
       .then((c) => setCompany(c))
-      .catch((e) => message.error(e));
+      .catch((e) => toasterStore.error(e));
   }, []);
 
   function handleSave(newCompany: ICompany): void {
@@ -25,9 +26,10 @@ export function Companies() {
       .update(newCompany)
       .then((updatedCompany) => {
         setCompany(updatedCompany);
-        message.success('Empresa atualizada com sucesso.');
+        authStore.updateCompany(updatedCompany);
+        toasterStore.success('Empresa atualizada com sucesso.');
       })
-      .catch(message.error);
+      .catch(toasterStore.error);
   }
 
   return (

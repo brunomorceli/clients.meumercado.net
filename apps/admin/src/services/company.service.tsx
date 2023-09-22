@@ -23,7 +23,6 @@ class CompanyServiceClass {
       const companyIdParam = companyId ? `&companyId=${companyId}` : '';
       const url = `${this.baseURL}/companies/check-tenantId?tenantId=${tenantId}${companyIdParam}`;
 
-      console.log(url)
       axios
         .get(url)
         .then((res) => resolve(res.data.available))

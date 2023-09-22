@@ -23,7 +23,7 @@ export function CompanyListItem(props: CompanyListItemProps) {
       icon: <ExclamationCircleOutlined />,
       content: (
         <Typography>
-          Deseja realmente remover <b>{company.label}</b>?
+          Deseja realmente remover <b>{company.name}</b>?
         </Typography>
       ),
       okText: "Remover",
@@ -37,7 +37,7 @@ export function CompanyListItem(props: CompanyListItemProps) {
       style={{ margin: 5 }}
       cover={
         <img
-          alt={company.label}
+          alt={company.name}
           src={company.logo || "images/no-image.png"}
           onClick={() => onDetails(company)}
           style={{cursor: 'pointer'}}
@@ -53,7 +53,7 @@ export function CompanyListItem(props: CompanyListItemProps) {
       ]}
     >
       <Typography.Title level={5}>
-        {company.label.toUpperCase()}
+        {company.name.toUpperCase()}
       </Typography.Title>
     </Card>
   );

@@ -1,18 +1,9 @@
 import { InputBase, TitleBase } from "@/components";
 import { ISignup, ISignupHandler } from "@/interfaces";
-import { useAuthStore } from "@/stores";
-import { message } from "antd";
+import { useAuthStore, useToasterStore } from "@/stores";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
-import {
-  Container,
-  Schema,
-  Form,
-  ButtonToolbar,
-  Button,
-  Panel,
-  FlexboxGrid,
-} from "rsuite";
+import { Container, Schema, Form, Button, Panel, FlexboxGrid } from "rsuite";
 import { useStore } from "zustand";
 
 const { StringType } = Schema.Types;
@@ -45,6 +36,7 @@ function TextField(props: any) {
 export default function Entrar() {
   const router = useRouter();
   const authStore = useStore(useAuthStore);
+  const toasterStore = useStore(useToasterStore);
   const formRef = useRef<any>();
   const [formError, setFormError] = useState<any>({});
   const [formValue, setFormValue] = useState<ISignup>(ISignupHandler.empty());
@@ -57,10 +49,10 @@ export default function Entrar() {
     authStore
       .signup(formValue)
       .then(() => {
-        message.success("Conta cadastrada com sucesso.");
+        toasterStore.success("Conta cadastrada com sucesso.");
         router.replace("/sigin");
       })
-      .catch((e) => message.error(e));
+      .catch((e) => toasterStore.error(e));
   }
 
   return (
@@ -75,7 +67,7 @@ export default function Entrar() {
         onError={setFormError}
         onSubmit={handleSubmit}
       >
-        <Panel bordered style={{ backgroundColor: 'white' }}>
+        <Panel bordered style={{ backgroundColor: "white" }}>
           <InputBase
             label="Email"
             value={formValue.email}
@@ -103,8 +95,8 @@ export default function Entrar() {
             error={formError.label}
             onChange={(label) => setFormValue({ ...formValue, label })}
           />
-          <FlexboxGrid justify="space-between" style={{marginTop: 20}}>
-            <Button appearance="link" onClick={() => router.replace('/signin')}>
+          <FlexboxGrid justify="space-between" style={{ marginTop: 20 }}>
+            <Button appearance="link" onClick={() => router.replace("/signin")}>
               Entrar
             </Button>
             <Button appearance="primary" onClick={handleSubmit}>

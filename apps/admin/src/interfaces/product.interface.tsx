@@ -16,7 +16,10 @@ export interface IProduct {
   unlimited: boolean;
   quantity: number;
   categories: string[];
-  measures: IMeasure[];
+  width: string;
+  height: string;
+  length: string;
+  weight: string;
   attributes: IAttribute[];
   type: EProductType;
 }
@@ -33,7 +36,10 @@ export class IProductHandler {
       unlimited: false,
       quantity: 1,
       categories: [],
-      measures: IMeasureHandler.getProductDefault(),
+      width: '',
+      height: '',
+      length: '',
+      weight: '',
       attributes: [],
       type: EProductType.PHYSIC,
     };

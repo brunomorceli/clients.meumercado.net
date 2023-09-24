@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { ICompany, ICompanyHandler } from "@/interfaces";
 import { TitleBase } from "..";
 import { useRouter } from "next/router";
-import { message } from "antd";
 
 export function Companies() {
   const router = useRouter();

@@ -1,3 +1,5 @@
+'use client';
+
 import { AuthGuard, Categories, TitleBase } from "@/components";
 
 export default function Home() {

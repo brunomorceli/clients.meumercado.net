@@ -1,9 +1,9 @@
 "use client";
 
-export function Button(): JSX.Element {
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export function Button() {
   return (
-    // eslint-disable-next-line no-alert
-    <button onClick={(): void => alert("booped")} type="button">
+    <button type="button">
       Boop
     </button>
   );

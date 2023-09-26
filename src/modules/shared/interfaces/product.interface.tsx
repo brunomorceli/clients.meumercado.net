@@ -1,5 +1,5 @@
 import { EProductType } from "@shared/enums";
-import { IAttribute, IMeasure, IMeasureHandler } from ".";
+import { IAttribute } from ".";
 
 export interface IProduct {
   id?: string;

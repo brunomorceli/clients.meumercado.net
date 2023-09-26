@@ -22,8 +22,8 @@
       "@shared/*": ["./src/modules/shared/*"],
       "@admins": ["./src/modules/admins"],
       "@admins/*": ["./src/modules/admins/*"],
-      "@clients": ["./src/modules/client"],
-      "@clients/*": ["./src/modules/client/*"],
+      "@customers": ["./src/modules/customers"],
+      "@customers/*": ["./src/modules/customers/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

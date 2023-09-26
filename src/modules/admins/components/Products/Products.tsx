@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IProduct, IProductSearch } from "@shared/interfaces";
 import { useStore } from "zustand";
-import { useProductStore } from "@shared/stores/product.store";
+import { useProductStore } from "@admins/stores/product.store";
 import { PanelBase, Search, TitleBase } from "@shared/components";
 import { ProductList } from "./List";
 import { useRouter } from "next/router";
@@ -19,12 +19,7 @@ export function Products() {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [processing, setProcessing] = useState<boolean>(false);
   const [searching, setSearching] = useState<boolean>(false);
-
-  useEffect(() => {
-    handleSearch();
-  }, []);
-
-  function handleSearch(search: IProductSearch = {}): void {
+  const searchProducts = useCallback((search: IProductSearch = {}) => {
     setSearching(true);
 
     productStore
@@ -34,7 +29,15 @@ export function Products() {
         setTotal(result.total);
       })
       .catch((e) => toasterStore.error(e))
-      .finally(() => setSearching(false));
+      .finally(() => setSearching(false));    
+  }, [productStore, toasterStore]);
+
+  useEffect(() => {
+    searchProducts();
+  }, [searchProducts]);
+
+  function handleSearch(search: IProductSearch = {}): void {
+    searchProducts(search);
   }
 
   function handleRemove(product: IProduct): void {

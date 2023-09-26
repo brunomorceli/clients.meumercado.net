@@ -1,6 +1,7 @@
 import { useStore } from "zustand";
 import { CompanyForm } from ".";
-import { useAuthStore, useCompanyStore, useToasterStore } from "@shared/stores";
+import { useAuthStore, useToasterStore } from "@shared/stores";
+import { useCompanyStore } from "@admins/stores";
 import { useEffect, useState } from "react";
 import { ICompany, ICompanyHandler } from "@shared/interfaces";
 import { TitleBase } from "@shared/components";
@@ -18,7 +19,7 @@ export function Companies() {
       .get(authStore.companyId)
       .then((c) => setCompany(c))
       .catch((e) => toasterStore.error(e));
-  }, []);
+  }, [toasterStore, companyStore, authStore.companyId]);
 
   function handleSave(newCompany: ICompany): void {
     companyStore

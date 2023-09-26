@@ -1,6 +1,6 @@
 import { IProduct, IProductSearchResult } from "@shared/interfaces";
 import { IProductSearch } from "@shared/interfaces/product-search.interface";
-import { ProductService } from "@shared/services";
+import { ProductService } from "@admins/services";
 import { create } from "zustand";
 
 interface useProductStoreProps {

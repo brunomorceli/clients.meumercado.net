@@ -55,19 +55,13 @@ export function DrawerComp() {
           </Typography.Title>
         </DrawerListItem>
 
-        <DrawerListItem onClick={() => handleGoTo('/admins/clients')}>
+        <DrawerListItem onClick={() => handleGoTo('/admins/customers')}>
           <Typography.Title level={4}>
             <TeamOutlined /> Clientes
           </Typography.Title>
         </DrawerListItem>
 
-        <DrawerListItem onClick={() => handleGoTo('/admins/categories')}>
-          <Typography.Title level={4}>
-            <TagsOutlined /> Categorias
-          </Typography.Title>
-        </DrawerListItem>
-
-        <DrawerListItem onClick={() => handleGoTo('/admins/employees')}>
+        <DrawerListItem onClick={() => handleGoTo('/admins/members')}>
           <Typography.Title level={4}>
             <IdcardOutlined /> Colaboradores
           </Typography.Title>

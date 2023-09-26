@@ -1,24 +1,11 @@
-import { ISignup, IConfirm, IAuthentication } from "@shared/interfaces";
-import { ISigninResponse } from "@shared/interfaces/signin-response.interface";
+import { ISignup, IConfirm, IAuthentication } from "@admins/interfaces";
+import { ISigninResponse } from "@admins/interfaces/signin-response.interface";
 import axios from "axios";
 
-class AuthServiceClass {
-  static instance: AuthServiceClass;
-  baseURL: string;
-  
-  private constructor() {
-    this.baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-  }
+export class AuthService {
+  private static baseURL: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
-  public static getInstance(): AuthServiceClass {
-    if (!this.instance) {
-      this.instance = new AuthServiceClass();
-    }
-
-    return this.instance;
-  }
-
-  signin(email: string): Promise<ISigninResponse | null> {
+  static signin(email: string): Promise<ISigninResponse | null> {
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/users/signin`;
       axios
@@ -28,7 +15,7 @@ class AuthServiceClass {
     });
   }
 
-  signup(data: ISignup): Promise<void> {
+  static signup(data: ISignup): Promise<void> {
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/users/signup`;
       axios
@@ -38,7 +25,7 @@ class AuthServiceClass {
     });
   }
   
-  confirm(data: IConfirm): Promise<IAuthentication> {
+  static confirm(data: IConfirm): Promise<IAuthentication> {
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/users/confirm`;
       axios
@@ -48,5 +35,3 @@ class AuthServiceClass {
     });
   }
 }
-
-export const AuthService = AuthServiceClass.getInstance();

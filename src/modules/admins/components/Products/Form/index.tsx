@@ -28,13 +28,8 @@ import {
   Toggle,
 } from "rsuite";
 import { useStore } from "zustand";
-import {
-  useAuthStore,
-  useCompanyStore,
-  useProductStore,
-  useToasterStore,
-} from "@shared/stores";
-
+import { useAuthStore, useToasterStore } from "@shared/stores";
+import { useCompanyStore, useProductStore } from "@admins/stores";
 import { EProductType } from "@shared/enums";
 import React from "react";
 import { Attributes } from "./Attributes";

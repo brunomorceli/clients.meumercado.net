@@ -2,22 +2,10 @@ import { IProduct, IProductSearch, IProductSearchResult } from "@shared/interfac
 import { GeneralUtils } from "@shared/utils";
 import axios from "axios";
 
-class ProductServiceClass {
-  static instance: ProductServiceClass;
-  baseURL: string;
-  
-  private constructor() {
-    this.baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-  }
+export class ProductService {
+  private static baseURL: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
-  public static getInstance(): ProductServiceClass {
-    if (!this.instance) {
-      this.instance = new ProductServiceClass();
-    }
-
-    return this.instance;
-  }
-  upsert(product: IProduct): Promise<IProduct> {
+  static upsert(product: IProduct): Promise<IProduct> {
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/products`;
       axios[product.id ? 'patch' : 'post'](url, product)
@@ -26,7 +14,7 @@ class ProductServiceClass {
     });
   }
   
-  find(data: IProductSearch): Promise<IProductSearchResult> {
+  static find(data: IProductSearch): Promise<IProductSearchResult> {
     const params = new URLSearchParams(data as any).toString();
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/products/find?${params}`;
@@ -37,7 +25,7 @@ class ProductServiceClass {
     });
   }
   
-  get(id: string): Promise<IProduct> {
+  static get(id: string): Promise<IProduct> {
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/products/${id}/get`;
       axios
@@ -46,7 +34,8 @@ class ProductServiceClass {
         .catch((e) => reject(GeneralUtils.getErrorMessage(e, 'Erro ao tentar carregar produto.')));
     });
   }
-  remove(id: string): Promise<void> {
+
+  static remove(id: string): Promise<void> {
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/products/${id}`;
       axios
@@ -56,5 +45,3 @@ class ProductServiceClass {
     });
   }
 }
-
-export const ProductService = ProductServiceClass.getInstance();

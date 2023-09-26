@@ -2,17 +2,10 @@ import { IFindAddressResult } from "@shared/interfaces/find-address-result.inter
 import { GeneralUtils } from "@shared/utils";
 import axios from "axios";
 
-class ExternalApiServiceClass {
-  static instance: ExternalApiServiceClass;
+export class ExternalApiService {
+  private static baseURL: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
-  public static getInstance(): ExternalApiServiceClass {
-    if (!this.instance) {
-      this.instance = new ExternalApiServiceClass();
-    }
-
-    return this.instance;
-  }
-  findAddress(cep: string): Promise<IFindAddressResult> {
+  static findAddress(cep: string): Promise<IFindAddressResult> {
     return new Promise((resolve, reject) => {
       const cleanCep = cep.trim().replace(/[^a-z0-9]/gi, "");
       const url = `https://viacep.com.br/ws/${cleanCep}/json`;
@@ -44,5 +37,3 @@ class ExternalApiServiceClass {
     });
   }
 }
-
-export const ExternalApiService = ExternalApiServiceClass.getInstance();

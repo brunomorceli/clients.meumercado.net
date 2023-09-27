@@ -1,4 +1,4 @@
-import { IConfirm } from "@shared/interfaces";
+import { IConfirm } from "@admins/interfaces";
 import { useAuthStore, useToasterStore } from "@shared/stores";
 import { useState } from "react";
 import { useStore } from "zustand";
@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 
 interface ConfirmProps {
   authId: string;
-  onCancel?: () => void;
 }
 
 export function Confirm(props: ConfirmProps) {
@@ -21,14 +20,11 @@ export function Confirm(props: ConfirmProps) {
 
     authStore
       .confirm(data)
-      .then(() => {
-        toasterStore.success('Bem-vindo(a).');
-        router.replace('/admins');
-      })
+      .then(() => toasterStore.success('Bem-vindo(a).'))
       .catch((e) => toasterStore.error(e))
       .finally(() => setProcessing(false));
 
   }
 
-  return <ConfirmForm authId={props.authId} onSubmit={handleConfirm} onCancel={props.onCancel} />
+  return <ConfirmForm authId={props.authId} onSubmit={handleConfirm} onCancel={() => router.replace('/admins/signin')} />
 }

@@ -1,4 +1,4 @@
-import { GeneralUtils } from "@root/modules/shared";
+import { GeneralUtils, PublicGuard } from "@root/modules/shared";
 import { useRouter } from "next/router";
 import { Button, Divider } from "rsuite";
 
@@ -16,7 +16,7 @@ export default function ProductsPage() {
   }
 
   return (
-    <>
+    <PublicGuard>
       <Button
         appearance="primary"
         onClick={() => router.replace('/admins')}
@@ -25,6 +25,6 @@ export default function ProductsPage() {
       </Button>
       <Divider />
       <h5>Landingpage</h5>
-    </>
+    </PublicGuard>
   );
 }

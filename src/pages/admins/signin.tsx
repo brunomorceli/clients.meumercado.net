@@ -1,4 +1,4 @@
-import { InputBase, TitleBase } from "@shared/components";
+import { InputText, PublicGuard, TitleBase } from "@shared/components";
 import { useAuthStore, useToasterStore } from "@shared/stores";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
@@ -29,6 +29,10 @@ export default function SigninPage() {
       .signin(formData.email)
       .then((res) => {
         if (!res) {
+          toasterStore.info(
+            "Parece que não há nenhuma conta criada com esse email, vamos criar uma nova conta?",
+            { duration: 6000 }
+          );
           router.replace("/admins/signup");
           return;
         }
@@ -39,7 +43,7 @@ export default function SigninPage() {
   }
 
   return (
-    <>
+    <PublicGuard>
       <TitleBase title="Nearstore - Entrar" />
       <Form
         ref={formRef}
@@ -51,14 +55,17 @@ export default function SigninPage() {
         onSubmit={handleSubmit}
       >
         <Panel bordered style={{ backgroundColor: "white" }}>
-          <InputBase
+          <InputText
             label="Email"
             value={formData.email}
             error={formError.email}
             onChange={(email) => setFormData({ email })}
           />
           <FlexboxGrid justify="space-between">
-            <Button appearance="link" onClick={() => router.replace("/admins/signup")}>
+            <Button
+              appearance="link"
+              onClick={() => router.replace("/admins/signup")}
+            >
               Criar Conta
             </Button>
             <Button appearance="primary" onClick={handleSubmit}>
@@ -67,6 +74,6 @@ export default function SigninPage() {
           </FlexboxGrid>
         </Panel>
       </Form>
-    </>
+    </PublicGuard>
   );
 }

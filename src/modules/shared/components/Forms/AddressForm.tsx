@@ -1,5 +1,5 @@
 import { Col, FlexboxGrid, Schema } from "rsuite";
-import { BrazilianState, Cep, InputBase, InputNumber, TrashButton } from "..";
+import { BrazilianState, Cep, InputText, InputNumber, TrashButton } from "..";
 import {
   IFindAddressResult,
   IFindAddressResultHandler,
@@ -61,7 +61,7 @@ export function AddressForm(props: AddressFormProps) {
       {validated && (
         <FlexboxGrid justify="space-between">
           <Col xs={24} sm={24} md={20} lg={20} xl={20}>
-            <InputBase
+            <InputText
               label="Logradouro"
               value={data.address}
               options={{ disabled: true }}
@@ -78,7 +78,7 @@ export function AddressForm(props: AddressFormProps) {
             />
           </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-            <InputBase
+            <InputText
               label="Bairro"
               value={data.neighborhood}
               options={{ disabled: true }}
@@ -87,7 +87,7 @@ export function AddressForm(props: AddressFormProps) {
             />
           </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-            <InputBase
+            <InputText
               label="Complemento"
               value={data.addressComplement}
               onChange={(val) => handleChangeKey("addressComplement", val)}
@@ -95,7 +95,7 @@ export function AddressForm(props: AddressFormProps) {
             />
           </Col>
           <Col xs={24} sm={24} md={16} lg={16} xl={16}>
-            <InputBase
+            <InputText
               label="Cidade"
               value={data.city}
               options={{ disabled: true }}

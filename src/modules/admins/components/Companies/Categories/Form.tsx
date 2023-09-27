@@ -5,7 +5,7 @@ import PlusIcon from "@rsuite/icons/Plus";
 import EditIcon from "@rsuite/icons/Edit";
 import TrashIcon from "@rsuite/icons/Trash";
 import { ItemDataType } from "rsuite/esm/@types/common";
-import { InputBase, PanelBase } from "@shared/components";
+import { InputText, PanelBase } from "@shared/components";
 import MoreIcon from '@rsuite/icons/More';
 import { ConfirmModal, FormModal } from "@shared/components";
 
@@ -192,7 +192,7 @@ export function CategoryForm(props: CategoryFormProps) {
             : handleAddItem(categoryForm as CustomItemDataType)
         }
       >
-        <InputBase
+        <InputText
           label="Nome"
           value={categoryForm?.label as string}
           onChange={(label) => setCategoryForm({ ...categoryForm || {}, label })}

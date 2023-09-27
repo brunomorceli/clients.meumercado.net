@@ -4,7 +4,7 @@ import {
   AddressForm,
   AddressFormSchema,
   ImageGalery,
-  InputBase,
+  InputText,
   PanelBase,
   PhoneNumber,
   SaveButton,
@@ -73,7 +73,7 @@ export function CompanyForm(props: CompanyFormProps) {
       onSubmit={handleSubmit}
     >
       <PanelBase title="Dados da empresa">
-        <InputBase
+        <InputText
           label="Nome (obrigatório)"
           value={company.name || ""}
           onChange={(val) => handleChangeCompanyKey("name", val)}
@@ -100,7 +100,7 @@ export function CompanyForm(props: CompanyFormProps) {
             disableAdd={Boolean(company.logo)}
           />
         </Row>
-        <InputBase
+        <InputText
           label={`Descrição (${company.description?.length || 0}/${2024})`}
           value={company.description || ""}
           error={formError.description}
@@ -117,7 +117,7 @@ export function CompanyForm(props: CompanyFormProps) {
         />
       </PanelBase>
       <PanelBase title="Contato">
-        <InputBase
+        <InputText
           label="Email"
           value={company.email || ""}
           onChange={(val) => handleChangeCompanyKey("email", val)}
@@ -128,7 +128,7 @@ export function CompanyForm(props: CompanyFormProps) {
           error={formError.phoneNumber}
           onChange={(val) => handleChangeCompanyKey("phoneNumber", val)}
         />
-        <InputBase
+        <InputText
           label="Responsável"
           value={company.responsible || ""}
           onChange={(val) => handleChangeCompanyKey("responsible", val)}

@@ -9,7 +9,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ImageGalery,
-  InputBase,
+  InputText,
   InputNumber,
   PanelBase,
   SaveButton,
@@ -174,13 +174,13 @@ export function ProductForm(props: ProductFormProps) {
         onBack={() => router.replace("/admins/products")}
       />
       <PanelBase title="Informações gerais">
-        <InputBase
+        <InputText
           label="Nome (obrigatório)"
           value={product.label}
           error={formError.label}
           onChange={(val) => handleChangeProductKey("label", val)}
         />
-        <InputBase
+        <InputText
           label={`Descrição (${product.description?.length}/${2024})`}
           value={product.description || ""}
           error={formError.description}
@@ -283,7 +283,7 @@ export function ProductForm(props: ProductFormProps) {
       <PanelBase title="Identificação">
         <FlexboxGrid justify="space-between">
           <Col xs={24} sm={24} md={12} lg={12} xl={11}>
-            <InputBase
+            <InputText
               label="Código de barras"
               value={product.barcode}
               error={formError.barcode}
@@ -291,7 +291,7 @@ export function ProductForm(props: ProductFormProps) {
             />
           </Col>
           <Col xs={24} sm={24} md={12} lg={12} xl={11}>
-            <InputBase
+            <InputText
               label="SKU"
               value={product.sku}
               error={formError.sku}
@@ -303,28 +303,28 @@ export function ProductForm(props: ProductFormProps) {
       <PanelBase title="Medidas do produto">
         <FlexboxGrid justify="space-between">
           <Col xs={24} sm={24} md={11} lg={11} xl={11}>
-            <InputBase
+            <InputText
               label="Largura"
               value={product.width}
               onChange={(val) => handleChangeProductKey("width", val || "")}
             />
           </Col>
           <Col xs={24} sm={24} md={11} lg={11} xl={11}>
-            <InputBase
+            <InputText
               label="Altura"
               value={product.height}
               onChange={(val) => handleChangeProductKey("height", val || "")}
             />
           </Col>
           <Col xs={24} sm={24} md={11} lg={11} xl={11}>
-            <InputBase
+            <InputText
               label="Comprimento"
               value={product.length}
               onChange={(val) => handleChangeProductKey("length", val || "")}
             />
           </Col>
           <Col xs={24} sm={24} md={11} lg={11} xl={11}>
-            <InputBase
+            <InputText
               label="Peso"
               value={product.weight}
               onChange={(val) => handleChangeProductKey("weight", val || "")}

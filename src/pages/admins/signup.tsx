@@ -1,5 +1,5 @@
-import { InputBase, TitleBase } from "@shared/components";
-import { ISignup, ISignupHandler } from "@shared/interfaces";
+import { InputText, PublicGuard, TitleBase } from "@shared/components";
+import { ISignup, ISignupHandler } from "@admins/interfaces";
 import { useAuthStore, useToasterStore } from "@shared/stores";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
@@ -11,27 +11,13 @@ const model = Schema.Model({
   email: StringType()
     .isEmail("Por favor, informe um e-mail válido.")
     .isRequired("Este campo é obrigatório."),
-  label: StringType()
+  userName: StringType()
     .minLength(3, "Informe pelo menos 3 caracteres.")
     .isRequired("Este campo é obrigatório."),
-  firstName: StringType()
-    .minLength(3, "Informe pelo menos 3 caracteres.")
-    .isRequired("Este campo é obrigatório."),
-  lastName: StringType()
+  companyName: StringType()
     .minLength(3, "Informe pelo menos 3 caracteres.")
     .isRequired("Este campo é obrigatório."),
 });
-
-function TextField(props: any) {
-  const { name, label, accepter, error, ...rest } = props;
-  return (
-    <Form.Group controlId={`${name}-3`}>
-      <Form.ControlLabel>{label} </Form.ControlLabel>
-      <Form.Control name={name} accepter={accepter} {...rest} />
-      <Form.ErrorMessage show={Boolean(error)}>{error}</Form.ErrorMessage>
-    </Form.Group>
-  );
-}
 
 export default function Entrar() {
   const router = useRouter();
@@ -50,61 +36,60 @@ export default function Entrar() {
       .signup(formValue)
       .then(() => {
         toasterStore.success("Conta cadastrada com sucesso.");
-        router.replace("/sigin");
       })
       .catch((e) => toasterStore.error(e));
   }
 
   return (
-    <Container>
-      <TitleBase title="Nearstore - Cadastrar" />
-      <Form
-        ref={formRef}
-        model={model}
-        formValue={formValue}
-        formError={formError}
-        onChange={(e) => setFormValue(e as any)}
-        onError={setFormError}
-        onSubmit={handleSubmit}
-      >
-        <Panel bordered style={{ backgroundColor: "white" }}>
-          <InputBase
-            label="Email"
-            value={formValue.email}
-            error={formError.email}
-            onChange={(email) => setFormValue({ ...formValue, email })}
-          />
+    <PublicGuard>
+      <Container>
+        <TitleBase title="Nearstore - Cadastrar" />
+        <Form
+          ref={formRef}
+          model={model}
+          formValue={formValue}
+          formError={formError}
+          onChange={(e) => setFormValue(e as any)}
+          onError={setFormError}
+          onSubmit={handleSubmit}
+        >
+          <Panel bordered style={{ backgroundColor: "white" }}>
+            <InputText
+              label="Email"
+              value={formValue.email}
+              error={formError.email}
+              onChange={(email) => setFormValue({ ...formValue, email })}
+            />
 
-          <InputBase
-            label="Nome"
-            value={formValue.firstName}
-            error={formError.firstName}
-            onChange={(firstName) => setFormValue({ ...formValue, firstName })}
-          />
+            <InputText
+              label="Nome Completo"
+              value={formValue.userName}
+              error={formError.userName}
+              onChange={(userName) => setFormValue({ ...formValue, userName })}
+            />
 
-          <InputBase
-            label="Sobrenome"
-            value={formValue.lastName}
-            error={formError.lastName}
-            onChange={(lastName) => setFormValue({ ...formValue, lastName })}
-          />
-
-          <InputBase
-            label="Nome da empresa"
-            value={formValue.label}
-            error={formError.label}
-            onChange={(label) => setFormValue({ ...formValue, label })}
-          />
-          <FlexboxGrid justify="space-between" style={{ marginTop: 20 }}>
-            <Button appearance="link" onClick={() => router.replace("/admins/signin")}>
-              Entrar
-            </Button>
-            <Button appearance="primary" onClick={handleSubmit}>
-              Cadastrar
-            </Button>
-          </FlexboxGrid>
-        </Panel>
-      </Form>
-    </Container>
+            <InputText
+              label="Nome da empresa"
+              value={formValue.companyName}
+              error={formError.companyName}
+              onChange={(companyName) =>
+                setFormValue({ ...formValue, companyName })
+              }
+            />
+            <FlexboxGrid justify="space-between" style={{ marginTop: 20 }}>
+              <Button
+                appearance="link"
+                onClick={() => router.replace("/admins/signin")}
+              >
+                Entrar
+              </Button>
+              <Button appearance="primary" onClick={handleSubmit}>
+                Cadastrar
+              </Button>
+            </FlexboxGrid>
+          </Panel>
+        </Form>
+      </Container>
+    </PublicGuard>
   );
 }

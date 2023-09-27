@@ -7,20 +7,42 @@ interface SearchProps {
   placeholder?: string;
   disableEnter?: boolean;
   options?: any;
+  debounce?: number;
   onChange?: (search: string) => void;
-  onSearch: (search: string) => void;
+  onSearch?: (search: string) => void;
 }
 
-export function Search(props: SearchProps) {
+export function InputSearch(props: SearchProps) {
   const [search, setSearch] = useState<string>("");
+  const [debountId, setDebouceId] = useState<any>(0);
+  const {
+    debounce,
+    disableEnter,
+    placeholder,
+    options,
+    loading,
+    onChange,
+    onSearch,
+  } = props;
 
   function handleChange(val: string): void {
     setSearch(val);
-    props.onChange && props.onChange(val);
+
+    if (!onChange) {
+      return;
+    }
+
+    if (!debounce) {
+      onChange(val);
+      return;
+    }
+
+    clearTimeout(debountId);
+    setDebouceId(setTimeout(() => onChange(val), debounce));
   }
 
   function handleKeyDown(event: any) {
-    event.key === "Enter" && !props.disableEnter && props.onSearch(search);
+    event.key === "Enter" && !disableEnter && onSearch && onSearch(search);
     setTimeout(() => event.target.focus(), 100);
   }
 
@@ -28,15 +50,15 @@ export function Search(props: SearchProps) {
     <InputGroup>
       <Input
         size="lg"
-        placeholder={props.placeholder || "Buscar..."}
+        placeholder={placeholder || "Buscar..."}
         value={search}
         onChange={(val) => handleChange(val || "")}
         onKeyDown={handleKeyDown}
-        disabled={props.loading}
-        {...props.options || {}}
+        disabled={loading}
+        {...(options || {})}
       />
       <InputGroup.Addon
-        onClick={() => props.onSearch(search)}
+        onClick={() => onSearch && onSearch(search)}
         style={{ cursor: "pointer" }}
       >
         <SearchIcon />

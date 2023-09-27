@@ -2,10 +2,9 @@ import {
   ISignup,
   IConfirm,
   IAuthenticationHandler,
-  ICompany,
-  IRole,
-} from "@shared/interfaces";
-import { ISigninResponse } from "@shared/interfaces/signin-response.interface";
+  ISigninResponse,
+} from "@admins/interfaces";
+import { ICompany } from "@shared/interfaces";
 import { AuthService } from "@shared/services";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -14,7 +13,6 @@ interface useAuthStoreProps {
   authenticated: boolean;
   token: string;
   userName: string;
-  roles: IRole[];
   companyId: string;
   tenantId: string;
   companyName: string;
@@ -51,7 +49,6 @@ export const useAuthStore = create(
                 authenticated: true,
                 token: auth.token,
                 userName: auth.userName,
-                roles: auth.roles,
                 companyId: auth.companyId,
                 tenantId: auth.tenantId,
                 companyName: auth.companyName,

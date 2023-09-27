@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { IProduct, IProductSearch } from "@shared/interfaces";
 import { useStore } from "zustand";
 import { useProductStore } from "@admins/stores/product.store";
-import { PanelBase, Search, TitleBase } from "@shared/components";
+import { PanelBase, InputSearch, TitleBase } from "@shared/components";
 import { ProductList } from "./List";
 import { useRouter } from "next/router";
 import { Pagination } from "antd";
@@ -67,7 +67,7 @@ export function Products() {
       >
         <FlexboxGrid justify="space-between">
           <FlexboxGrid.Item colspan={24} style={{ marginBottom: 25 }}>
-            <Search
+            <InputSearch
               loading={searching}
               placeholder="Buscar produto"
               onSearch={(label) => handleSearch(label ? { label } : undefined)}

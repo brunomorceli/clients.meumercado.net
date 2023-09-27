@@ -4,8 +4,8 @@ import { IBillingData, IDeliveryData } from ".";
 export interface IUser {
   id?: string;
   companyId?: string;
-  firstName: string;
-  lastName: string;
+  name: string;
+  slug?: string;
   email: string;
   role: ERoleType;
   phoneNumber?: string;
@@ -28,8 +28,7 @@ export interface IUser {
 export class IUserHandler {
   static empty(role?: ERoleType): IUser {
     return {
-      firstName: '',
-      lastName: '',
+      name: '',
       email: '',
       role: role || ERoleType.MEMBER,
       phoneNumber: '',

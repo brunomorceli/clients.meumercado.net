@@ -1,6 +1,5 @@
 export * from './Layout';
 export * from './Buttons';
-export * from './Backdrop';
 export * from './Inputs';
 export * from './Spin';
 export * from './ImageGalery';

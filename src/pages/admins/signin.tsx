@@ -25,6 +25,8 @@ export default function SigninPage() {
       return;
     }
 
+    setFormError({});
+
     authStore
       .signin(formData.email)
       .then((res) => {

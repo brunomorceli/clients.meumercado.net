@@ -35,7 +35,7 @@ import React from "react";
 import { Attributes } from "./Attributes";
 import { useRouter } from "next/router";
 import { FormOutlined } from "@ant-design/icons";
-import { FormModal, Currency } from "@shared/components";
+import { FormModal, InputCurrency } from "@shared/components";
 import { Categories } from "../..";
 
 interface ProductFormProps {
@@ -97,7 +97,7 @@ export function ProductForm(props: ProductFormProps) {
 
       productStore
         .get(id)
-        .then(handleChangeProduct)
+        .then(setProduct)
         .catch((e) => toasterStore.error(e))
         .finally(() => setProcessing(false));
     },
@@ -114,10 +114,6 @@ export function ProductForm(props: ProductFormProps) {
 
   function handleChangeProductKey(key: string, val: any): void {
     setProduct({ ...product, [key]: val });
-  }
-
-  function handleChangeProduct(data: any): void {
-    setProduct(data);
   }
 
   function getFlatCategories(item: any, dst?: any[]) {
@@ -145,6 +141,8 @@ export function ProductForm(props: ProductFormProps) {
       return;
     }
 
+    setFormError({});
+
     setProcessing(true);
 
     productStore
@@ -165,7 +163,7 @@ export function ProductForm(props: ProductFormProps) {
       model={model}
       formValue={product}
       formError={formError}
-      onChange={handleChangeProduct}
+      onChange={(data) => setProduct(data as any)}
       onError={setFormError}
       onSubmit={handleSubmit}
     >
@@ -219,7 +217,7 @@ export function ProductForm(props: ProductFormProps) {
         {product.showPrice && (
           <FlexboxGrid justify="space-between">
             <Col xs={24} sm={24} md={12} lg={12} xl={11}>
-              <Currency
+              <InputCurrency
                 label="Preço (obrigatório)"
                 cents={product.price}
                 placeholder="R$ 100,00"
@@ -228,7 +226,7 @@ export function ProductForm(props: ProductFormProps) {
               />
             </Col>
             <Col xs={24} sm={24} md={12} lg={12} xl={11}>
-              <Currency
+              <InputCurrency
                 label="Preço de desconto"
                 cents={product.discountPrice!}
                 placeholder="R$ 89,99"

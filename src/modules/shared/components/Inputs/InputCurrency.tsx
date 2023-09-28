@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Form, Input } from "rsuite";
 
-interface CurrencyProps {
+interface InputCurrencyProps {
   label: string;
   cents: number;
   placeholder?: string;
@@ -22,7 +22,7 @@ const formatter = new Intl.NumberFormat("pt-br", {
   maximumFractionDigits: 2,
 });
 
-export function Currency(props: CurrencyProps) {
+export function InputCurrency(props: InputCurrencyProps) {
   const [label, setLabel] = useState<string>('');
 
   useEffect(() => {

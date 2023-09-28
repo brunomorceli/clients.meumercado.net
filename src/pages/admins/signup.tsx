@@ -32,6 +32,8 @@ export default function Entrar() {
       return;
     }
 
+    setFormError({});
+
     authStore
       .signup(formValue)
       .then(() => {

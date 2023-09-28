@@ -1,6 +1,5 @@
-import { ButtonGroup, Panel, Stack } from "rsuite";
+import { ButtonGroup, Divider, Panel, Stack } from "rsuite";
 import { ReactNode } from "react";
-import { Divider } from "antd";
 import { PlusButton } from "..";
 
 interface PanelBaseProps {

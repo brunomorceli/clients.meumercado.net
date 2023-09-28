@@ -9,14 +9,14 @@ export interface IFindAddressResult {
 }
 
 export class IFindAddressResultHandler {
-  static empty() {
+  static empty(data: any = {}) {
     return {
-      address: '',
-      neighborhood: '',
-      city: '',
-      state: '',
-      cep: '',
-      addressNumber: '',
+      address: data.address || '',
+      neighborhood: data.neighborhood || '',
+      city: data.city || '',
+      state: data.state || '',
+      cep: data.cep || '',
+      addressNumber: data.addressNumber || '',
     };
   }
 }

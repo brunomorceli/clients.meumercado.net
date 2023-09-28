@@ -1,26 +1,27 @@
-import { Col, FlexboxGrid, Schema } from "rsuite";
-import { BrazilianState, Cep, InputText, InputNumber, TrashButton } from "..";
+import { Col, FlexboxGrid } from "rsuite";
+import {
+  InputBrazilianState,
+  InputCep,
+  InputText,
+  InputNumber,
+  TrashButton,
+  InputCepSchema,
+} from "..";
 import {
   IFindAddressResult,
   IFindAddressResultHandler,
 } from "@shared/interfaces/find-address-result.interface";
 import { useToasterStore } from "@shared/stores";
-import { useStore } from 'zustand';
+import { useStore } from "zustand";
 
 interface AddressFormProps {
-  data: IFindAddressResult;
-  error: IFindAddressResult;
+  data: any;
+  error: any;
   onChange: (data: IFindAddressResult) => void;
 }
 
 export const AddressFormSchema = {
-  cep: Schema.Types.StringType()
-    .isRequired("Este campo é obrigatório.")
-    .minLength(8, "CEP incompleto.")
-    .addRule(
-      (_val, data) => Boolean(data.address && data.address.length > 0),
-      "CEP inválido! Por favor, verifique o número."
-    ),
+  cep: InputCepSchema,
 };
 
 export function AddressForm(props: AddressFormProps) {
@@ -28,12 +29,12 @@ export function AddressForm(props: AddressFormProps) {
   const toasterStore = useStore(useToasterStore);
 
   function handleChangeKey(key: string, val: any): void {
-    onChange({ ...data, [key]: val });
+    onChange({ ...IFindAddressResultHandler.empty(data), [key]: val });
   }
 
   function handleChangeCep(cep: string): void {
     const invalid = cep.length < 8;
-    onChange({ ...(invalid ? IFindAddressResultHandler.empty() : data), cep });
+    onChange({ ...IFindAddressResultHandler.empty(invalid ? {} : data), cep });
   }
 
   function handleSearchCep(address: IFindAddressResult | null): void {
@@ -44,13 +45,13 @@ export function AddressForm(props: AddressFormProps) {
 
     toasterStore.success("CEP válido.");
 
-    onChange({ ...data, ...address });
+    onChange({ ...IFindAddressResultHandler.empty(data), ...address });
   }
 
   const validated = Boolean(data.address && data.address.length !== 0);
   return (
     <>
-      <Cep
+      <InputCep
         label="CEP (obrigatório)"
         value={data.cep}
         error={error.cep}
@@ -73,7 +74,9 @@ export function AddressForm(props: AddressFormProps) {
             <InputNumber
               label="Número"
               value={data.addressNumber}
-              onChange={(val) => handleChangeKey("addressNumber", val ? val.toString(10) : null)}
+              onChange={(val) =>
+                handleChangeKey("addressNumber", val ? val.toString(10) : null)
+              }
               error={error.addressNumber}
             />
           </Col>
@@ -104,7 +107,7 @@ export function AddressForm(props: AddressFormProps) {
             />
           </Col>
           <Col xs={24} sm={24} md={8} lg={8} xl={8}>
-            <BrazilianState
+            <InputBrazilianState
               label="Estado"
               value={data.state}
               options={{ disabled: true }}

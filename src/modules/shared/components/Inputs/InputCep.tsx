@@ -2,11 +2,18 @@ import { useStore } from "zustand";
 import { useExternalApiStore, useToasterStore } from "@shared/stores";
 import { useState } from "react";
 import { IFindAddressResult } from "@shared/interfaces/find-address-result.interface";
-import { message } from "antd";
-import { Form, InputGroup, MaskedInput } from "rsuite";
-import ReloadIcon from '@rsuite/icons/Reload';
+import { Form, InputGroup, MaskedInput, Schema } from "rsuite";
+import ReloadIcon from "@rsuite/icons/Reload";
 
-interface CepProps {
+export const InputCepSchema = Schema.Types.StringType()
+  .isRequired("Este campo é obrigatório.")
+  .minLength(8, "CEP incompleto.")
+  .addRule(
+    (_val, data) => Boolean(data.address && data.address.length > 0),
+    "CEP inválido! Por favor, verifique o número."
+  );
+
+interface InputCepProps {
   value?: string | null | undefined;
   label?: string;
   error?: string;
@@ -16,7 +23,7 @@ interface CepProps {
 }
 
 const cache: any = {};
-export function Cep(props: CepProps) {
+export function InputCep(props: InputCepProps) {
   const externalApiStore = useStore(useExternalApiStore);
   const toasterStore = useStore(useToasterStore);
   const [processing, setProcessing] = useState<boolean>(false);
@@ -44,7 +51,7 @@ export function Cep(props: CepProps) {
   }
 
   function handleChange(val: string): void {
-    const cep = val.replace(/[^0-9]/g, '').trim();
+    const cep = val.replace(/[^0-9]/g, "").trim();
     if (cep.length > 8) {
       return;
     }
@@ -55,20 +62,30 @@ export function Cep(props: CepProps) {
 
   return (
     <Form.Group style={{ width: "100%" }}>
-      <Form.ControlLabel>{props.label || 'CEP'}</Form.ControlLabel>
+      <Form.ControlLabel>{props.label || "CEP"}</Form.ControlLabel>
       <InputGroup>
         <MaskedInput
-          value={props.value || ''}
+          value={props.value || ""}
           disabled={processing || props.disabled}
-          mask={[/[0-9]/,/[0-9]/,/[0-9]/,/[0-9]/,/[0-9]/,'-',/[0-9]/,/[0-9]/,/[0-9]/]}
+          mask={[
+            /[0-9]/,
+            /[0-9]/,
+            /[0-9]/,
+            /[0-9]/,
+            /[0-9]/,
+            "-",
+            /[0-9]/,
+            /[0-9]/,
+            /[0-9]/,
+          ]}
           onChange={(val) => handleChange(val)}
           placeholder="00000-000"
         />
-        {processing &&
+        {processing && (
           <InputGroup.Addon>
             <ReloadIcon spin />
           </InputGroup.Addon>
-        }
+        )}
       </InputGroup>
       <Form.ErrorMessage show={Boolean(props.error)}>
         {props.error}

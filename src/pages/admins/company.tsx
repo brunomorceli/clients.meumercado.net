@@ -1,10 +1,15 @@
 import { AuthGuard } from "@shared/components";
-import { Companies } from "@admins/components";
+import { CompanyForm } from "@admins/components";
+import { useStore } from "zustand";
+import { useAuthStore } from "@root/modules/shared";
 
 export default function CompanyPage() {
+  const authStore = useStore(useAuthStore);
+  const { companyId } = authStore;
+
   return (
     <AuthGuard>
-      <Companies />
+      <CompanyForm companyId={companyId} />
     </AuthGuard>
   )
 }

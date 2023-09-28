@@ -1,4 +1,4 @@
-import { IConfirm } from "@shared/interfaces";
+import { IConfirm } from "@admins/interfaces";
 import { Button, Card, Form, Input, Result, Typography } from "antd";
 import { useEffect, useState } from "react";
 

@@ -1,7 +1,7 @@
 import { EBrazilianStateHandler } from "@shared/enums";
 import { Form, SelectPicker } from "rsuite";
 
-interface BrazilianStateProps {
+interface InputBrazilianStateProps {
   label?: string;
   value?: string;
   error?: string;
@@ -9,7 +9,7 @@ interface BrazilianStateProps {
   onChange?: (val: string) => void;
 }
 
-export function BrazilianState(props: BrazilianStateProps) {
+export function InputBrazilianState(props: InputBrazilianStateProps) {
   return (
     <Form.Group style={{ width: "100%" }}>
       <Form.ControlLabel>{props.label}</Form.ControlLabel>

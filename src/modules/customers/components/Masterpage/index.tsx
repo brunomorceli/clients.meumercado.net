@@ -37,11 +37,7 @@ export function CustomerMasterpage(props: MasterpageProps) {
           isAuth ? authStore.companyName : process.env.NEXT_PUBLIC_APP_NAME
         }
       />
-      <CustomFlexboxGrid justify="center">
-        <Col xs={24} sm={24} md={18} lg={16} xl={16} xxl={12}>
-          {props.children}
-        </Col>
-      </CustomFlexboxGrid>
+      {props.children}
     </>
   );
 }

@@ -6,7 +6,7 @@ import {
   AppBarTitle,
 } from "./styles";
 import { HomeFilled, MenuOutlined } from "@ant-design/icons";
-import { useMasterpageStore } from "@shared/stores";
+import { useMasterpageStore } from "@admins/stores";
 import { Button } from "antd";
 import { useRouter } from "next/router";
 

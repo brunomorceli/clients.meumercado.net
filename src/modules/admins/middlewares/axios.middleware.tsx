@@ -1,6 +1,7 @@
 "use client";
 
-import { useAuthStore, useToasterStore } from "@shared/stores";
+import { useToasterStore } from "@shared/stores";
+import { useAuthStore } from "@admins/stores";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useStore } from "zustand";
@@ -16,7 +17,7 @@ function getFromLocalStorage(key: string): any {
 
 axios.interceptors.request.use(
   (config: any) => {
-    const auth = (getFromLocalStorage("auth-store") || {}).state || {};
+    const auth = (getFromLocalStorage("admins-auth-store") || {}).state || {};
     if (auth && auth.token && auth.token.length !== 0) {
       config.headers["Authorization"] = `Bearer ${auth.token}`;
     }

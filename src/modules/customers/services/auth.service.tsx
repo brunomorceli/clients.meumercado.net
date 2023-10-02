@@ -1,5 +1,5 @@
-import { ISignup, IConfirm, IAuthentication } from "@admins/interfaces";
-import { ISigninResponse } from "@admins/interfaces/signin-response.interface";
+import { ISignup, IConfirm, IAuthentication } from "@customers/interfaces";
+import { ISigninResponse } from "@customers/interfaces/signin-response.interface";
 import axios from "axios";
 
 export class AuthService {
@@ -7,7 +7,7 @@ export class AuthService {
 
   static signin(email: string): Promise<ISigninResponse | null> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/users/signin`;
+      const url = `${this.baseURL}/customers/auth/signin`;
       axios
         .post(url, { email })
         .then((res) => resolve(res.status === 204 ? null : res.data))
@@ -17,7 +17,7 @@ export class AuthService {
 
   static signup(data: ISignup): Promise<void> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/users/signup`;
+      const url = `${this.baseURL}/customers/auth/signup`;
       axios
         .post(url, data)
         .then((res) => resolve(res.data))
@@ -27,7 +27,7 @@ export class AuthService {
   
   static confirm(data: IConfirm): Promise<IAuthentication> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/users/confirm`;
+      const url = `${this.baseURL}/customers/auth/confirm`;
       axios
         .post(url, data)
         .then((response) => resolve(response.data))

@@ -1,16 +1,16 @@
 import { ReactNode } from "react";
 import { AppBar } from "./AppBar";
 import { DrawerComp } from "./Drawer";
-import { MasterpageComp } from "./styles";
 import { useStore } from "zustand";
-import { useAuthStore } from "@shared/stores";
-import { Col, FlexboxGrid } from "rsuite";
+import { useAuthStore } from "@admins/stores";
+
+import '../../middlewares/axios.middleware';
 
 interface MasterpageProps {
   children: ReactNode | null | undefined;
 }
 
-export function Masterpage(props: MasterpageProps) {
+export function AdminMasterpage(props: MasterpageProps) {
   const authStore = useStore(useAuthStore);
   const isAuth = authStore.authenticated;
 

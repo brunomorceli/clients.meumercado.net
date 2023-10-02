@@ -5,7 +5,7 @@ import {
   ISigninResponse,
 } from "@admins/interfaces";
 import { ICompany } from "@shared/interfaces";
-import { AuthService } from "@shared/services";
+import { AuthService } from "@admins/services";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -78,6 +78,6 @@ export const useAuthStore = create(
       },
     }),
 
-    { name: "auth-store" }
+    { name: "admins-auth-store" }
   )
 );

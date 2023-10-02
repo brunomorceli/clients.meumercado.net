@@ -9,3 +9,4 @@ export * from './company-search.interface';
 export * from './company-search-result.interface';
 export * from './select-option.iterface';
 export * from './attribute.interface';
+export * from './orders';

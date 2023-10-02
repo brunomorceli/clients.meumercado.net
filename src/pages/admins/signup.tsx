@@ -1,6 +1,7 @@
 import { InputText, PublicGuard, TitleBase } from "@shared/components";
 import { ISignup, ISignupHandler } from "@admins/interfaces";
-import { useAuthStore, useToasterStore } from "@shared/stores";
+import { useToasterStore } from "@shared/stores";
+import { useAuthStore } from "@admins/stores";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { Container, Schema, Form, Button, Panel, FlexboxGrid } from "rsuite";

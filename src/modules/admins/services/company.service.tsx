@@ -7,7 +7,7 @@ export class CompanyService {
 
   static update(data: ICompany): Promise<ICompany> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/companies`;
+      const url = `${this.baseURL}/admins/companies`;
       axios.patch(url, data)
         .then((res) => resolve(res.data))
         .catch((e) =>
@@ -21,7 +21,7 @@ export class CompanyService {
   static find(data: ICompanySearch): Promise<ICompanySearchResult> {
     const params = new URLSearchParams(data as any).toString();
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/companies/find?${params}`;
+      const url = `${this.baseURL}/admins/companies/find?${params}`;
       axios
         .get(url)
         .then((res) => resolve(res.data))
@@ -35,7 +35,7 @@ export class CompanyService {
 
   static get(id: string): Promise<ICompany> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/companies/${id}/get`;
+      const url = `${this.baseURL}/admins/companies/${id}/get`;
       axios
         .get(url)
         .then((res) => resolve(res.data))

@@ -1,19 +1,17 @@
-import { useAuthStore } from "@shared/stores";
+import { useAuthStore as useAdminUseAuthGuard } from "@admins/stores";
+import { useAuthStore as useCustomerUseAuthGuard } from "@customers/stores";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { useStore } from "zustand";
 import { GeneralUtils } from "..";
 
 export function PublicGuard(props: any) {
   const router = useRouter();
-  const authStore = useStore(useAuthStore);
+  const adminAuthStore = useStore(useAdminUseAuthGuard);
+  const customerAuthStore = useStore(useCustomerUseAuthGuard);
   const subdomain = GeneralUtils.getSubdomain(window.location.href);
+  const isAuth = subdomain ? customerAuthStore.authenticated : adminAuthStore.authenticated;
 
-  useEffect(() => {
-    if (authStore.authenticated) {
-      router.replace(subdomain ? '/' : '/admins');
-    }
-  }, [authStore, router, subdomain]);
+  isAuth && router.replace(Boolean(subdomain) ? '/customers' : '/admins');
   
-  return !authStore.authenticated ? props.children : null;
+  return !isAuth && props.children;
 }

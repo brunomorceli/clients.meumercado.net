@@ -1,5 +1,6 @@
 import { useStore } from "zustand";
-import { useAuthStore, useCompanyStore, useToasterStore } from "@shared/stores";
+import { useToasterStore } from "@shared/stores";
+import { useAuthStore, useCompanyStore } from "@admins/stores";
 import { CategoryForm, CustomItemDataType } from "./Form";
 import { useCallback, useEffect, useState } from "react";
 import { ICompany, ICompanyHandler } from "@shared/interfaces";

@@ -1,4 +1,4 @@
-import { useMasterpageStore, useAuthStore } from "@shared/stores";
+import { useMasterpageStore, useAuthStore } from "@admins/stores";
 import {
   ExclamationCircleOutlined,
   IdcardOutlined,
@@ -6,7 +6,6 @@ import {
   ShopOutlined,
   ShoppingCartOutlined,
   ShoppingOutlined,
-  TagsOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
 import { faDolly, faTruck } from "@fortawesome/free-solid-svg-icons";

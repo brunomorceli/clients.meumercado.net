@@ -14,8 +14,8 @@ import { FlexboxGrid, Form, Row, Schema } from "rsuite";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useStore } from "zustand";
-import { useAuthStore, useToasterStore } from "@shared/stores";
-import { useCompanyStore } from "@admins/stores";
+import { useToasterStore } from "@shared/stores";
+import { useCompanyStore, useAuthStore } from "@admins/stores";
 
 const model = Schema.Model({
   ...AddressFormSchema,

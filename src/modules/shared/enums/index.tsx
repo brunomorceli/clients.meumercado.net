@@ -5,3 +5,6 @@ export * from './brazilian-state.enum';
 export * from './brazilian-state-name.enum';
 export * from './role-type.enum';
 export * from './user-status-type.enum';
+export * from './payment-method.enum';
+export * from './credit-card-type.enum';
+export * from './order-status.enum';

@@ -9,7 +9,7 @@ export class CustomerService {
 
   static create(data: IUser): Promise<IUser> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/companies/users`;
+      const url = `${this.baseURL}/admins/users`;
       axios
         .post(url, data)
         .then((res) => resolve(res.data))
@@ -23,7 +23,7 @@ export class CustomerService {
 
   static update(data: IUser): Promise<IUser> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/companies/users`;
+      const url = `${this.baseURL}/admins/users`;
       axios
         .patch(url, data)
         .then((res) => resolve(res.data))
@@ -40,7 +40,7 @@ export class CustomerService {
     const params = new URLSearchParams(paramsData).toString();
 
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/companies/users/find?${params}&roles=${ERoleType.CUSTOMER}`;
+      const url = `${this.baseURL}/admins/users/find?${params}&roles=${ERoleType.CUSTOMER}`;
       axios
         .get(url)
         .then((res) => resolve(res.data))
@@ -54,7 +54,7 @@ export class CustomerService {
 
   static get(id: string): Promise<IUser> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/companies/users/${id}/get`;
+      const url = `${this.baseURL}/admins/users/${id}/get`;
       axios
         .get(url)
         .then((res) => resolve(res.data))
@@ -68,7 +68,7 @@ export class CustomerService {
 
   static remove(id: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/companies/users/${id}`;
+      const url = `${this.baseURL}/admins/users/${id}`;
       axios
         .delete(url)
         .then(() => resolve())

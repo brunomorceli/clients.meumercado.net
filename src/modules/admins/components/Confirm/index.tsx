@@ -1,5 +1,6 @@
 import { IConfirm } from "@admins/interfaces";
-import { useAuthStore, useToasterStore } from "@shared/stores";
+import { useToasterStore } from "@shared/stores";
+import { useAuthStore } from "@admins/stores";
 import { useState } from "react";
 import { useStore } from "zustand";
 import { ConfirmForm } from "./ConfirmForm";

@@ -7,7 +7,7 @@ export class ProductService {
 
   static upsert(product: IProduct): Promise<IProduct> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/products`;
+      const url = `${this.baseURL}/admins/products`;
       axios[product.id ? 'patch' : 'post'](url, product)
         .then((res) => resolve(res.data))
         .catch((e) => reject(GeneralUtils.getErrorMessage(e, 'Erro ao tentar salvar produto.')));
@@ -17,7 +17,7 @@ export class ProductService {
   static find(data: IProductSearch): Promise<IProductSearchResult> {
     const params = new URLSearchParams(data as any).toString();
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/products/find?${params}`;
+      const url = `${this.baseURL}/admins/products/find?${params}`;
       axios
         .get(url)
         .then((res) => resolve(res.data))
@@ -27,7 +27,7 @@ export class ProductService {
   
   static get(id: string): Promise<IProduct> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/products/${id}/get`;
+      const url = `${this.baseURL}/admins/products/${id}/get`;
       axios
         .get(url)
         .then((res) => resolve(res.data))
@@ -37,7 +37,7 @@ export class ProductService {
 
   static remove(id: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/products/${id}`;
+      const url = `${this.baseURL}/admins/products/${id}`;
       axios
         .delete(url)
         .then(() => resolve())

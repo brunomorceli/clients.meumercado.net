@@ -8,7 +8,7 @@ import { CustomerMasterpage } from "@customers/components";
 import 'rsuite/dist/rsuite.min.css';
 import '../styles/globals.css'
 
-import { Layout, Toaster } from "@shared/components";
+import { Toaster } from "@shared/components";
 import { GeneralUtils } from "@root/modules/shared";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -26,20 +26,16 @@ export default function App({ Component, pageProps }: AppProps) {
   if (subdomain) {
     return (
       <CustomerMasterpage>
-        <Layout>
-          <Component {...pageProps} />
-          <Toaster />
-        </Layout>
+        <Component {...pageProps} />
+        <Toaster />
       </CustomerMasterpage>
     );
   }
 
   return (
     <AdminMasterpage>
-      <Layout>
-        <Component {...pageProps} />
-        <Toaster />
-      </Layout>
+      <Component {...pageProps} />
+      <Toaster />
     </AdminMasterpage>
   );
 }

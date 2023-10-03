@@ -1,5 +1,6 @@
 import { Button, List, Select, Typography } from "antd";
 import { styled } from "styled-components";
+import { FlexboxGrid } from "rsuite";
 
 export const AppBarComp = styled.div`
   width: 100%;
@@ -90,4 +91,8 @@ export const CustomSelect = styled(Select)`
     color: white !important;
   }
 `;
- 
+
+export const CustomFlexboxGrid = styled(FlexboxGrid)`
+  padding-top: 84px;
+  min-height: calc(100vh - 64px);
+`;

@@ -165,7 +165,6 @@ export function ProductForm(props: ProductFormProps) {
       formError={formError}
       onChange={(data) => setProduct(data as any)}
       onError={setFormError}
-      onSubmit={handleSubmit}
     >
       <TitleBase
         title="Formulário de produto"

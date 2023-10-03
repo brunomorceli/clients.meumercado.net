@@ -1,4 +1,3 @@
-export * from './Layout';
 export * from './Buttons';
 export * from './Inputs';
 export * from './Spin';

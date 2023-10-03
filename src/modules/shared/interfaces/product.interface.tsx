@@ -5,6 +5,7 @@ export interface IProduct {
   id?: string;
   companyId?: string;
   label: string;
+  slug?: string;
   description?: string;
   videos: [],
   pictures: string[],

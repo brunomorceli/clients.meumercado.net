@@ -9,3 +9,11 @@ body {
 .tox-statusbar {
   display: none !important;
 }
+
+.img-crop-media {
+  background-image: url("/images/image-editor-bg.png") !important;
+}
+
+.rs-picker-menu {
+  z-index: 9;
+}

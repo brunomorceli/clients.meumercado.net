@@ -1,10 +1,7 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { AppBar } from "./AppBar";
-import { useStore } from "zustand";
-import { useAuthStore, useCompanyStore } from "@customers/stores";
 
 import "../../middlewares/axios.middleware";
-import { useToasterStore } from "@root/modules/shared";
 import { Col } from "rsuite";
 import { CustomFlexboxGrid } from "./styles";
 
@@ -13,30 +10,9 @@ interface MasterpageProps {
 }
 
 export function CustomerMasterpage(props: MasterpageProps) {
-  const authStore = useStore(useAuthStore);
-  const toastStore = useStore(useToasterStore);
-  const companyStore = useStore(useCompanyStore);
-  const [processing, setProcessing] = useState<boolean>(true);
-  const isAuth = authStore.authenticated;
-
-  useEffect(() => {
-    companyStore
-      .get()
-      .catch(toastStore.error)
-      .finally(() => setProcessing(false));
-  }, []);
-
-  if (processing) {
-    return null;
-  }
-
   return (
     <>
-      <AppBar
-        title={
-          isAuth ? authStore.companyName : process.env.NEXT_PUBLIC_APP_NAME
-        }
-      />
+      <AppBar />
       <CustomFlexboxGrid justify="center">
         <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
           {props.children}

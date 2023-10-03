@@ -10,3 +10,4 @@ export * from './company-search-result.interface';
 export * from './select-option.iterface';
 export * from './attribute.interface';
 export * from './orders';
+export * from './cart-product.interface';

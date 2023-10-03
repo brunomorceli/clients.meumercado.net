@@ -88,7 +88,7 @@ export function ProductForm(props: ProductFormProps) {
         .catch((e) => toasterStore.error(e))
         .finally(() => setProcessing(false));
     },
-    [companyStore]
+    [companyStore, toasterStore]
   );
 
   const loadProduct = useCallback(
@@ -101,7 +101,7 @@ export function ProductForm(props: ProductFormProps) {
         .catch((e) => toasterStore.error(e))
         .finally(() => setProcessing(false));
     },
-    [productStore]
+    [productStore, toasterStore]
   );
 
   useEffect(() => {

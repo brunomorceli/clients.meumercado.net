@@ -52,7 +52,7 @@ export function ProductAutocomplete(props: ProductAutocompleteProps) {
   }
 
   return (
-    <InputGroup inside style={{ width: "100%", zIndex: 99999 }}>
+    <InputGroup inside style={{ width: "100%" }}>
       <AutoComplete
         placeholder="Buscar produto..."
         data={products.map((p) => ({ label: p.slug, value: p.id }))}

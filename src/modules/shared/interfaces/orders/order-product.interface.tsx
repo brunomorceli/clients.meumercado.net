@@ -1,3 +1,6 @@
+import { IProduct } from "..";
+import { v4 as Uuild } from "uuid";
+
 export interface IOrderProduct {
   id?: string;
   name: string;
@@ -15,6 +18,16 @@ export class IOrderProductHandler {
       price: 0,
       total: 0,
       productId: '',
+    };
+  }
+
+  static fromProduct(product: IProduct): IOrderProduct {
+    return {
+      name: product.label,
+      quantity: 1,
+      price: product.price,
+      total: product.price,
+      productId: product.id!,
     };
   }
 }

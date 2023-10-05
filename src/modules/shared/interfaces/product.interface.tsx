@@ -16,6 +16,7 @@ export interface IProduct {
   discountPrice?: number;
   unlimited: boolean;
   quantity: number;
+  quantitySulfix?: string;
   categories: string[];
   width: string;
   height: string;

@@ -269,12 +269,24 @@ export function ProductForm(props: ProductFormProps) {
           />
         </Stack>
         {!product.unlimited && (
-          <InputNumber
-            label="Quantidade (obrigatório)"
-            value={product.quantity || ""}
-            error={formError.quantity}
-            onChange={(value) => handleChangeProductKey("quantity", value)}
-          />
+          <FlexboxGrid justify="space-between">
+            <Col xs={24} sm={24} md={20} lg={20} xl={20}>
+              <InputNumber
+                label="Quantidade (obrigatório)"
+                value={product.quantity || ""}
+                error={formError.quantity}
+                onChange={(value) => handleChangeProductKey("quantity", value)}
+              />
+            </Col>
+            <Col xs={24} sm={24} md={4} lg={4} xl={4}>
+              <InputText
+                label="Unidade"
+                value={product.quantitySulfix}
+                options={{ placeholder: 'Ex: G, CM, KG'}}
+                onChange={(value) => handleChangeProductKey("quantitySulfix", value)}
+              />
+            </Col>
+          </FlexboxGrid>
         )}
       </PanelBase>
       <PanelBase title="Identificação">

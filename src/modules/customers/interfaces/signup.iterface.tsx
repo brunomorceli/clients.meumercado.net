@@ -1,15 +1,10 @@
-export interface ISignup {
-  email: string;
-  userName: string;
-  companyName: string;
+import { IUser, IUserHandler } from "@root/modules/shared";
+
+export interface ISignup extends IUser {
 }
 
 export class ISignupHandler {
   static empty(): ISignup {
-    return {
-      email: '',
-      userName: '',
-      companyName: '',
-    };
+    return IUserHandler.empty();
   }
 }

@@ -3,6 +3,7 @@ import { useAuthStore as useCustomerUseAuthGuard } from "@customers/stores";
 import { useRouter } from "next/router";
 import { useStore } from "zustand";
 import { GeneralUtils } from "..";
+import { useEffect } from "react";
 
 export function AuthGuard(props: any) {
   const router = useRouter();
@@ -11,7 +12,11 @@ export function AuthGuard(props: any) {
   const subdomain = GeneralUtils.getSubdomain(window.location.href);
   const isAuth = subdomain ? customerAuthStore.authenticated : adminAuthStore.authenticated;
 
-  !isAuth && router.replace(Boolean(subdomain) ? '/customers/signin' : '/admins/signin');
+  useEffect(() => {
+    if (!isAuth) {
+      router.replace(Boolean(subdomain) ? '/customers/signin' : '/admins/signin');
+    }
+  }, [router.pathname])
   
   return isAuth && props.children;
 }

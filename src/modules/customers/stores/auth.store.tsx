@@ -78,6 +78,6 @@ export const useAuthStore = create(
       },
     }),
 
-    { name: "auth-store" }
+    { name: "customers-auth-store" }
   )
 );

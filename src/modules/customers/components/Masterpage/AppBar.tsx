@@ -1,38 +1,51 @@
 /* eslint-disable @next/next/no-img-element */
-import { Col, FlexboxGrid, Nav } from "rsuite";
+import { Badge, Col, Divider, FlexboxGrid, Nav } from "rsuite";
 import CogIcon from "@rsuite/icons/legacy/Cog";
 import { useRouter } from "next/router";
 import { useStore } from "zustand";
-import { useCartStore, useCompanyStore } from "@customers/stores";
+import {
+  useAuthStore,
+  useCartStore,
+  useCompanyStore,
+  useMasterpageStore,
+} from "@customers/stores";
 import { CustomNavbar } from "./styles";
 import { AppbarCategory } from "./AppbarCategory";
-import { ProductAutocomplete, ProductForm } from "..";
-import { useState } from "react";
+import { ProductAutocomplete } from "..";
+import { ICartProductHandler, IProduct } from "@shared/interfaces";
+import { ConfirmModal } from "@shared/components";
+
 import {
-  ICartProduct,
-  ICartProductHandler,
-  IProduct,
-} from "@root/modules/shared";
+  faBagShopping,
+  faCartShopping,
+  faHeart,
+  faUpRightFromSquare,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import UserInfoIcon from "@rsuite/icons/UserInfo";
+import { useState } from "react";
 
 export function AppBar() {
   const router = useRouter();
+  const authStore = useStore(useAuthStore);
+  const masterpageStore = useStore(useMasterpageStore);
   const companyStore = useStore(useCompanyStore);
   const { company } = companyStore;
   const cartStore = useStore(useCartStore);
-  const [cartProduct, setCartProduct] = useState<ICartProduct | null>(null);
+  const products = company.id ? cartStore.getProducts(company.id) : [];
+  const [showExitModal, setShowExitModal] = useState<boolean>(false);
 
-  function handlePickProduct(product: IProduct): void {
-    const existingCartProduct = cartStore.getProduct(company.id!, product.id!);
-    setCartProduct(
-      existingCartProduct
-        ? { ...existingCartProduct, product }
-        : ICartProductHandler.empty(product)
-    );
+  function handleAddProduct(product: IProduct): void {
+    if (!products.some((p) => p.product.id === product.id)) {
+      cartStore.addProduct(company.id!, ICartProductHandler.empty(product));
+    }
+
+    masterpageStore.setCart(true);
   }
 
-  function handleAddProduct(product: ICartProduct): void {
-    cartStore.addProduct(company.id!, product);
-    setCartProduct(null);
+  function handleConfirmExit(): void {
+    authStore.signout();
+    setShowExitModal(false);
   }
 
   return (
@@ -60,21 +73,70 @@ export function AppBar() {
           ))}
         </Nav>
         <Nav pullRight>
-          <Nav.Item icon={<CogIcon />}>Configurações</Nav.Item>
+          <Nav.Item
+            icon={<FontAwesomeIcon icon={faCartShopping} />}
+            onClick={masterpageStore.toggleCart}
+          >
+            Carrinho
+            {products.length !== 0 && (
+              <>
+                &nbsp;
+                <Badge content={products.length} />
+              </>
+            )}
+          </Nav.Item>
+          {authStore.authenticated ? (
+            <>
+              <Nav.Menu title="Configurações" icon={<CogIcon />} noCaret>
+                <Nav.Item
+                  onSelect={() => router.replace("/customers/account")}
+                  icon={<UserInfoIcon />}
+                >
+                  Meus dados
+                </Nav.Item>
+                <Nav.Item
+                  onSelect={() => router.replace("/customers/orders")}
+                  icon={<FontAwesomeIcon icon={faBagShopping} />}
+                >
+                  &nbsp; Meus pedidos
+                </Nav.Item>
+                <Divider />
+                <Nav.Item
+                  onSelect={() => setShowExitModal(true)}
+                  icon={<FontAwesomeIcon icon={faUpRightFromSquare} />}
+                >
+                  Sair
+                </Nav.Item>
+              </Nav.Menu>
+              <Nav.Item
+                onSelect={() => router.replace("/customers/favorites")}
+                icon={<FontAwesomeIcon icon={faHeart} />}
+              >
+                Favoritos
+              </Nav.Item>
+            </>
+          ) : (
+            <Nav.Item onClick={() => masterpageStore.setLogin(true)}>
+              Entrar
+            </Nav.Item>
+          )}
         </Nav>
         <Col xs={24}>
           <FlexboxGrid justify="center" style={{ margin: 10 }}>
             <Col xs={24} sm={24} md={18} lg={12} xl={12} xxl={12}>
-              <ProductAutocomplete onPick={handlePickProduct} />
+              <ProductAutocomplete onPick={handleAddProduct} />
             </Col>
           </FlexboxGrid>
         </Col>
       </CustomNavbar>
-      <ProductForm
-        product={cartProduct}
-        onClose={() => setCartProduct(null)}
-        onSave={handleAddProduct}
-      />
+      <ConfirmModal
+        open={showExitModal}
+        onConfirm={handleConfirmExit}
+        onClose={() => setShowExitModal(false)}
+      >
+        <h4>Sair</h4>
+        Deseja realmente sair?
+      </ConfirmModal>
     </>
   );
 }

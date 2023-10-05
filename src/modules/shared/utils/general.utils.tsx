@@ -29,7 +29,7 @@ export class GeneralUtils {
     return `${Math.round(Math.abs((a - b) / ((a + b) / 100)))}%`;
   }
 
-  static clamp(val: number, min: number, max: number): number {
+  static clamp(val: number, min: number, max: number = Infinity): number {
     return Math.min(Math.max(val, min), max);
   }
 
@@ -82,5 +82,13 @@ export class GeneralUtils {
 
     const tenantId = domain.split('.')[0];
     return tenantId;
+  }
+
+  static getSulfixLabel(val: any, separator: string = '/'): string {
+    if (!val || (typeof val === 'string' && val.length === 0) || val === Infinity) {
+      return '';
+    }
+
+    return `${separator}${val}`;
   }
 }

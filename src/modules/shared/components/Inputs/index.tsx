@@ -10,3 +10,4 @@ export * from "./InputButton";
 export * from "./InputNumber";
 export * from "./InputCurrency";
 export * from "./InputCpfCnpj";
+export * from "./InputQuantity";

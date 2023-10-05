@@ -23,6 +23,6 @@ export const useCompanyStore = create(
         });
       },
     }),
-    { name: "customer-company" }
+    { name: "customers-company" }
   )
 );

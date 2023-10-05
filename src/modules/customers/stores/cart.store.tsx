@@ -82,6 +82,6 @@ export const useCartStore = create(
         set({ ...cache, carts });
       },
     }),
-    { name: "customer-cart-store" }
+    { name: "customers-cart-store" }
   )
 );

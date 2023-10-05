@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { FormModal, InputNumber } from "@shared/components";
+import { FormModal, InputQuantity } from "@shared/components";
 import { Col, Form, Schema } from "rsuite";
 import React from "react";
 import {
@@ -21,6 +21,7 @@ export function ProductForm(props: ProductFormProps) {
   const [cartProduct, setCartProduct] = useState<ICartProduct>(
     ICartProductHandler.empty()
   );
+  const { product } = cartProduct;
   const formRef = useRef<any>();
   const [formError, setFormError] = useState<any>({});
   const max = cartProduct.product.quantity;
@@ -51,6 +52,7 @@ export function ProductForm(props: ProductFormProps) {
   }
 
   const open = Boolean(props.product);
+  const price = `${GeneralUtils.getAmountLabel(product.price)}${GeneralUtils.getSulfixLabel(product.quantitySulfix)}`;
   return (
     <FormModal
       title="Adicionar produto"
@@ -67,18 +69,20 @@ export function ProductForm(props: ProductFormProps) {
         onError={setFormError}
       >
         <Col xs={24} style={{ marginBottom: 20 }}>
-          <InputNumber
-            label={`Quantidade (${cartProduct.quantity}/${max})`}
-            value={cartProduct.quantity || ""}
+          <InputQuantity
+            label="Quantidade"
+            value={cartProduct.quantity}
+            max={max}
+            showLimit
             error={formError.quantity}
             onChange={handleChangeQuantity}
           />
         </Col>
         <h4 style={{ color: "#007a00" }}>
-          Total: {GeneralUtils.getAmountLabel(cartProduct.quantity * cartProduct.product.price)}
+          Total: {GeneralUtils.getAmountLabel(cartProduct.quantity * product.price)}
         </h4>
         <h6 style={{ color: "#b9b9b9" }}>
-          Preço: {GeneralUtils.getAmountLabel(cartProduct.product.price)}
+          Preço: {price}
         </h6>
       </Form>
     </FormModal>

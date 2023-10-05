@@ -9,6 +9,7 @@ interface useCartStoreProps {
   getProduct: (companyId: string, productId: string) => ICartProduct | null;
   getProducts: (companyId: string) => ICartProduct[];
   removeProduct: (companyId: string, productId: string) => void;
+  clear: (companyId: string) => void;
 }
 
 export const useCartStore = create(
@@ -81,6 +82,18 @@ export const useCartStore = create(
 
         set({ ...cache, carts });
       },
+
+      clear: (companyId: string) => {
+        const cache = get();
+        const carts = cache.carts;
+
+        if (!carts[companyId]) {
+          return;
+        }
+
+        carts[companyId].products = [];
+        set({ ...cache, carts });
+      }
     }),
     { name: "customers-cart-store" }
   )

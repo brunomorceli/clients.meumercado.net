@@ -21,9 +21,7 @@ export function AppbarCategory(props: AppbarCategoryProps) {
           Todos
         </Nav.Item>
         {(props.item.children || []).map((item: any, index: number) => (
-          <>
-            <AppbarCategory item={item} key={index} onPick={props.onPick} />
-          </>
+          <AppbarCategory item={item} key={index} onPick={props.onPick} />
         ))}
       </Nav.Menu>
     </>

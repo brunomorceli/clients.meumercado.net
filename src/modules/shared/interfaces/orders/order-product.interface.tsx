@@ -21,10 +21,10 @@ export class IOrderProductHandler {
     };
   }
 
-  static fromProduct(product: IProduct): IOrderProduct {
+  static fromProduct(product: IProduct, quantity: number = 1): IOrderProduct {
     return {
       name: product.label,
-      quantity: 1,
+      quantity,
       price: product.price,
       total: product.price,
       productId: product.id!,

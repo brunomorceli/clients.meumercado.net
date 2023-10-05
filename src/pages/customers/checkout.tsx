@@ -1,9 +1,10 @@
+import { OrderCheckout } from "@root/modules/customers/components";
 import { AuthGuard } from "@shared/components";
 
 export default function CheckoutPage() { 
   return (
     <AuthGuard>
-      <h5>Checkout</h5>
+      <OrderCheckout />
     </AuthGuard>
   )
 }

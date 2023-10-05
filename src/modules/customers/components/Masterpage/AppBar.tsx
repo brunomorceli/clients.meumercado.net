@@ -123,7 +123,7 @@ export function AppBar() {
         </Nav>
         <Col xs={24}>
           <FlexboxGrid justify="center" style={{ margin: 10 }}>
-            <Col xs={24} sm={24} md={18} lg={12} xl={12} xxl={12}>
+            <Col xs={24} sm={24} md={24} lg={18} xl={18} xxl={18}>
               <ProductAutocomplete onPick={handleAddProduct} />
             </Col>
           </FlexboxGrid>

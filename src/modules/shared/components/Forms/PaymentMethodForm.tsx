@@ -24,7 +24,7 @@ export function PaymentMethodForm(props: PaymentMethodProps) {
           options={[
             { label: "Dinheiro", value: EPaymentMethod.CASH },
             { label: "PIX", value: EPaymentMethod.PIX },
-            { label: "Cartão de crédito", value: EPaymentMethod.CREDIT_CARD },
+            { label: "Cartão", value: EPaymentMethod.CREDIT_CARD },
             { label: "Crédito (Fiado)", value: EPaymentMethod.CREDIT },
           ]}
           value={payment.method}
@@ -34,7 +34,7 @@ export function PaymentMethodForm(props: PaymentMethodProps) {
       {payment.method === EPaymentMethod.CREDIT_CARD && (
         <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{ marginBottom: 20 }}>
           <InputSelect
-            label="Tipo"
+            label="Tipo de cartão"
             options={[
               { label: "Débito", value: ECreditCardType.DEBIT },
               { label: "Crédito", value: ECreditCardType.CREDIT },

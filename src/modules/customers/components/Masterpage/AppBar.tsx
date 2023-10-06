@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Badge, Col, Divider, FlexboxGrid, Nav } from "rsuite";
+import { Badge, Col, Divider, FlexboxGrid, Nav, Navbar } from "rsuite";
 import CogIcon from "@rsuite/icons/legacy/Cog";
 import { useRouter } from "next/router";
 import { useStore } from "zustand";
@@ -51,43 +51,37 @@ export function AppBar() {
   return (
     <>
       <CustomNavbar>
-        <Nav>
-          {company.logo ? (
-            <Nav.Item onClick={() => router.replace("/")}>
-              <img
-                alt="logo"
-                src={company.logo}
-                height={90}
-                style={{ display: "flex", flexDirection: "column", margin: 5 }}
-              />
-            </Nav.Item>
-          ) : (
-            <h5>{company.name}</h5>
-          )}
-          {company.categories.map((item, index) => (
-            <AppbarCategory
-              key={index}
-              item={item}
-              onPick={(id) => console.log("selected category:", id)}
-            />
-          ))}
-        </Nav>
-        <Nav pullRight>
-          <Nav.Item
-            icon={<FontAwesomeIcon icon={faCartShopping} />}
-            onClick={masterpageStore.toggleCart}
-          >
-            Carrinho
-            {products.length !== 0 && (
-              <>
-                &nbsp;
-                <Badge content={products.length} />
-              </>
+        <div style={{ width: "50%", position: "fixed", top: 10, left: "25%" }}>
+          <ProductAutocomplete onPick={handleAddProduct} />
+        </div>
+        <Navbar appearance="subtle">
+          <Nav>
+            {company.logo ? (
+              <Nav.Item onClick={() => router.replace("/")}>
+                <img
+                  alt="logo"
+                  src={company.logo}
+                  height={90}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    margin: 5,
+                  }}
+                />
+              </Nav.Item>
+            ) : (
+              <h5>{company.name}</h5>
             )}
-          </Nav.Item>
-          {authStore.authenticated ? (
-            <>
-              <Nav.Menu title="Configurações" icon={<CogIcon />} noCaret>
+            <Nav.Item></Nav.Item>
+          </Nav>
+          <Nav pullRight>
+            {authStore.authenticated ? (
+              <Nav.Menu
+                eventKey="1"
+                title="Configurações"
+                icon={<CogIcon />}
+                noCaret
+              >
                 <Nav.Item
                   onSelect={() => router.replace("/customers/account")}
                   icon={<UserInfoIcon />}
@@ -108,26 +102,43 @@ export function AppBar() {
                   Sair
                 </Nav.Item>
               </Nav.Menu>
-              <Nav.Item
-                onSelect={() => router.replace("/customers/favorites")}
-                icon={<FontAwesomeIcon icon={faHeart} />}
-              >
-                Favoritos
+            ) : (
+              <Nav.Item onClick={() => masterpageStore.setLogin(true)}>
+                Entrar
               </Nav.Item>
-            </>
-          ) : (
-            <Nav.Item onClick={() => masterpageStore.setLogin(true)}>
-              Entrar
-            </Nav.Item>
-          )}
-        </Nav>
-        <Col xs={24}>
-          <FlexboxGrid justify="center" style={{ margin: 10 }}>
-            <Col xs={24} sm={24} md={24} lg={18} xl={18} xxl={18}>
-              <ProductAutocomplete onPick={handleAddProduct} />
-            </Col>
+            )}
+            <Nav.Menu
+              noCaret
+              icon={<FontAwesomeIcon icon={faCartShopping} />}
+              title={
+                <>
+                  Carrinho
+                  {products.length !== 0 && (
+                    <>
+                      &nbsp;
+                      <Badge content={products.length} />
+                    </>
+                  )}
+                </>
+              }
+              onClick={masterpageStore.toggleCart}
+            />
+          </Nav>
+          
+        </Navbar>
+        <Nav style={{ width: "100%", borderColor: 'red' }} appearance="subtle">
+          <FlexboxGrid justify="center">
+            {company.categories.map((item, index) => (
+              <AppbarCategory
+                key={index}
+                item={item}
+                onPick={(id) =>
+                  router.replace(`/customers/products/categories/${id}`)
+                }
+              />
+            ))}
           </FlexboxGrid>
-        </Col>
+        </Nav>
       </CustomNavbar>
       <ConfirmModal
         open={showExitModal}

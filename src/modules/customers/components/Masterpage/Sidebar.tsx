@@ -17,7 +17,7 @@ export function SidebarComp() {
               {company.categories.map((item, index) => (
                 <AppbarCategory
                   key={index}
-                  item={item}
+                  option={item}
                   onPick={(id) =>
                     router.replace(`/customers/products/categories/${id}`)
                   }

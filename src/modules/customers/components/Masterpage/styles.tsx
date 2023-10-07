@@ -1,10 +1,54 @@
-import { Col, Content, Nav, Navbar, Sidebar, Stack } from "rsuite";
+import { Col, Container, Content, Nav, Navbar, Sidebar, Stack } from "rsuite";
 import { styled } from "styled-components";
+
+export const CustomContainer = styled(Container)`
+  margin-top: 115px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  height: calc(100vh - 115px);
+  overflow: hidden;
+  overflow-y: auto;
+  background-color: white;
+`;
 
 export const CustomNavbar = styled(Navbar)`
   width: 100%;
-  height: 115px;
+  height: 55px;
   background-color: #8bc34a;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  z-index: 9;
+
+  *.rs-nav-bar {
+    display: none;
+  }
+
+  a {
+    color: white;
+    font-weight: 500;
+    font-size: medium;
+  }
+`;
+
+export const CustomNavbarTitle = styled(Nav.Item)`
+  
+`;
+
+export const CustomNavCategories = styled(Navbar)`
+  width: 100%;
+  background-color: #8bc34a;
+
+  *.rs-nav-bar {
+    display: none;
+  }
+
+  a {
+    color: white;
+    font-weight: 500;
+    font-size: medium;
+  }
 
   /*
   -webkit-box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.28);

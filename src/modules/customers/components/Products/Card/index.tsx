@@ -12,7 +12,7 @@ export function ProductCard(props: ProductCardListProps) {
     <>
       <FlexboxGrid justify="start" align="top">
         {props.products.map((item: IProduct, index: number) => (
-          <Col xs={24} sm={24} md={12} lg={8} xl={6} xxl={6} key={index}>
+          <Col xs={24} sm={24} md={12} lg={6} xl={4} xxl={4} key={index}>
             <ProductCardItem product={item} onClick={props.onSelect} />
           </Col>
         ))}

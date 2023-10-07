@@ -9,7 +9,7 @@ import {
   useCompanyStore,
   useMasterpageStore,
 } from "@customers/stores";
-import { CustomNavbar } from "./styles";
+import { CustomNavCategories, CustomNavbar, CustomNavbarTitle } from "./styles";
 import { AppbarCategory } from "./AppbarCategory";
 import { ProductAutocomplete } from "..";
 import { ICartProductHandler, IProduct } from "@shared/interfaces";
@@ -18,7 +18,6 @@ import { ConfirmModal } from "@shared/components";
 import {
   faBagShopping,
   faCartShopping,
-  faHeart,
   faUpRightFromSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -56,7 +55,7 @@ export function AppBar() {
         </div>
         <Navbar appearance="subtle">
           <Nav>
-            {company.logo ? (
+            {/*company.logo ? (
               <Nav.Item onClick={() => router.replace("/")}>
                 <img
                   alt="logo"
@@ -71,8 +70,10 @@ export function AppBar() {
               </Nav.Item>
             ) : (
               <h5>{company.name}</h5>
-            )}
-            <Nav.Item></Nav.Item>
+            )*/}
+            <CustomNavbarTitle onClick={() => router.replace("/")}>
+              {company.name}
+            </CustomNavbarTitle>
           </Nav>
           <Nav pullRight>
             {authStore.authenticated ? (
@@ -124,21 +125,22 @@ export function AppBar() {
               onClick={masterpageStore.toggleCart}
             />
           </Nav>
-          
         </Navbar>
-        <Nav style={{ width: "100%", borderColor: 'red' }} appearance="subtle">
-          <FlexboxGrid justify="center">
-            {company.categories.map((item, index) => (
-              <AppbarCategory
-                key={index}
-                item={item}
-                onPick={(id) =>
-                  router.replace(`/customers/products/categories/${id}`)
-                }
-              />
-            ))}
-          </FlexboxGrid>
-        </Nav>
+        <CustomNavCategories appearance="subtle">
+          <Nav style={{ width: "100%" }} appearance="subtle">
+            <FlexboxGrid justify="center">
+              {company.categories.map((item, index) => (
+                <AppbarCategory
+                  key={index}
+                  option={item}
+                  onPick={(id) =>
+                    router.replace(`/customers/products/categories/${id}`)
+                  }
+                />
+              ))}
+            </FlexboxGrid>
+          </Nav>
+        </CustomNavCategories>
       </CustomNavbar>
       <ConfirmModal
         open={showExitModal}

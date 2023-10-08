@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Badge, Col, Divider, FlexboxGrid, Nav, Navbar } from "rsuite";
+import { Badge, Col, Divider, FlexboxGrid, Nav, Navbar, Stack } from "rsuite";
 import CogIcon from "@rsuite/icons/legacy/Cog";
 import { useRouter } from "next/router";
 import { useStore } from "zustand";
@@ -9,7 +9,15 @@ import {
   useCompanyStore,
   useMasterpageStore,
 } from "@customers/stores";
-import { CustomNavCategories, CustomNavbar, CustomNavbarTitle } from "./styles";
+import {
+  CustomNavCategories,
+  CustomNavbar,
+  CustomNavbarTitle,
+  WebAppbar,
+  WebAppbarItem,
+  WebAppbarTitle,
+  WebCategories,
+} from "./styles";
 import { AppbarCategory } from "./AppbarCategory";
 import { ProductAutocomplete } from "..";
 import { ICartProductHandler, IProduct } from "@shared/interfaces";
@@ -23,6 +31,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UserInfoIcon from "@rsuite/icons/UserInfo";
 import { useState } from "react";
+import { AppBarTitle } from "@root/modules/admins/components/Masterpage/styles";
 
 export function AppBar() {
   const router = useRouter();
@@ -46,6 +55,48 @@ export function AppBar() {
     authStore.signout();
     setShowExitModal(false);
   }
+
+  return (
+    <>
+      <WebAppbar>
+        <Stack alignItems="center" justifyContent="flex-start">
+          <WebAppbarTitle onClick={() => router.replace("/")}>
+            {company.name}
+          </WebAppbarTitle>
+          <Stack.Item grow={1}>
+            <ProductAutocomplete onPick={handleAddProduct} />
+          </Stack.Item>
+          <WebAppbarItem onClick={masterpageStore.toggleCart}>
+            <FontAwesomeIcon icon={faCartShopping} style={{ marginRight: 5 }} />{" "}
+            Carrinho
+            {products.length !== 0 && (
+              <>
+                &nbsp;
+                <Badge content={products.length} />
+              </>
+            )}
+          </WebAppbarItem>
+        </Stack>
+      </WebAppbar>
+      <WebCategories>
+      <CustomNavCategories appearance="subtle">
+        <Nav style={{ width: "100%" }} appearance="subtle">
+          <FlexboxGrid justify="center">
+            {company.categories.map((item, index) => (
+              <AppbarCategory
+                key={index}
+                option={item}
+                onPick={(id) =>
+                  router.replace(`/customers/products/categories/${id}`)
+                }
+              />
+            ))}
+          </FlexboxGrid>
+        </Nav>
+      </CustomNavCategories>
+      </WebCategories>
+    </>
+  );
 
   return (
     <>
@@ -126,22 +177,22 @@ export function AppBar() {
             />
           </Nav>
         </Navbar>
-        <CustomNavCategories appearance="subtle">
-          <Nav style={{ width: "100%" }} appearance="subtle">
-            <FlexboxGrid justify="center">
-              {company.categories.map((item, index) => (
-                <AppbarCategory
-                  key={index}
-                  option={item}
-                  onPick={(id) =>
-                    router.replace(`/customers/products/categories/${id}`)
-                  }
-                />
-              ))}
-            </FlexboxGrid>
-          </Nav>
-        </CustomNavCategories>
       </CustomNavbar>
+      <CustomNavCategories appearance="subtle">
+        <Nav style={{ width: "100%" }} appearance="subtle">
+          <FlexboxGrid justify="center">
+            {company.categories.map((item, index) => (
+              <AppbarCategory
+                key={index}
+                option={item}
+                onPick={(id) =>
+                  router.replace(`/customers/products/categories/${id}`)
+                }
+              />
+            ))}
+          </FlexboxGrid>
+        </Nav>
+      </CustomNavCategories>
       <ConfirmModal
         open={showExitModal}
         onConfirm={handleConfirmExit}

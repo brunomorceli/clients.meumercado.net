@@ -1,7 +1,17 @@
-import { Col, Container, Content, Nav, Navbar, Sidebar, Stack } from "rsuite";
+import {
+  Button,
+  Col,
+  Container,
+  Content,
+  Nav,
+  Navbar,
+  Row,
+  Sidebar,
+  Stack,
+} from "rsuite";
 import { styled } from "styled-components";
 
-export const CustomContainer = styled(Container)`
+export const CustomContainer = styled(Row)`
   margin-top: 115px;
   padding-top: 40px;
   padding-bottom: 40px;
@@ -12,12 +22,11 @@ export const CustomContainer = styled(Container)`
 `;
 
 export const CustomNavbar = styled(Navbar)`
+  display: block;
   width: 100%;
-  height: 55px;
-  background-color: #8bc34a;
-  position: fixed;
-  top: 0px;
-  left: 0px;
+  min-height: 55px;
+  //background-color: #8bc34a;
+  background-color: red;
   width: 100%;
   z-index: 9;
 
@@ -32,9 +41,7 @@ export const CustomNavbar = styled(Navbar)`
   }
 `;
 
-export const CustomNavbarTitle = styled(Nav.Item)`
-  
-`;
+export const CustomNavbarTitle = styled(Nav.Item)``;
 
 export const CustomNavCategories = styled(Navbar)`
   width: 100%;
@@ -101,4 +108,42 @@ export const CustomNavItem = styled(Nav.Item)`
 export const CustomCol = styled(Col)`
   white-space: break-spaces;
   width: calc(100% - 20px);
+`;
+
+// ==============================================================================
+export const WebContainer = styled(Stack)`
+  height: 100vh;
+`;
+
+export const WebAppbar = styled(Stack.Item)`
+  width: 100vw;
+  min-height: 55px;
+  background-color: #8bc34a;
+`;
+
+export const WebAppbarTitle = styled.div`
+  display: flex;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+
+  padding: 20px;
+`;
+
+export const WebAppbarItem = styled.div`
+  display: flex;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  vertical-align: middle;
+
+  padding: 20px;
+`;
+
+
+
+export const WebCategories = styled(Stack.Item)`
+  width: 100vw;
+  min-height: 55px;
+  background-color: #8bc34a;
 `;

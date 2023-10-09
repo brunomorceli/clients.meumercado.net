@@ -22,6 +22,7 @@ const titleStyle = {
   marginBottom: 20,
   padding: 10,
   borderRadius: 5,
+  backgroundColor: "#8bc34a",
 };
 
 export default function CustomersPage() {
@@ -29,9 +30,7 @@ export default function CustomersPage() {
   const [products, setProducts] = useState<IProduct[]>([]);
 
   useEffect(() => {
-    productStore
-      .find({})
-      .then((res) => setProducts(res.data));
+    productStore.find({}).then((res) => setProducts(res.data));
   }, []);
   return (
     <>
@@ -68,34 +67,26 @@ export default function CustomersPage() {
         />
       </Carousel>
 
-      <div
-        style={{
-          ...titleStyle,
-          background: "linear-gradient(0deg, #558b2f 0%, #7abb4b 100%)",
-        }}
-      >
+      <div style={titleStyle}>
         <FontAwesomeIcon icon={faCartShopping} />
         &nbsp; Promoções da semana
       </div>
 
       <ProductCard
-        products={[...products, ...products]}
-        onSelect={(p) => console.log('select:', p)}
+        products={[...products, ...products, ...products]}
+        onAdd={(p) => console.log("select:", p)}
+        onDetails={(p) => console.log("details:", p)}
       />
 
-      <div
-        style={{
-          ...titleStyle,
-          background: "linear-gradient(0deg, #558b2f 0%, #7abb4b 100%)",
-        }}
-      >
+      <div style={titleStyle}>
         <FontAwesomeIcon icon={faCartShopping} />
         &nbsp; Produtos
       </div>
 
       <ProductCard
-        products={[...products, ...products]}
-        onSelect={(p) => console.log('select:', p)}
+        products={[...products, ...products, ...products]}
+        onAdd={(p) => console.log("select:", p)}
+        onDetails={(p) => console.log("details:", p)}
       />
     </>
   );

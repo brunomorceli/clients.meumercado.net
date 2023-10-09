@@ -7,20 +7,20 @@ import {
   CardOldPrice,
   CardPrice,
   CardPriceContainer,
-  CardButtonContainer,
 } from "./styles";
 import { GeneralUtils } from "@shared/utils";
-import { Button } from "rsuite";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { Button, Stack } from "rsuite";
+import PlusIcon from "@rsuite/icons/Plus";
+import SearchIcon from "@rsuite/icons/Search";
 
 interface ProductCardProps {
   product: IProduct;
-  onClick: (product: IProduct) => void;
+  onAdd: (product: IProduct) => void;
+  onDetails: (product: IProduct) => void;
 }
 
 export function ProductCardItem(props: ProductCardProps) {
-  const { product, onClick } = props;
+  const { product, onAdd, onDetails } = props;
   const discount: any = null;
   const price = `${GeneralUtils.getAmountLabel(
     product.price
@@ -45,19 +45,30 @@ export function ProductCardItem(props: ProductCardProps) {
             discount ? discount.price : product.price
           )}
         </CardPrice>
-        <CardButtonContainer>
-          <Button
-            onClick={() => onClick(product)}
-            appearance="primary"
-            block
-          >
-            <FontAwesomeIcon
-              icon={faCartShopping}
-              style={{ verticalAlign: "middle", marginRight: 5 }}
-            />
-            Adicionar &nbsp;
-          </Button>
-        </CardButtonContainer>
+        <div className="button-container">
+          <Stack justifyContent="center" spacing={5}>
+            <Stack.Item grow={1}>
+              <Button
+                onClick={() => onAdd(product)}
+                appearance="primary"
+                block
+                startIcon={<PlusIcon />}
+              >
+                Adicionar
+              </Button>
+            </Stack.Item>
+            <Stack.Item>
+              <Button
+                appearance="primary"
+                color="blue"
+                size="lg"
+                onClick={() => onDetails(product)}
+              >
+                <SearchIcon />
+              </Button>
+            </Stack.Item>
+          </Stack>
+        </div>
       </CardPriceContainer>
     </CardContainer>
   );

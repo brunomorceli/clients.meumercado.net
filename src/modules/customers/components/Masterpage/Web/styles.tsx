@@ -1,14 +1,4 @@
-import {
-  Button,
-  Col,
-  Container,
-  Content,
-  Nav,
-  Navbar,
-  Row,
-  Sidebar,
-  Stack,
-} from "rsuite";
+import { Col, Content, Nav, Navbar, Row, Sidebar, Stack } from "rsuite";
 import { styled } from "styled-components";
 
 export const CustomContainer = styled(Row)`
@@ -115,35 +105,3 @@ export const WebContainer = styled(Stack)`
   height: 100vh;
 `;
 
-export const WebAppbar = styled(Stack.Item)`
-  width: 100vw;
-  min-height: 55px;
-  background-color: #8bc34a;
-`;
-
-export const WebAppbarTitle = styled.div`
-  display: flex;
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-
-  padding: 20px;
-`;
-
-export const WebAppbarItem = styled.div`
-  display: flex;
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-  vertical-align: middle;
-
-  padding: 20px;
-`;
-
-
-
-export const WebCategories = styled(Stack.Item)`
-  width: 100vw;
-  min-height: 55px;
-  background-color: #8bc34a;
-`;

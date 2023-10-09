@@ -1,3 +1,3 @@
-export * from './Masterpage';
+export * from './Masterpage/Web';
 export * from './Products';
 export * from './Orders';

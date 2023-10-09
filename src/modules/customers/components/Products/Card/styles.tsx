@@ -12,6 +12,23 @@ export const CardContainer = styled.div`
   border-radius: 10px;
   margin: 10px !important;
   margin-bottom: 10px;
+
+  .button-container {
+    text-align: center !important;
+    width: 100%;
+    vertical-align: bottom !important;
+    overflow: hidden;
+    height: 0px;
+
+    transition: all 0.2s;
+  }
+
+  &:hover {
+    .button-container {
+      height: 40px;
+      transform:  all 0.5s;
+    }
+  }
 `;
 
 export const CardPercentFlag = styled.div`
@@ -28,12 +45,9 @@ export const CardPercentFlag = styled.div`
   width: calc(100% - 22px);
 `;
 
-export const CardImage = styled.div<{src: string}>`
+export const CardImage = styled.img`
   width: 100%;
-  padding-top: 100%;
-  background-position: center;
-  background-size: cover;
-  background-image: url(${(props) => props.src});
+  height: auto;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   cursor: pointer;

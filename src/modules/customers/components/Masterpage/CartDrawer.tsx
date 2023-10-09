@@ -16,7 +16,11 @@ import {
 } from "@root/modules/shared";
 import { useRouter } from "next/router";
 
-export function CartDrawer() {
+interface CartDrawerProps {
+  full?: boolean;
+}
+
+export function CartDrawer(props: CartDrawerProps) {
   const router = useRouter();
   const authStore = useStore(useAuthStore);
   const masterpageStore = useStore(useMasterpageStore);
@@ -60,6 +64,7 @@ export function CartDrawer() {
 
   return (
     <Drawer
+      full={props.full}
       open={masterpageStore.cart}
       onClose={() => masterpageStore.toggleCart()}
     >

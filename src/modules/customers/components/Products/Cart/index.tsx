@@ -1,7 +1,7 @@
 "use client";
 
 import { ConfirmModal, InputQuantity } from "@shared/components";
-import { FlexboxGrid } from "rsuite";
+import { Col, FlexboxGrid, Panel, Stack } from "rsuite";
 import React, { useState } from "react";
 import { GeneralUtils, ICartProduct } from "@root/modules/shared";
 import { SubtitleCustom, TitleCustom } from "./styles";
@@ -19,34 +19,27 @@ export function ProductCart(props: ProductCartProps) {
     props.onRemove(product);
     setRemoveTaget(null);
   }
+
   return (
     <>
       {props.products.map((product, index) => (
-        <FlexboxGrid
-          key={index}
-          justify="space-between"
-          style={{ marginBottom: 15, marginTop: 15 }}
-        >
-          <FlexboxGrid.Item colspan={13}>
-            <TitleCustom>{product.product.label}</TitleCustom>
-            <SubtitleCustom>
-              {GeneralUtils.getAmountLabel(product.product.price)}
-            </SubtitleCustom>
-          </FlexboxGrid.Item>
-          <FlexboxGrid.Item colspan={9}>
-            <InputQuantity
-              label="Qtd."
-              value={product.quantity}
-              max={
-                product.product.unlimited ? Infinity : product.product.quantity
-              }
-              showLimit
-              onChange={(quantity) => props.onChange({ ...product, quantity })}
-              onRemove={() => setRemoveTaget(product)}
-              actionRemove
-            />
-          </FlexboxGrid.Item>
-        </FlexboxGrid>
+        <div key={index} style={{ width: '100%', margin: 0, padding: 0, marginTop: 20, marginBottom: 20 }}>
+          <TitleCustom>{product.product.label.toUpperCase()}</TitleCustom>
+          <SubtitleCustom>
+            Preço : {GeneralUtils.getAmountLabel(product.product.price)}{GeneralUtils.getSulfixLabel(product.product.quantitySulfix, ' / ')}
+          </SubtitleCustom>
+
+          <InputQuantity
+            value={product.quantity}
+            max={
+              product.product.unlimited ? Infinity : product.product.quantity
+            }
+            showLimit
+            onChange={(quantity) => props.onChange({ ...product, quantity })}
+            onRemove={() => setRemoveTaget(product)}
+            actionRemove
+          />
+        </div>
       ))}
       <ConfirmModal
         title="Remover produto"

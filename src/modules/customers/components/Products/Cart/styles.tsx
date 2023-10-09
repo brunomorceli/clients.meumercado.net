@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const TitleCustom = styled.div`
-  padding-top: 20px;
+  width: 100%;
   font-size: 16px;
   font-weight: 600;
   color: #292929;
@@ -11,6 +11,8 @@ export const TitleCustom = styled.div`
 `;
 
 export const SubtitleCustom = styled.div`
+  width: 100%;
+  text-align: right;
   font-size: 14px;
   font-weight: 600;
   color: #00a700;

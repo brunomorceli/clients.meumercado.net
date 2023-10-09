@@ -28,7 +28,10 @@ export function ProductCardItem(props: ProductCardProps) {
 
   return (
     <CardContainer>
-      <CardImage src={product.pictures?.[0] || "images/no-image.png"} />
+      <CardImage
+        src={product.pictures?.[0] || "images/no-image.png"}
+        onClick={() => onDetails(product)}
+      />
       {discount && (
         <CardPercentFlag>
           {GeneralUtils.getPercentDifference(product.price, discount.price)} de

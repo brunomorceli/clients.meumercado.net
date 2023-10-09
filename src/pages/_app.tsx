@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import type { AppProps } from "next/app";
 import { AdminMasterpage } from "@admins/components";
-import { CustomerMasterpage } from "@customers/components";
+import { CustomerMasterpage } from "@customers/components/Masterpage";
 
 import 'rsuite/dist/rsuite.min.css';
 import '../styles/globals.css'

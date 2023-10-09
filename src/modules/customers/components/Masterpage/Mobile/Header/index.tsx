@@ -21,16 +21,14 @@ import { ConfirmModal } from "@shared/components";
 import {
   faBagShopping,
   faCartShopping,
-  faHouse,
-  faPhone,
   faRightToBracket,
   faUpRightFromSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UserInfoIcon from "@rsuite/icons/UserInfo";
+import MenuIcon from "@rsuite/icons/Menu";
 import { useState } from "react";
 import { Categories } from "./Categories";
-import ArrowDownLineIcon from "@rsuite/icons/ArrowDownLine";
 
 interface HeaderProps {
   backgroundColor?: string;
@@ -45,6 +43,7 @@ export function Header(props: HeaderProps) {
   const { company } = companyStore;
   const cartStore = useStore(useCartStore);
   const products = company.id ? cartStore.getProducts(company.id) : [];
+  const [showCategories, setShowCategories] = useState<boolean>(false);
   const [showExitModal, setShowExitModal] = useState<boolean>(false);
 
   function handleAddProduct(product: IProduct): void {
@@ -63,9 +62,10 @@ export function Header(props: HeaderProps) {
   const Settings = () => (
     <DropdownSettings
       trigger="hover"
+      placement="bottomEnd"
       renderToggle={() => (
         <Item>
-          <CogIcon /> Configurações
+          <CogIcon />
         </Item>
       )}
     >
@@ -93,58 +93,50 @@ export function Header(props: HeaderProps) {
   return (
     <>
       <HeaderContainer backgroundColor={props.backgroundColor}>
-        <Stack alignItems="center" justifyContent="flex-start">
-          <CompanyName onClick={() => router.replace("/")} color={props.color}>
-            {company.name}
-          </CompanyName>
-          <Stack.Item grow={1}>
-            <ProductAutocomplete onPick={handleAddProduct} />
-          </Stack.Item>
-          <Item onClick={masterpageStore.toggleCart}>
-            <FontAwesomeIcon icon={faCartShopping} style={{ marginRight: 5 }} />{" "}
-            Carrinho
-            {products.length !== 0 && (
-              <>
-                &nbsp;
-                <Badge content={products.length} />
-              </>
-            )}
+        <Stack alignItems="center" justifyContent="space-between">
+          <Item
+            style={{ marginLeft: 10 }}
+            onClick={() => setShowCategories(true)}
+          >
+            <MenuIcon />
           </Item>
-          {authStore.authenticated ? (
-            <Settings></Settings>
-          ) : (
-            <Item onClick={() => masterpageStore.toggleLogin()}>
-              <FontAwesomeIcon icon={faRightToBracket} />
+          <Stack.Item grow={1}>
+            <CompanyName
+              onClick={() => router.replace("/")}
+              color={props.color}
+            >
+              {company.name}
+            </CompanyName>
+          </Stack.Item>
+          <Stack.Item style={{ width: 110 }}>
+            <Item onClick={masterpageStore.toggleCart}>
+              <FontAwesomeIcon
+                icon={faCartShopping}
+                style={{ marginRight: 5 }}
+              />
               &nbsp;
-              Entrar
+              {products.length !== 0 && <Badge content={products.length} />}
             </Item>
-          )}
+
+            {authStore.authenticated ? (
+              <Settings />
+            ) : (
+              <Item onClick={() => masterpageStore.toggleLogin()}>
+                <FontAwesomeIcon icon={faRightToBracket} />
+              </Item>
+            )}
+          </Stack.Item>
         </Stack>
       </HeaderContainer>
       <SecondaryHeader backgroundColor={props.backgroundColor}>
-        <Item onClick={() => router.replace("/customers")}>
-          <FontAwesomeIcon icon={faHouse} /> Início
-        </Item>
-        <Item>
-          <FontAwesomeIcon icon={faBagShopping} /> Produtos
-          <ArrowDownLineIcon />
-        </Item>
-        <Item>
-          <FontAwesomeIcon icon={faPhone} /> Contato
-        </Item>
-        <div className="categories">
-          <FlexboxGrid justify="center" align="top">
-            <Col md={22} lg={22} xl={22} xxl={22}>
-              <Categories
-                options={company.categories}
-                onPick={(id) =>
-                  router.replace(`/customers/products/categories/${id}`)
-                }
-              />
-            </Col>
-          </FlexboxGrid>
-        </div>
+        <ProductAutocomplete onPick={handleAddProduct} />
       </SecondaryHeader>
+      <Categories
+        options={company.categories}
+        open={showCategories}
+        onPick={(id) => router.replace(`/customers/products/categories/${id}`)}
+        onClose={() => setShowCategories(false)}
+      />
 
       <ConfirmModal
         open={showExitModal}

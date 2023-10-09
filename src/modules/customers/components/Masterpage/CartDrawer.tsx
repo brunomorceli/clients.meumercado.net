@@ -17,7 +17,8 @@ import {
 import { useRouter } from "next/router";
 
 interface CartDrawerProps {
-  full?: boolean;
+  noRender?: boolean;
+  options?: any;
 }
 
 export function CartDrawer(props: CartDrawerProps) {
@@ -64,14 +65,14 @@ export function CartDrawer(props: CartDrawerProps) {
 
   return (
     <Drawer
-      full={props.full}
+      style={{ minWidth: '25vw', maxWidth: '300px' }}
       open={masterpageStore.cart}
       onClose={() => masterpageStore.toggleCart()}
     >
       <Drawer.Header>
         <Drawer.Title>Carrinho</Drawer.Title>
       </Drawer.Header>
-      <Drawer.Body>
+      <Drawer.Body style={{ padding: 20 }}>
         <ProductAutocomplete onPick={handleAddProduct} />
         <ProductCart
           products={products}
@@ -84,7 +85,7 @@ export function CartDrawer(props: CartDrawerProps) {
           </h6>
         )}
 
-        <h3 style={{ color: '#00a700', textAlign: 'right'}}>Total: {totalLabel}</h3>
+        <h3 style={{ color: '#8bc34a', textAlign: 'right'}}>Total: {totalLabel}</h3>
         {products.length !== 0 && (
           <CartButton
             title="Finalizar"

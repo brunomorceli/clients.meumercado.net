@@ -72,23 +72,42 @@ export class GeneralUtils {
     }
 
     let domain = url;
-    if (url.includes('://')) {
-      domain = url.split('://')[1];
+    if (url.includes("://")) {
+      domain = url.split("://")[1];
     }
 
-    if (domain.indexOf('www')) {
-      domain = domain.replace('wwww', '');
+    if (domain.indexOf("www")) {
+      domain = domain.replace("wwww", "");
     }
 
-    const tenantId = domain.split('.')[0];
+    const tenantId = domain.split(".")[0];
     return tenantId;
   }
 
-  static getSulfixLabel(val: any, separator: string = '/'): string {
-    if (!val || (typeof val === 'string' && val.length === 0) || val === Infinity) {
-      return '';
+  static getSulfixLabel(val: any, separator: string = "/"): string {
+    if (
+      !val ||
+      (typeof val === "string" && val.length === 0) ||
+      val === Infinity
+    ) {
+      return "";
     }
 
     return `${separator}${val}`;
+  }
+
+  static localTime(val?: string, showTime = false, fallback = ""): string {
+    if (!val) {
+      return fallback;
+    }
+
+    const date = new Date(val);
+
+    if (!showTime) {
+      return date.toLocaleDateString();
+    }
+
+    const timeParts = date.toLocaleTimeString().split(":");
+    return `${date.toLocaleDateString()} ${timeParts[0]}:${timeParts[1]}`;
   }
 }

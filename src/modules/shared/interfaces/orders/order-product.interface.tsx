@@ -8,6 +8,7 @@ export interface IOrderProduct {
   price: number;
   total: number;
   productId: string;
+  product?: IProduct;
 }
 
 export class IOrderProductHandler {

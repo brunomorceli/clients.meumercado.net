@@ -51,7 +51,7 @@ export function OrderCheckout() {
   function handleCheckout(): void {
     const order: IOrder = {
       payments: [payment],
-      products: products.map((p) =>
+      orderProducts: products.map((p) =>
         IOrderProductHandler.fromProduct(p.product, p.quantity)
       ),
     };

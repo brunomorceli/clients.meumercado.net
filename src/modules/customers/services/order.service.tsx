@@ -21,7 +21,7 @@ export class OrderService {
   static list(data: IPagination): Promise<IOrderSearchResult> {
     const params = new URLSearchParams(data as any).toString();
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/customers/orders/find?${params}`;
+      const url = `${this.baseURL}/customers/orders/list?${params}`;
       axios
         .get(url)
         .then((res) => resolve(res.data))

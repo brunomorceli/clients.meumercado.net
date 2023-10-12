@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useStore } from "zustand";
 import { OrdersList } from "./List";
 import { Panel } from "rsuite";
+import { OrderHeader } from "./List/OrderHeader";
 
 export function Orders() {
   const toasterStore = useStore(useToasterStore);
@@ -39,7 +40,7 @@ export function Orders() {
   }
 
   return (
-    <Panel bordered style={{ backgroundColor: 'white' }}>
+    <Panel header={<OrderHeader />} bordered style={{ backgroundColor: 'white' }}>
       <OrdersList
         orders={orders}
         loading={processing}

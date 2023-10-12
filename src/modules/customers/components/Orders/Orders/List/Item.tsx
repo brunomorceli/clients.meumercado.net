@@ -1,15 +1,11 @@
-import { FlexboxGrid, List, Panel, Button, Timeline } from "rsuite";
-import { CustomTimeline, Label, Subtitle, Title } from "./styles";
-import {
-  EOrderStatus,
-  EOrderStatusHandler,
-  FormModal,
-  GeneralUtils,
-  IOrder,
-  InputText,
-} from "@shared";
+import { List, Panel, Button } from "rsuite";
+import { Subtitle } from "./styles";
+import { EOrderStatus, FormModal, IOrder, InputText, PanelBase } from "@shared";
 import BlockIcon from "@rsuite/icons/Block";
 import { useEffect, useState } from "react";
+import { Products } from "./Products";
+import { Progress } from "./Progress";
+import { Order } from "./Order";
 
 interface OrderListProps {
   order: IOrder;
@@ -34,7 +30,7 @@ export function Item(props: OrderListProps) {
     if (observation.length > 0 && observation.length < minChars) {
       setError("A observação deve conter pelo menos 20 caracteres");
     } else {
-      setError('');
+      setError("");
     }
   }, [observation]);
 
@@ -59,105 +55,9 @@ export function Item(props: OrderListProps) {
     resetForm();
   }
 
-  const Header = () => (
-    <>
-      <FlexboxGrid>
-        <FlexboxGrid.Item colspan={8}>
-          <Label>Data</Label>
-        </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={8}>
-          <Label>Valor</Label>
-        </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={8}>
-          <Label>Status</Label>
-        </FlexboxGrid.Item>
-      </FlexboxGrid>
-      <FlexboxGrid>
-        <FlexboxGrid.Item colspan={8}>
-          <Title>{new Date(order.createdAt!).toLocaleDateString()}</Title>
-        </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={8}>
-          <Title>{GeneralUtils.getAmountLabel(total)}</Title>
-        </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={8}>
-          <Title>
-            <Label style={{ color: EOrderStatusHandler.color(order.status!) }}>
-              {EOrderStatusHandler.label(order.status!)}
-            </Label>
-          </Title>
-        </FlexboxGrid.Item>
-      </FlexboxGrid>
-    </>
-  );
-
-  const Products = () => (
-    <>
-      <FlexboxGrid>
-        <FlexboxGrid.Item colspan={12}>
-          <Label>Nome</Label>
-        </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={4}>
-          <Label>Qtd.</Label>
-        </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={4}>
-          <Label>Preço</Label>
-        </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={4}>
-          <Label>Total</Label>
-        </FlexboxGrid.Item>
-      </FlexboxGrid>
-      <hr />
-      {order.orderProducts.map((op, index) => (
-        <>
-          <FlexboxGrid key={index}>
-            <FlexboxGrid.Item colspan={12}>
-              <Title>{op.product!.label}</Title>
-            </FlexboxGrid.Item>
-            <FlexboxGrid.Item colspan={4}>
-              <Title>
-                {op.quantity!}
-                {GeneralUtils.getSulfixLabel(op.product!.quantitySulfix, " ")}
-              </Title>
-            </FlexboxGrid.Item>
-            <FlexboxGrid.Item colspan={4}>
-              <Title>{GeneralUtils.getAmountLabel(op.price)}</Title>
-            </FlexboxGrid.Item>
-            <FlexboxGrid.Item colspan={4}>
-              <Title>
-                {GeneralUtils.getAmountLabel(op.product!.price * op.quantity)}
-              </Title>
-            </FlexboxGrid.Item>
-          </FlexboxGrid>
-          <hr />
-        </>
-      ))}
-      <FlexboxGrid>
-        <FlexboxGrid.Item colspan={20}>
-          <Title>Total</Title>
-        </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={4}>
-          <Title>{GeneralUtils.getAmountLabel(total)}</Title>
-        </FlexboxGrid.Item>
-      </FlexboxGrid>
-    </>
-  );
-
-  const Progress = () => (
-    <CustomTimeline>
-      {order.orderLogs.map((ol, index) => (
-        <Timeline.Item key={index} dot={EOrderStatusHandler.icon(ol.status)}>
-          <p>
-            <Title>{EOrderStatusHandler.label(ol.status)}</Title>
-            <Label>{GeneralUtils.localTime(ol.createdAt, true)}</Label>
-          </p>
-        </Timeline.Item>
-      ))}
-    </CustomTimeline>
-  );
-
   return (
     <List.Item>
-      <Panel header={<Header />} collapsible>
+      <Panel header={<Order order={order} />} collapsible>
         <Panel
           header={
             <>
@@ -167,28 +67,30 @@ export function Item(props: OrderListProps) {
           }
           style={{ backgroundColor: "#fafafa" }}
         >
-          <Subtitle>Produtos</Subtitle>
-          <Products />
+          <PanelBase title="Produtos">
+            <Products order={order} />
+          </PanelBase>
 
-          <Subtitle>Progresso</Subtitle>
-          <Progress />
+          <PanelBase title="Progresso">
+            <Progress order={order} />
 
-          
-          {[EOrderStatus.PENDING, EOrderStatus.PREPARING].includes(
-            order.status!
-          ) && (
-            <>
-              <Subtitle>Ações</Subtitle>
-              <Button
-                appearance="primary"
-                color="red"
-                startIcon={<BlockIcon />}
-                onClick={() => setOpenModal(true)}
-              >
-                Cancelar pedido
-              </Button>
-            </>
-          )}
+            {[EOrderStatus.PENDING, EOrderStatus.PREPARING].includes(
+              order.status!
+            ) && (
+              <>
+                <Subtitle>Ações</Subtitle>
+                <Button
+                  appearance="primary"
+                  color="red"
+                  startIcon={<BlockIcon />}
+                  onClick={() => setOpenModal(true)}
+                >
+                  Cancelar pedido
+                </Button>
+              </>
+            )}
+          </PanelBase>
+
           <FormModal
             title="Cancelar pedido"
             open={openModal}

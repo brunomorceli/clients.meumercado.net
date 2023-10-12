@@ -1,28 +1,19 @@
-import { Steps, FlexboxGrid, List, Panel, Button, Timeline } from "rsuite";
+import { FlexboxGrid, List, Panel, Button, Timeline } from "rsuite";
 import { CustomTimeline, Label, Subtitle, Title } from "./styles";
 import {
-  ConfirmModal,
   EOrderStatus,
   EOrderStatusHandler,
+  FormModal,
   GeneralUtils,
   IOrder,
+  InputText,
 } from "@shared";
-import {
-  faBoxOpen,
-  faClipboardCheck,
-  faEnvelopeCircleCheck,
-  faMotorcycle,
-  faRectangleXmark,
-  faTape,
-  faTruckArrowRight,
-} from "@fortawesome/free-solid-svg-icons";
 import BlockIcon from "@rsuite/icons/Block";
-import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
 
 interface OrderListProps {
   order: IOrder;
-  onCancel: (order: IOrder) => void;
+  onCancel: (order: IOrder, observation: string) => void;
 }
 
 export function Item(props: OrderListProps) {
@@ -35,6 +26,38 @@ export function Item(props: OrderListProps) {
     EOrderStatus.CANCELED_BY_COMPANY,
   ].includes(order.status!);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [observation, setObservation] = useState<string>("");
+  const minChars = 20;
+  const [error, setError] = useState<string>("");
+
+  useEffect(() => {
+    if (observation.length > 0 && observation.length < minChars) {
+      setError("A observação deve conter pelo menos 20 caracteres");
+    } else {
+      setError('');
+    }
+  }, [observation]);
+
+  function resetForm() {
+    setObservation("");
+    setError("");
+  }
+
+  function handleClose(): void {
+    setOpenModal(false);
+    resetForm();
+  }
+
+  function handleSave(): void {
+    if (!observation || observation.length < minChars) {
+      setError("A observação deve conter pelo menos 20 caracteres");
+      return;
+    }
+
+    onCancel(order, observation);
+    setOpenModal(false);
+    resetForm();
+  }
 
   const Header = () => (
     <>
@@ -83,7 +106,7 @@ export function Item(props: OrderListProps) {
           <Label>Total</Label>
         </FlexboxGrid.Item>
       </FlexboxGrid>
-        <hr />
+      <hr />
       {order.orderProducts.map((op, index) => (
         <>
           <FlexboxGrid key={index}>
@@ -121,68 +144,14 @@ export function Item(props: OrderListProps) {
 
   const Progress = () => (
     <CustomTimeline>
-      <Timeline.Item dot={<FontAwesomeIcon icon={faEnvelopeCircleCheck} />}>
-        <p>
-          <Title>Pedido enviado.</Title>
-          <Label>{GeneralUtils.localTime(order.createdAt, true)}</Label>
-        </p>
-      </Timeline.Item>
-      {order.preparingAt &&
-        <Timeline.Item dot={<FontAwesomeIcon icon={faTape} />}>
+      {order.orderLogs.map((ol, index) => (
+        <Timeline.Item key={index} dot={EOrderStatusHandler.icon(ol.status)}>
           <p>
-            <Title>{EOrderStatusHandler.label(EOrderStatus.PREPARING)}</Title>
-            <Label>{GeneralUtils.localTime(order.preparingAt, true)}</Label>
+            <Title>{EOrderStatusHandler.label(ol.status)}</Title>
+            <Label>{GeneralUtils.localTime(ol.createdAt, true)}</Label>
           </p>
         </Timeline.Item>
-      }
-      {order.shippingAt &&
-        <Timeline.Item dot={<FontAwesomeIcon icon={faTruckArrowRight} />}>
-          <p>
-            <Title>{EOrderStatusHandler.label(EOrderStatus.SHIPPING)}</Title>
-            <Label>{GeneralUtils.localTime(order.shippingAt, true)}</Label>
-          </p>
-        </Timeline.Item>
-      }
-      {order.deliveringAt &&
-        <Timeline.Item dot={<FontAwesomeIcon icon={faMotorcycle} />}>
-          <p>
-            <Title>{EOrderStatusHandler.label(EOrderStatus.DELIVERING)}</Title>
-            <Label>{GeneralUtils.localTime(order.deliveringAt, true)}</Label>
-          </p>
-        </Timeline.Item>
-      }
-      {order.doneAt &&
-        <Timeline.Item dot={<FontAwesomeIcon icon={faBoxOpen} />}>
-          <p>
-            <Title>{EOrderStatusHandler.label(EOrderStatus.DONE)}</Title>
-            <Label>{GeneralUtils.localTime(order.doneAt, true)}</Label>
-          </p>
-        </Timeline.Item>
-      }
-      {order.canceledByClientAt &&
-        <Timeline.Item dot={<FontAwesomeIcon icon={faRectangleXmark} />}>
-          <p>
-            <Title>
-              {EOrderStatusHandler.label(EOrderStatus.CANCELED_BY_CLIENT)}
-            </Title>
-            <Label>
-              {GeneralUtils.localTime(order.canceledByClientAt, true)}
-            </Label>
-          </p>
-        </Timeline.Item>
-      }
-      {order.canceledByCompanyAt &&
-        <Timeline.Item dot={<FontAwesomeIcon icon={faRectangleXmark} />}>
-          <p>
-            <Title>
-              {EOrderStatusHandler.label(EOrderStatus.CANCELED_BY_COMPANY)}
-            </Title>
-            <Label>
-              {GeneralUtils.localTime(order.canceledByCompanyAt, true)}
-            </Label>
-          </p>
-        </Timeline.Item>
-      }
+      ))}
     </CustomTimeline>
   );
 
@@ -204,29 +173,38 @@ export function Item(props: OrderListProps) {
           <Subtitle>Progresso</Subtitle>
           <Progress />
 
-          <Subtitle>Ações</Subtitle>
+          
           {[EOrderStatus.PENDING, EOrderStatus.PREPARING].includes(
             order.status!
           ) && (
-            <Button
-              appearance="primary"
-              color="red"
-              startIcon={<BlockIcon />}
-              onClick={() => setOpenModal(true)}
-            >
-              Cancelar pedido
-            </Button>
+            <>
+              <Subtitle>Ações</Subtitle>
+              <Button
+                appearance="primary"
+                color="red"
+                startIcon={<BlockIcon />}
+                onClick={() => setOpenModal(true)}
+              >
+                Cancelar pedido
+              </Button>
+            </>
           )}
-          <ConfirmModal
+          <FormModal
             title="Cancelar pedido"
             open={openModal}
-            onConfirm={() => onCancel(order)}
-            onClose={() => setOpenModal(false)}
-            confirmText="Confirmar cancelamento"
-            cancelText="Não cancelar"
+            onSave={handleSave}
+            onClose={handleClose}
+            saveText="Confirmar cancelamento"
           >
-            Deseja realmente cancelar esta compra?
-          </ConfirmModal>
+            <div style={{ marginBottom: 40 }}>
+              <InputText
+                label={`Observação (${observation.length})`}
+                error={error}
+                onChange={setObservation}
+                options={{ as: "textarea", rows: 5 }}
+              />
+            </div>
+          </FormModal>
         </Panel>
       </Panel>
     </List.Item>

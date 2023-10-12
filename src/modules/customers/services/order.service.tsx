@@ -46,4 +46,18 @@ export class OrderService {
         );
     });
   }
+
+  static cancel(id: string, observation: string): Promise<IOrder> {
+    return new Promise((resolve, reject) => {
+      const url = `${this.baseURL}/customers/orders/${id}/cancel`;
+      axios
+        .put(url, { observation })
+        .then((res) => resolve(res.data))
+        .catch((e) =>
+          reject(
+            GeneralUtils.getErrorMessage(e, "Erro ao tentar cancelar compra.")
+          )
+        );
+    });
+  }
 }

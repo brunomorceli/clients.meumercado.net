@@ -1,5 +1,5 @@
 import { IOrderPayment, IOrderProduct } from ".";
-import { EOrderStatus } from "../..";
+import { EOrderStatus, IOrderLog } from "../..";
 
 export interface IOrder {
   id?: string;
@@ -9,14 +9,8 @@ export interface IOrder {
   observation?: string;
   orderProducts: IOrderProduct[];
   payments: IOrderPayment[];
+  orderLogs: IOrderLog[];
   createdAt?: string;
-  pendingAt?: string;
-  preparingAt?: string;
-  shippingAt?: string;
-  deliveringAt?: string;
-  doneAt?: string;
-  canceledByCompanyAt?: string;
-  canceledByClientAt?: string;
   deletedAt?: string;
 }
 
@@ -25,6 +19,7 @@ export class IOrderHandler {
     return {
       orderProducts: [],
       payments: [],
+      orderLogs: [],
     };
   }
 }

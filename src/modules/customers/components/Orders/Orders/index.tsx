@@ -25,12 +25,25 @@ export function Orders() {
       .finally(() => setProcessing(false));
   }
 
+  function handleCancel(order: IOrder, observation: string): void {
+    setProcessing(true);
+
+    orderStore
+      .cancel(order.id!, observation)
+      .then(() => {
+        toasterStore.success('Pedido cancelado com sucesso.');
+        loadOrders();
+      })
+      .catch(toasterStore.error)
+      .finally(() => setProcessing(false));
+  }
+
   return (
     <Panel bordered style={{ backgroundColor: 'white' }}>
       <OrdersList
         orders={orders}
         loading={processing}
-        onCancel={(order) => console.log('cancel:', order)}
+        onCancel={handleCancel}
       />
     </Panel>
   );

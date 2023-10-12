@@ -1,3 +1,14 @@
+import {
+  faBoxOpen,
+  faEnvelopeCircleCheck,
+  faMotorcycle,
+  faXmark,
+  faTape,
+  faTruckArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ReactNode } from "react";
+
 export enum EOrderStatus {
   PENDING = "PENDING",
   PREPARING = "PREPARING",
@@ -27,14 +38,15 @@ export class EOrderStatusHandler {
         return "Cancelado pelo cliente";
     }
   }
+
   static color(status: EOrderStatus): string {
     switch (status) {
       case EOrderStatus.PENDING:
-        return "#aaaaaa";
+        return "#59c3dd";
       case EOrderStatus.PREPARING:
         return "#283593";
       case EOrderStatus.SHIPPING:
-        return "#283593";
+        return "#ffa600";
       case EOrderStatus.DELIVERING:
         return "#558b2f";
       case EOrderStatus.DONE:
@@ -44,5 +56,35 @@ export class EOrderStatusHandler {
       case EOrderStatus.CANCELED_BY_CLIENT:
         return "#e64a19";
     }
+  }
+
+  static icon(status: EOrderStatus): ReactNode {
+    const style = { color: this.color(status) };
+    let icon: any = null;
+    switch (status) {
+      case EOrderStatus.PENDING:
+        icon = faEnvelopeCircleCheck;
+        break;
+      case EOrderStatus.PREPARING:
+        icon = faTape;
+        break;
+      case EOrderStatus.SHIPPING:
+        icon = faTruckArrowRight;
+        break;
+      case EOrderStatus.DELIVERING:
+        icon = faMotorcycle;
+        break;
+      case EOrderStatus.DONE:
+        icon = faBoxOpen;
+        break;
+      case EOrderStatus.CANCELED_BY_COMPANY:
+        icon = faXmark;
+        break;
+      case EOrderStatus.CANCELED_BY_CLIENT:
+        icon = faXmark;
+        break;
+    }
+
+    return <FontAwesomeIcon icon={icon} style={style} />;
   }
 }

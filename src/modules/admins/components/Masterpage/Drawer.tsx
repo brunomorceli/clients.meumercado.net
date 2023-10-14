@@ -66,7 +66,7 @@ export function DrawerComp() {
           </Typography.Title>
         </DrawerListItem>
 
-        <DrawerListItem onClick={() => handleGoTo('/admins/carts')}>
+        <DrawerListItem onClick={() => handleGoTo('/admins/orders')}>
           <Typography.Title level={4}>
             <ShoppingCartOutlined /> Pedidos
           </Typography.Title>

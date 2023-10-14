@@ -3,3 +3,4 @@ export * from './masterpage.store';
 export * from './company.store';
 export * from './product.store';
 export * from './customer.store';
+export * from './order.store';

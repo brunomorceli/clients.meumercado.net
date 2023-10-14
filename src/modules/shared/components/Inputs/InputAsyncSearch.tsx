@@ -62,12 +62,7 @@ export function InputAsyncSearch(props: InputAsyncSearchProps) {
         <SelectPicker
           searchable={false}
           cleanable={false}
-          data={[
-            { label: "Nome", value: "name" },
-            { label: "Email", value: "email" },
-            { label: "Telefone", value: "phoneNumber" },
-            { label: "CPF/CNPJ", value: "cpfCnpj" },
-          ]}
+          data={props.filters}
           value={filter}
           defaultValue={filter}
           onChange={(val: any) => val && setFilter(val)}

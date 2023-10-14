@@ -87,4 +87,11 @@ export class EOrderStatusHandler {
 
     return <FontAwesomeIcon icon={icon} style={style} />;
   }
+
+  static options(): any[] {
+    return Object.values(EOrderStatus).map((value) => ({
+      label: this.label(value),
+      value,
+    }));
+  }
 }

@@ -1,11 +1,13 @@
-import { IOrder, IOrderSearchResult, IOrderUpdate, IPagination } from "@shared/interfaces";
+import { IOrder, IOrderUpdate } from "@shared/interfaces";
 import { GeneralUtils } from "@shared/utils";
 import axios from "axios";
+import { IFindOrder } from "../interfaces/find-order.interface";
+import { IFindOrderResult } from "../interfaces/find-order-result";
 
 export class OrderService {
   private static baseURL: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
-  static find(data: IPagination): Promise<IOrderSearchResult> {
+  static find(data: IFindOrder): Promise<IFindOrderResult> {
     const params = new URLSearchParams(data as any).toString();
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/admins/orders/find?${params}`;

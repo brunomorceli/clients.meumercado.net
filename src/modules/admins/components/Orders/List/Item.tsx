@@ -1,26 +1,15 @@
-import { List, Panel, Button } from "rsuite";
-import { Subtitle } from "./styles";
-import { EOrderStatus, FormModal, IOrder, InputText, PanelBase } from "@shared";
-import BlockIcon from "@rsuite/icons/Block";
+import { List } from "rsuite";
 import { useEffect, useState } from "react";
-import { Products } from "./Products";
 import { Order } from "./Order";
-import { OrderProgress } from "@shared/components";
+import { IOrderResult } from "@root/modules/admins/interfaces";
 
 interface OrderListProps {
-  order: IOrder;
-  onCancel: (order: IOrder, observation: string) => void;
+  order: IOrderResult;
+  onCancel: (order: IOrderResult, observation: string) => void;
 }
 
 export function Item(props: OrderListProps) {
   const { order, onCancel } = props;
-  const total = (
-    order.orderProducts.map((op) => op.quantity * op.price) || []
-  ).reduce((total, current) => total + current, 0);
-  const isCanceled = [
-    EOrderStatus.CANCELED_BY_CLIENT,
-    EOrderStatus.CANCELED_BY_COMPANY,
-  ].includes(order.status!);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [observation, setObservation] = useState<string>("");
   const minChars = 20;
@@ -55,6 +44,13 @@ export function Item(props: OrderListProps) {
     resetForm();
   }
 
+  return (
+    <List.Item>
+      <Order order={order} />
+    </List.Item>
+  );
+
+  /*
   return (
     <List.Item>
       <Panel header={<Order order={order} />} collapsible>
@@ -110,5 +106,5 @@ export function Item(props: OrderListProps) {
         </Panel>
       </Panel>
     </List.Item>
-  );
+  );*/
 }

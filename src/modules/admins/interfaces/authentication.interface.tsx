@@ -1,10 +1,8 @@
-import { IRole } from "@shared/interfaces";
 
 export interface IAuthentication {
   token: string;
   type:   'OWNER' | 'EMPLOYEE' | 'CLIENT';
   userName: string;
-  roles: IRole[];
   companyId: string;
   tenantId: string;
   companyName: string;
@@ -17,7 +15,6 @@ export class IAuthenticationHandler {
       token: '',
       type: 'OWNER',
       userName: '',
-      roles: [],
       companyId: '',
       tenantId: '',
       companyName: '',

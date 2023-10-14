@@ -1,30 +1,27 @@
 import { FlexboxGrid } from "rsuite";
 import { Label, Title } from "./styles";
-import {
-  EOrderStatusHandler,
-  GeneralUtils,
-  IOrder,
-} from "@shared";
+import { EOrderStatusHandler, GeneralUtils } from "@shared";
+import { IOrderResult } from "@root/modules/admins/interfaces";
 
 interface OrderProps {
-  order: IOrder;
+  order: IOrderResult;
 }
 
 export function Order(props: OrderProps) {
   const { order } = props;
-  const total = (
-    order.orderProducts.map((op) => op.quantity * op.price) || []
-  ).reduce((total, current) => total + current, 0);
 
   return (
     <FlexboxGrid>
-      <FlexboxGrid.Item colspan={8}>
-        <Title>{new Date(order.createdAt!).toLocaleDateString()}</Title>
+      <FlexboxGrid.Item colspan={4}>
+        <Title>{GeneralUtils.localTime(order.createdAt, true)}</Title>
       </FlexboxGrid.Item>
-      <FlexboxGrid.Item colspan={8}>
-        <Title>{GeneralUtils.getAmountLabel(total)}</Title>
+      <FlexboxGrid.Item colspan={12}>
+        <Title>{order.userName}</Title>
       </FlexboxGrid.Item>
-      <FlexboxGrid.Item colspan={8}>
+      <FlexboxGrid.Item colspan={4}>
+        <Title>{GeneralUtils.getAmountLabel(order.total)}</Title>
+      </FlexboxGrid.Item>
+      <FlexboxGrid.Item colspan={4}>
         <Title>
           <Label style={{ color: EOrderStatusHandler.color(order.status!) }}>
             {EOrderStatusHandler.label(order.status!)}

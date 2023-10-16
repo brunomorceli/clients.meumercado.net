@@ -1,11 +1,9 @@
 import { useOrderStore } from "@admins/stores";
 import { useToasterStore } from "@shared/stores";
-import { IOrder } from "@shared/interfaces";
 import { useEffect, useState } from "react";
 import { useStore } from "zustand";
 import { OrdersList } from "./List";
 import { Panel } from "rsuite";
-import { OrderHeader } from "./List/OrderHeader";
 import { TitleBase } from "@shared";
 import { useRouter } from "next/router";
 import { Search } from "./Search";
@@ -33,19 +31,27 @@ export function Orders() {
       .finally(() => setProcessing(false));
   }
 
-  function handleUpdate(order: IOrderResult, observation: string): void {
+  function handleSave(order: IOrderResult): void {
+    const updateData = {
+      id: order.id,
+      status: order.status,
+      observation: order.observation || "",
+    };
     setProcessing(true);
 
-    /*
     orderStore
-      .update(order.id!, observation)
+      .update(updateData)
       .then(() => {
-        toasterStore.success('Pedido cancelado com sucesso.');
-        loadOrders();
+        toasterStore.success("Pedido atualizado com sucesso.");
+        
+        const list = [...orders];
+        const index = list.findIndex((o) => o.id === order.id);
+        list[index].status = order.status;
+
+        setOrders(list);
       })
       .catch(toasterStore.error)
       .finally(() => setProcessing(false));
-      */
   }
 
   function handleSearch(data: IFindOrder): void {
@@ -60,13 +66,18 @@ export function Orders() {
 
   return (
     <>
-      <TitleBase title="Pedidos" onBack={() => router.replace('/admins')}  />
-      <Panel bordered header={<Search onSearch={handleSearch} />} style={{ backgroundColor: 'white' }}>
-        <Panel header={<OrderHeader />} bordered style={{ backgroundColor: 'white' }}>
+      <TitleBase title="Pedidos" onBack={() => router.replace("/admins")} />
+      <Panel
+        bordered
+        header={<Search onSearch={handleSearch} />}
+        style={{ backgroundColor: "white" }}
+      >
+        <Panel bordered style={{ backgroundColor: "white" }}>
           <OrdersList
             orders={orders}
             loading={processing}
-            onCancel={handleUpdate}
+            onSave={handleSave}
+            onPick={(o) => router.replace(`/admins/orders/${o.id}/details`)}
           />
         </Panel>
       </Panel>

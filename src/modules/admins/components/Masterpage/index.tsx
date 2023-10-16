@@ -7,6 +7,7 @@ import { useAuthStore } from "@admins/stores";
 import "../../middlewares/axios.middleware";
 import { CustomFlexboxGrid } from "./styles";
 import { Col } from "rsuite";
+import { Notifications } from "../Notifications";
 
 interface MasterpageProps {
   children: ReactNode | null | undefined;
@@ -33,6 +34,7 @@ export function AdminMasterpage(props: MasterpageProps) {
           {props.children}
         </Col>
       </CustomFlexboxGrid>
+      <Notifications />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { EOrderStatus, IPagination } from "@root/modules/shared";
+import { EOrderStatus } from "@root/modules/shared";
 
 export interface IOrderResult {
   id: string;

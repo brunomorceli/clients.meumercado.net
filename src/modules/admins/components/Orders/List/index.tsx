@@ -7,6 +7,7 @@ interface OrderListProps {
   loading?: boolean;
   orders: IOrderResult[];
   onPick: (order: IOrderResult) => void;
+  onClientDetails: (order: IOrderResult) => void;
   onSave: (order: IOrderResult) => void;
 }
 
@@ -17,14 +18,17 @@ export function OrdersList(props: OrderListProps) {
         <FlexboxGrid.Item colspan={4}>
           <Label>Data</Label>
         </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={12}>
+        <FlexboxGrid.Item colspan={8}>
           <Label>Nome do Cliente</Label>
         </FlexboxGrid.Item>
         <FlexboxGrid.Item colspan={4}>
           <Label>Valor</Label>
         </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={4}>
+        <FlexboxGrid.Item colspan={6}>
           <Label>Status</Label>
+        </FlexboxGrid.Item>
+        <FlexboxGrid.Item colspan={2}>
+          <Label>Ações</Label>
         </FlexboxGrid.Item>
       </FlexboxGrid>
       <List hover style={{ cursor: "pointer" }}>
@@ -34,6 +38,7 @@ export function OrdersList(props: OrderListProps) {
             order={item}
             onPick={props.onPick}
             onSave={props.onSave}
+            onClientDetails={props.onClientDetails}
           />
         ))}
       </List>

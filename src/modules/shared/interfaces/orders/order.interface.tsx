@@ -2,7 +2,7 @@ import { IOrderPayment, IOrderProduct } from ".";
 import { EOrderStatus, IOrderLog } from "../..";
 
 export interface IOrder {
-  id?: string;
+  id?: number;
   userId?: string;
   companyId?: string;
   status?: EOrderStatus;

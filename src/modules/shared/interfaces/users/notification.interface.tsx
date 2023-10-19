@@ -6,7 +6,7 @@ export interface INotification {
   target: ENotificationTarget;
   type: ENotificationType;
   userId?: string;
-  orderId?: string;
+  orderId?: number;
   companyId: string;
   viewed?: boolean;
   createdAt: string;

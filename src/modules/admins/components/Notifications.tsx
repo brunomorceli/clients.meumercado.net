@@ -1,10 +1,11 @@
 import { useStore } from "zustand";
 import { useUserStore } from "../stores";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function Notifications() {
   const userStore = useStore(useUserStore);
   const [last, setLast] = useState<number>(userStore.last);
+  const audioRef = useRef<any>();
 
   useEffect(() => {
     const intervalHandler = setInterval(() => {
@@ -18,11 +19,28 @@ export function Notifications() {
 
   useEffect(() => {
     if (last !== userStore.last) {
-      console.log('ding');
+      play();
     }
 
     setLast(userStore.last);
   }, [userStore.last]);
 
-  return null;
+  function play() {
+    const audio = audioRef.current;
+
+    if (!audio.paused) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+    
+    audio.play();
+  }
+
+  return (
+    <audio
+      ref={audioRef}
+      src="/audios/ding.mp3"
+      style={{ display: "none" }}
+    />
+  );
 }

@@ -15,11 +15,11 @@ import { useStore } from "zustand";
 import { useCustomerStore } from "@root/modules/admins/stores";
 import { useRouter } from "next/router";
 
-interface UserFormProps {
+interface CustomerFormProps {
   userId?: string | null | undefined;
 }
 
-export function CustomerForm(props: UserFormProps) {
+export function CustomerForm(props: CustomerFormProps) {
   const { userId } = props;
   const router = useRouter();
   const toasterStore = useStore(useToasterStore);

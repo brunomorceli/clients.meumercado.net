@@ -1,9 +1,10 @@
 import { EOrderStatus } from "@root/modules/shared";
 
 export interface IOrderResult {
-  id: string;
+  id: number;
   userId: string;
   userName: string;
+  phoneNumber?: string;
   cpfCnpj: string;
   companyId: string;
   status: EOrderStatus;

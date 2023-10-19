@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { useStore } from "zustand";
 import { OrdersList } from "./List";
 import { Panel } from "rsuite";
-import { TitleBase } from "@shared";
+import { EOrderStatus, TitleBase } from "@shared";
 import { useRouter } from "next/router";
 import { Search } from "./Search";
 import { IFindOrder } from "../../interfaces/find-order.interface";
 import { IOrderResult } from "../../interfaces";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping, faHourglassEnd } from "@fortawesome/free-solid-svg-icons";
 
 export function Orders() {
   const router = useRouter();
@@ -16,6 +18,7 @@ export function Orders() {
   const orderStore = useStore(useOrderStore);
   const [orders, setOrders] = useState<IOrderResult[]>([]);
   const [processing, setProcessing] = useState<boolean>(false);
+  const inactiveStatuses = [EOrderStatus.CANCELED_BY_CLIENT, EOrderStatus.CANCELED_BY_COMPANY, EOrderStatus.DONE];
 
   useEffect(() => {
     loadOrders();
@@ -25,10 +28,18 @@ export function Orders() {
     setProcessing(true);
 
     orderStore
-      .find({})
+      .find({ limit: 100 })
       .then((res) => setOrders(res.data))
       .catch(toasterStore.error)
       .finally(() => setProcessing(false));
+  }
+
+  function filterActiveOrders(order: IOrderResult) {
+    return !inactiveStatuses.includes(order.status);
+  }
+  
+  function filterInactiveOrders(order: IOrderResult) {
+    return inactiveStatuses.includes(order.status);
   }
 
   function handleSave(order: IOrderResult): void {
@@ -72,11 +83,24 @@ export function Orders() {
         header={<Search onSearch={handleSearch} />}
         style={{ backgroundColor: "white" }}
       >
-        <Panel bordered style={{ backgroundColor: "white" }}>
+        <h5 style={{ marginBottom: 10 }}><FontAwesomeIcon icon={faCartShopping} /> Pedidos em andamento</h5>
+        <Panel bordered style={{ backgroundColor: "white", marginBottom: 30 }}>
           <OrdersList
-            orders={orders}
+            orders={orders.filter(filterActiveOrders)}
             loading={processing}
             onSave={handleSave}
+            onClientDetails={(order) => router.replace(`/admins/customers/${order.userId}/details`)}
+            onPick={(o) => router.replace(`/admins/orders/${o.id}/details`)}
+          />
+        </Panel>
+
+        <h5 style={{ marginBottom: 10 }}><FontAwesomeIcon icon={faHourglassEnd} /> Pedidos concluídos/cancelados</h5>
+        <Panel bordered style={{ backgroundColor: "white" }}>
+          <OrdersList
+            orders={orders.filter(filterInactiveOrders)}
+            loading={processing}
+            onSave={handleSave}
+            onClientDetails={(order) => router.replace(`/admins/customers/${order.userId}`)}
             onPick={(o) => router.replace(`/admins/orders/${o.id}/details`)}
           />
         </Panel>

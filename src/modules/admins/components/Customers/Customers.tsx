@@ -130,7 +130,7 @@ export function Customers() {
               ),
             }))}
             onClick={(option) =>
-              router.replace(`/admins/customers/${option.value.id}`)
+              router.replace(`/admins/customers/${option.value.id}/details`)
             }
             onRemove={(item) => handleRemove(item.value)}
           />

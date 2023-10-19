@@ -13,3 +13,4 @@ export * from './Toaster';
 export * from './Lists';
 export * from './TooltipHover';
 export * from './Orders';
+export * from './Icons';

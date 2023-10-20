@@ -1,3 +1,4 @@
+import { IOrderResult } from "@root/modules/admins/interfaces";
 import {
   EOrderStatus,
   EOrderStatusHandler,
@@ -11,32 +12,36 @@ import { useEffect, useState } from "react";
 import { FlexboxGrid, Form, SelectPicker } from "rsuite";
 
 interface OrderStatusFormProps {
-  order?: IOrder | null | undefined;
-  onSave: (order: IOrder) => void;
+  order?: IOrder | IOrderResult | null | undefined;
+  onSave: (order: IOrder | IOrderResult) => void;
   onCancel: () => void;
 }
 
 export function OrdersStatusForm(props: OrderStatusFormProps) {
   const { onSave, onCancel } = props;
-  const [order, setOrder] = useState<IOrder>(IOrderHandler.empty());
+  const [order, setOrder] = useState<IOrder | IOrderResult>(IOrderHandler.empty());
   const statusKeys = Object.values(EOrderStatus);
   const [error, setError] = useState<any>({});
   const minChars = 20;
 
   useEffect(() => {
-    props.order && setOrder(props.order);
+    if (Boolean(props.order)) {
+      setOrder({
+        ...props.order!,
+        status: getNextStatus(props.order!.status!),
+      });
+    }
   }, [props.order]);
 
-  function clampStatusIndex(status?: EOrderStatus): number {
+  function getNextStatus(status?: EOrderStatus): EOrderStatus {
     if (!status) {
-      return 0;
+      return EOrderStatus.PENDING;
     }
 
-    return GeneralUtils.clamp(
-      statusKeys.indexOf(status!),
-      0,
-      statusKeys.length - 1
-    );
+    const index = statusKeys.indexOf(status);
+    const nextIndex = GeneralUtils.clamp(index + 1, 0, statusKeys.length - 1);
+
+    return statusKeys[nextIndex];
   }
 
   function handleClose() {
@@ -75,7 +80,6 @@ export function OrdersStatusForm(props: OrderStatusFormProps) {
     onSave(order!);
   }
 
-  const currentIndex = clampStatusIndex(props.order ? props.order.status! : EOrderStatus.PENDING);
   return (
     <FormModal
       title="Alterar status"
@@ -97,11 +101,17 @@ export function OrdersStatusForm(props: OrderStatusFormProps) {
                 readOnly
                 block
                 caretAs={() => null}
-                defaultValue={order.status}
+                defaultValue={
+                  props.order ? props.order.status! : EOrderStatus.PENDING
+                }
                 data={[
                   {
-                    value: order.status,
-                    label: EOrderStatusHandler.label(order.status!),
+                    value: props.order
+                      ? props.order.status
+                      : EOrderStatus.PENDING,
+                    label: EOrderStatusHandler.label(
+                      props.order ? props.order.status! : EOrderStatus.PENDING
+                    ),
                   },
                 ]}
               />
@@ -113,11 +123,12 @@ export function OrdersStatusForm(props: OrderStatusFormProps) {
                 searchable={false}
                 cleanable={false}
                 block
-                defaultValue={currentIndex + 1}
+                defaultValue={order.status}
+                value={order.status}
                 data={[
                   ...EOrderStatusHandler.options().slice(
-                    currentIndex + 1,
-                    statusKeys.length - 1
+                    statusKeys.indexOf(order.status!),
+                    statusKeys.length
                   ),
                 ]}
                 onSelect={(status) => setOrder({ ...order!, status })}

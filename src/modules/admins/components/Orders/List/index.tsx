@@ -1,47 +1,40 @@
-import { FlexboxGrid, List } from "rsuite";
 import { Item } from "./Item";
 import { IOrderResult } from "@root/modules/admins/interfaces";
-import { Label } from "./styles";
+import { IOrder, OrdersStatusForm } from "@root/modules/shared";
+import { useState } from "react";
 
 interface OrderListProps {
   loading?: boolean;
   orders: IOrderResult[];
-  onPick: (order: IOrderResult) => void;
+  onOrderDetails: (order: IOrderResult) => void;
   onClientDetails: (order: IOrderResult) => void;
-  onSave: (order: IOrderResult) => void;
+  onChangeStatus: (order: IOrderResult) => void;
 }
 
 export function OrdersList(props: OrderListProps) {
+  const [orderForm, setOrderForm] = useState<IOrderResult | null>(null);
+
+  function handleChangeStatus(order: IOrder | IOrderResult): void {
+    props.onChangeStatus(order as IOrderResult);
+    setOrderForm(null);
+  }
+
   return (
     <>
-      <FlexboxGrid>
-        <FlexboxGrid.Item colspan={4}>
-          <Label>Data</Label>
-        </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={8}>
-          <Label>Nome do Cliente</Label>
-        </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={4}>
-          <Label>Valor</Label>
-        </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={6}>
-          <Label>Status</Label>
-        </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={2}>
-          <Label>Ações</Label>
-        </FlexboxGrid.Item>
-      </FlexboxGrid>
-      <List hover style={{ cursor: "pointer" }}>
-        {props.orders.map((item, index) => (
-          <Item
-            key={index}
-            order={item}
-            onPick={props.onPick}
-            onSave={props.onSave}
-            onClientDetails={props.onClientDetails}
-          />
-        ))}
-      </List>
+      {props.orders.map((item, index) => (
+        <Item
+          key={index}
+          order={item}
+          onOrderDetails={props.onOrderDetails}
+          onClientDetails={props.onClientDetails}
+          onChangeStatus={setOrderForm}
+        />
+      ))}
+      <OrdersStatusForm
+        order={orderForm}
+        onSave={handleChangeStatus}
+        onCancel={() => setOrderForm(null)}
+      />
     </>
   );
 }

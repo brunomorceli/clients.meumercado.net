@@ -42,7 +42,7 @@ export function Order(props: OrderProps) {
       <Col xs={24} sm={24} md={12} lg={6} xl={6} xxl={6}>
         <Label>Status</Label>
         {canEdit ? (
-          <Button appearance="subtle" onClick={() => onChangeStatus(order)}>
+          <Button size="sm" style={{ marginLeft: -10 }} appearance="subtle" onClick={() => onChangeStatus(order)}>
             <Title style={{ color: EOrderStatusHandler.color(order.status!) }}>
               {EOrderStatusHandler.label(order.status!)}
               &nbsp;

@@ -1,9 +1,10 @@
 import { IOrderPayment, IOrderProduct } from ".";
-import { EOrderStatus, IOrderLog } from "../..";
+import { EOrderStatus, IOrderLog, IUser } from "../..";
 
 export interface IOrder {
   id?: number;
   userId?: string;
+  user?: IUser;
   companyId?: string;
   status?: EOrderStatus;
   observation?: string;
@@ -20,6 +21,13 @@ export class IOrderHandler {
       orderProducts: [],
       payments: [],
       orderLogs: [],
+      status: EOrderStatus.PENDING,
     };
+  }
+
+  static total(order: IOrder): number {
+    return (
+      order.orderProducts.map((op) => op.quantity * op.product?.price!) || []
+    ).reduce((total, current) => total + current, 0);
   }
 }

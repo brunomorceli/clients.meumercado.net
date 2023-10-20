@@ -110,4 +110,17 @@ export class GeneralUtils {
     const timeParts = date.toLocaleTimeString().split(":");
     return `${date.toLocaleDateString()} ${timeParts[0]}:${timeParts[1]}`;
   }
+
+  static maskPhonenumber(phoneNumber: string): string {
+    if (!phoneNumber || phoneNumber.length < 11) {
+      return phoneNumber || '';
+    }
+
+    const ddd = phoneNumber.slice(0, 2);
+    const first = phoneNumber.slice(2, 3);
+    const second = phoneNumber.slice(3, 7);
+    const third = phoneNumber.slice(7);
+
+    return `(${ddd}) ${first} ${second}-${third}`;
+  }
 }

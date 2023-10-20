@@ -17,6 +17,16 @@ export const Title = styled.div`
   text-overflow: ellipsis;
 `;
 
+export const Total = styled.div`
+  color: green;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 export const Subtitle = styled.h6`
   margin-top: 20px;
   margin-bottom: 20px;

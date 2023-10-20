@@ -38,7 +38,7 @@ export class OrderService {
     });
   }
 
-  static get(id: string): Promise<IOrder> {
+  static get(id: number): Promise<IOrder> {
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/admins/orders/${id}/get`;
       axios

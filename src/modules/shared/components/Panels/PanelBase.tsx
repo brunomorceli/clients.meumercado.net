@@ -6,26 +6,33 @@ interface PanelBaseProps {
   title: string;
   children?: ReactNode | null | undefined;
   onAdd?: () => void;
+  actionEl?: ReactNode | null | undefined;
+  style?: any;
   hideTitleDivider?: boolean;
 }
 
 export function PanelBase(props: PanelBaseProps) {
-  const { title, children, hideTitleDivider, onAdd } = props;
+  const { title, children, hideTitleDivider, onAdd, actionEl } = props;
 
+  const element = actionEl || (
+    <ButtonGroup>
+      <PlusButton onClick={onAdd} />
+    </ButtonGroup>
+  );
   return (
     <Panel
       bordered
       shaded
-      style={{ backgroundColor: "white", marginBottom: 20 }}
+      style={{
+        backgroundColor: "white",
+        marginBottom: 20,
+        ...(props.style || {}),
+      }}
       header={
         <>
           <Stack justifyContent="space-between">
             <h5>{title}</h5>
-            {onAdd &&
-              <ButtonGroup>
-                <PlusButton onClick={onAdd} />
-              </ButtonGroup>
-            }
+            {(onAdd || actionEl) && element}
           </Stack>
           {!hideTitleDivider && <Divider />}
         </>

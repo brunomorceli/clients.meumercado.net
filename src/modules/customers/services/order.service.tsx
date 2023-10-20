@@ -33,7 +33,7 @@ export class OrderService {
     });
   }
 
-  static get(id: string): Promise<IOrder> {
+  static get(id: number): Promise<IOrder> {
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/customers/orders/${id}/get`;
       axios
@@ -47,7 +47,7 @@ export class OrderService {
     });
   }
 
-  static cancel(id: string, observation: string): Promise<IOrder> {
+  static cancel(id: number, observation: string): Promise<IOrder> {
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/customers/orders/${id}/cancel`;
       axios

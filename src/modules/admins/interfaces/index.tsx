@@ -3,3 +3,7 @@ export * from './signin-response.interface';
 export * from './confirm.interface';
 export * from './authentication.interface';
 export * from './order-result.interface';
+export * from './find-order.interface';
+export * from './find-order-result.interface';
+export * from './find-order-by-user.interface';
+export * from './find-order-by-user-result.interface';

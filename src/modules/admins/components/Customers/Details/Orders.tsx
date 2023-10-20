@@ -56,6 +56,13 @@ export function Orders(props: OrderProps) {
         />
       </Table.Column>
 
+      <Table.Column width={70}>
+        <Table.HeaderCell>Produtos</Table.HeaderCell>
+        <Table.Cell
+          dataKey="productCount"
+        />
+      </Table.Column>
+
       <Table.Column width={100} fixed="right">
         <Table.HeaderCell>Ações</Table.HeaderCell>
         <Table.Cell>

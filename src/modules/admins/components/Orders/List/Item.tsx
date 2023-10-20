@@ -1,12 +1,4 @@
-import {
-  Button,
-  Dropdown,
-  FlexboxGrid,
-  Form,
-  List,
-  SelectPicker,
-  Stack,
-} from "rsuite";
+import { Col, Dropdown, FlexboxGrid, Form, List, SelectPicker } from "rsuite";
 import { useState } from "react";
 import { IOrderResult } from "@root/modules/admins/interfaces";
 import { Label, Title } from "./styles";
@@ -24,7 +16,6 @@ import {
   faEllipsisVertical,
   faMagnifyingGlass,
   faPenToSquare,
-  faPrint,
 } from "@fortawesome/free-solid-svg-icons";
 
 interface OrderListProps {
@@ -113,13 +104,17 @@ export function Item(props: OrderListProps) {
             <Dropdown
               noCaret
               placement="bottomEnd"
-              title={<FontAwesomeIcon style={{ paddingLeft: 5, paddingRight: 5 }} icon={faEllipsisVertical} />}
+              title={
+                <FontAwesomeIcon
+                  style={{ paddingLeft: 5, paddingRight: 5 }}
+                  icon={faEllipsisVertical}
+                />
+              }
             >
               <Dropdown.Item
                 icon={<FontAwesomeIcon icon={faMagnifyingGlass} />}
                 onClick={() => onPick(order)}
               >
-
                 &nbsp;Detalhes
               </Dropdown.Item>
               {canEdit && (
@@ -130,14 +125,19 @@ export function Item(props: OrderListProps) {
                   &nbsp;Alterar status
                 </Dropdown.Item>
               )}
-              {order.phoneNumber &&
+              {order.phoneNumber && (
                 <Dropdown.Item
                   icon={<WhatsappIcon />}
-                  onClick={() => window.open(`https://api.whatsapp.com/send/?phone=${order.phoneNumber}&type=phone_number`, '_blank')}
+                  onClick={() =>
+                    window.open(
+                      `https://api.whatsapp.com/send/?phone=${order.phoneNumber}&type=phone_number`,
+                      "_blank"
+                    )
+                  }
                 >
                   &nbsp;Mensagem do Whatsapp
                 </Dropdown.Item>
-              }
+              )}
             </Dropdown>
           </FlexboxGrid.Item>
         </FlexboxGrid>
@@ -154,14 +154,15 @@ export function Item(props: OrderListProps) {
             <div>
               <Form.Group style={{ width: "100%", marginBottom: 40 }}>
                 <Form.ControlLabel>Status</Form.ControlLabel>
-                <Stack spacing={5} justifyContent="space-between">
-                  <Stack.Item>
+                <FlexboxGrid justify="space-between">
+                  <FlexboxGrid.Item style={{ width: 'calc(50% - 5px)'}}>
                     <SelectPicker
                       style={{ width: "100%" }}
                       label="De"
                       searchable={false}
                       cleanable={false}
                       readOnly
+                      block
                       caretAs={() => null}
                       defaultValue={order.status}
                       data={[
@@ -171,13 +172,14 @@ export function Item(props: OrderListProps) {
                         },
                       ]}
                     />
-                  </Stack.Item>
-                  <Stack.Item>
+                  </FlexboxGrid.Item>
+                  <FlexboxGrid.Item style={{ width: 'calc(50% - 5px)'}}>
                     <SelectPicker
                       style={{ width: "100%" }}
                       label="Para"
                       searchable={false}
                       cleanable={false}
+                      block
                       defaultValue={statusKeys[currentIndex + 1]}
                       data={[
                         ...EOrderStatusHandler.options().slice(
@@ -189,8 +191,8 @@ export function Item(props: OrderListProps) {
                         setOrderForm({ ...orderForm!, status })
                       }
                     />
-                  </Stack.Item>
-                </Stack>
+                  </FlexboxGrid.Item>
+                </FlexboxGrid>
                 <Form.ErrorMessage show={Boolean(error.status)}>
                   {error.status}
                 </Form.ErrorMessage>

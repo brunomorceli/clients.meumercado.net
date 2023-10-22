@@ -1,7 +1,7 @@
 import { useProductStore } from "@root/modules/customers/stores";
 import { IProduct, useToasterStore } from "@root/modules/shared";
-import { useState } from "react";
-import { AutoComplete, Avatar, InputGroup } from "rsuite";
+import { ReactNode, useState } from "react";
+import { AutoComplete, Avatar, InputGroup, Stack } from "rsuite";
 import { useStore } from "zustand";
 import SearchIcon from "@rsuite/icons/Search";
 import Slug from "slug";
@@ -22,10 +22,25 @@ export function ProductAutocomplete(props: ProductAutocompleteProps) {
   const [debountId, setDebouceId] = useState<any>(0);
   const debounce = props.debounce || 300;
 
+  function getSubtitle(product: IProduct): ReactNode {
+    if (product.quantity === 0) {
+      return <div style={{ color: "#a3a3a3" }}>(Esgotado)</div>;
+    }
+
+    if (product.quantity === 1) {
+      <div style={{ color: "#fc4c4c" }}>Último disponível.</div>;
+    }
+
+    if (product.quantity < 10) {
+      <div>0{product.quantity} em estoque.</div>;
+    }
+
+    return null;
+  }
 
   function handleSearch(val: string): void {
-    const filtered = (val || '').replace(/\s+$/, ' ');
-  
+    const filtered = (val || "").replace(/\s+$/, " ");
+
     setSearch(filtered);
 
     const slug = Slug((filtered || "").trim());
@@ -40,15 +55,17 @@ export function ProductAutocomplete(props: ProductAutocompleteProps) {
     }
 
     clearTimeout(debountId);
-    setDebouceId(setTimeout(() => {
-      productStore
-        .find({ label: slug, limit: props.limit || 10 })
-        .then((res) => {
-          cache[slug] = res;
-          setProducts(res.data);
-        })
-        .catch(toasterStore.error);
-    }, debounce));
+    setDebouceId(
+      setTimeout(() => {
+        productStore
+          .find({ label: slug, limit: props.limit || 10 })
+          .then((res) => {
+            cache[slug] = res;
+            setProducts(res.data);
+          })
+          .catch(toasterStore.error);
+      }, debounce)
+    );
   }
 
   return (
@@ -63,16 +80,23 @@ export function ProductAutocomplete(props: ProductAutocompleteProps) {
         renderMenuItem={(_, item) => {
           const product = products.find((p) => p.id === item.value);
           const img = product?.pictures.length! > 0 ? product?.pictures[0] : "";
+          const outOfStock =
+            !product?.unlimited && (product?.quantity || 0) < 1;
 
           return (
-            <div
-              style={{ verticalAlign: "middle" }}
-              onClick={() => props.onPick(product!)}
+            <Stack
+              onClick={() => !outOfStock && props.onPick(product!)}
+              justifyContent="space-between"
+              alignItems="center"
             >
-              <Avatar src={img} style={{ verticalAlign: 'middle' }} />
-              &nbsp;
-              {product?.label}
-            </div>
+              <Avatar src={img} style={{ verticalAlign: "middle" }} />
+              <Stack.Item flex={1} style={{ marginLeft: 5 }}>
+                <div style={{ fontWeight: 500 }}>
+                  {product?.label.toUpperCase()}
+                </div>
+                {getSubtitle(product!)}
+              </Stack.Item>
+            </Stack>
           );
         }}
       />

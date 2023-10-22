@@ -1,5 +1,5 @@
 
-import { ICartProduct } from "@root/modules/shared";
+import { ICartProduct, IStockProduct } from "@root/modules/shared";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -10,6 +10,7 @@ interface useCartStoreProps {
   getProducts: (companyId: string) => ICartProduct[];
   removeProduct: (companyId: string, productId: string) => void;
   clear: (companyId: string) => void;
+  updateStock: (companyId: string, stockProducts: IStockProduct[]) => ICartProduct[];
 }
 
 export const useCartStore = create(
@@ -93,7 +94,27 @@ export const useCartStore = create(
 
         carts[companyId].products = [];
         set({ ...cache, carts });
-      }
+      },
+
+      updateStock: (companyId: string, stockProducts: IStockProduct[]) => {
+        const carts = get().carts;
+        if (!carts[companyId]) {
+          return;
+        }
+
+        carts[companyId].products.map((cartProduct: ICartProduct) => {
+          const stockProduct = stockProducts.find((stockProduct) => stockProduct.productId === cartProduct.product.id);
+          if (stockProduct) {
+            cartProduct.product.quantity = stockProduct.quantity;
+          }
+
+          return cartProduct;
+        })
+
+        set({ ...get(), carts });
+
+        return carts[companyId].products;
+      },
     }),
     { name: "customers-cart-store" }
   )

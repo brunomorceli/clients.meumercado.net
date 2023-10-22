@@ -1,4 +1,4 @@
-import { IOrder, IOrderSearchResult, IPagination } from "@shared/interfaces";
+import { ICheckStock, ICheckStockResult, IOrder, IOrderSearchResult, IPagination } from "@shared/interfaces";
 import { GeneralUtils } from "@shared/utils";
 import axios from "axios";
 
@@ -56,6 +56,19 @@ export class OrderService {
         .catch((e) =>
           reject(
             GeneralUtils.getErrorMessage(e, "Erro ao tentar cancelar compra.")
+          )
+        );
+    });
+  }
+
+  static checkStock(data: ICheckStock): Promise<ICheckStockResult> {
+    return new Promise((resolve, reject) => {
+      const url = `${this.baseURL}/customers/orders/check-stock`;
+      axios.post(url, data)
+        .then((res) => resolve(res.data))
+        .catch((e) =>
+          reject(
+            GeneralUtils.getErrorMessage(e, "Erro ao tentar verificar estoque.")
           )
         );
     });

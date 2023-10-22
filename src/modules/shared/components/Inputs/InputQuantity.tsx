@@ -21,8 +21,8 @@ interface InputQuantityProps {
 
 export function InputQuantity(props: InputQuantityProps) {
   const { value } = props;
-  const min = props.min || 1;
-  const max = props.max || Infinity;
+  const min = props.min !== undefined ? props.min : 1;
+  const max = props.max !== undefined ? props.max : Infinity;
   const step = props.step || 1;
   const sulfix = GeneralUtils.getSulfixLabel(props.sulfix, " ");
   const label = props.showLimit

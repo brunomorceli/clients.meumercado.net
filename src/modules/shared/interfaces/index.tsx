@@ -11,3 +11,6 @@ export * from './select-option.iterface';
 export * from './attribute.interface';
 export * from './orders';
 export * from './cart-product.interface';
+export * from './stock-product.interface';
+export * from './check-stock.interface';
+export * from './check-stock-result.interface';

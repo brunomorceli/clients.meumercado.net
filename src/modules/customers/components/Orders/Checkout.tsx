@@ -10,10 +10,12 @@ import {
   ECreditCardType,
   GeneralUtils,
   ICartProduct,
+  ICheckStock,
   IOrder,
   IOrderPayment,
   IOrderPaymentHandler,
   IOrderProductHandler,
+  IStockProduct,
   PanelBase,
   PaymentMethodForm,
   TitleBase,
@@ -40,6 +42,27 @@ export function OrderCheckout() {
   const [processing, setProcessing] = useState<boolean>(false);
   const [sent, setSent] = useState<boolean>(false);
 
+  async function updateStock(
+    clientId: string,
+    cartProducts: ICartProduct[]
+  ): Promise<ICartProduct[]> {
+    setProcessing(true);
+
+    const data: ICheckStock = {
+      products: cartProducts.map(
+        (p) =>
+          ({
+            productId: p.product.id,
+            quantity: p.quantity,
+          } as IStockProduct)
+      ),
+    };
+
+    const res = await orderStore.checkStock(data);
+
+    return cartStore.updateStock(clientId, res.products);
+  }
+
   function handleChageProduct(product: ICartProduct): void {
     cartStore.addProduct(company.id!, product);
   }
@@ -59,12 +82,25 @@ export function OrderCheckout() {
 
     setProcessing(true);
 
-    orderStore
-      .create(order)
-      .then(() => {
-        setSent(true);
-        cartStore.clear(company.id!);
-        toasterStore.success('Pedido enviado com sucesso!');
+    updateStock(company.id!, products)
+      .then((cartProducts) => {
+        if (cartProducts.some((cp) => cp.quantity > cp.product.quantity)) {
+          toasterStore.error(
+            "Alguns produtos se encontram fora de estoque, por favor, atualize os valores antes de prosseguir."
+          );
+
+          return;
+        }
+
+        orderStore
+          .create(order)
+          .then(() => {
+            setSent(true);
+            cartStore.clear(company.id!);
+            toasterStore.success("Pedido enviado com sucesso!");
+          })
+          .catch(toasterStore.error)
+          .finally(() => setProcessing(false));
       })
       .catch(toasterStore.error)
       .finally(() => setProcessing(false));

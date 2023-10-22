@@ -22,7 +22,6 @@ export class ProductService {
         .get(url)
         .then((res) => resolve(res.data))
         .catch((e) => {
-          console.log(e)
           reject(GeneralUtils.getErrorMessage(e, 'Erro ao tentar carregar produtos.'));
         });
     });

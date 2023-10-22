@@ -22,7 +22,6 @@ export function Search(props: SearchProps) {
   const [status, setStatus] = useState<string>("all");
 
   function handleRemoveField(option: IOption): void {
-    console.log(option)
     setSelectedOptions(
       selectedOptions.filter((sf) => sf.field !== option.field)
     );

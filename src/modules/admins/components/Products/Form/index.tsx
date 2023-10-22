@@ -65,10 +65,6 @@ export function ProductForm(props: ProductFormProps) {
       (price) => !product.showPrice || Number(price) > 0,
       "Este campo é obrigatório"
     ),
-    quantity: Schema.Types.NumberType("Este campo deve ser um número.").addRule(
-      (quantity) => product.unlimited || Number(quantity) > 0,
-      "Este campo é obrigatório"
-    ),
     sku: Schema.Types.StringType().minLength(
       3,
       "O SKU deve conter pelo menos 3 letras"
@@ -272,7 +268,7 @@ export function ProductForm(props: ProductFormProps) {
           <FlexboxGrid justify="space-between">
             <Col xs={24} sm={24} md={20} lg={20} xl={20}>
               <InputNumber
-                label="Quantidade (obrigatório)"
+                label="Quantidade"
                 value={product.quantity || ""}
                 error={formError.quantity}
                 onChange={(value) => handleChangeProductKey("quantity", value)}

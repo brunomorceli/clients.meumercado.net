@@ -1,12 +1,9 @@
-import { AuthGuard } from "@shared/components";
+import { ProductsByCategory } from "@customers/components";
 import { useRouter } from "next/router";
 
-export default function FavoritesPage() {
+export default function ProductByCategoryPage() {
   const router = useRouter();
   const { id } = router.query;
-  return (
-    <AuthGuard>
-      <h5>Produtos por categoria {id}</h5>
-    </AuthGuard>
-  )
+
+  return <ProductsByCategory categoryId={id as string} />;
 }

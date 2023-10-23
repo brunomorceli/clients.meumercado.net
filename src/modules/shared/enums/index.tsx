@@ -10,3 +10,4 @@ export * from './credit-card-type.enum';
 export * from './order-status.enum';
 export * from './notification-target.enum';
 export * from './notification-type.enum';
+export * from './status-group.enum';

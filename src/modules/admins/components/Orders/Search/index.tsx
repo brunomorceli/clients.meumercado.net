@@ -48,9 +48,21 @@ export function Search(props: SearchProps) {
     props.onSearch(findOder);
   }
 
-  const availableOptions = options.filter(
-    (o) => !selectedOptions.some((so) => so.field === o.field)
-  );
+  const availableOptions = options
+    .filter((o) => {
+      if (o.field === EField.cpfCnpj && search.length !== 0) {
+        return !!search.match(/^[0-9]/);
+      }
+
+      if (o.field === EField.userName && search.length !== 0) {
+        return !!search.trim().match(/^[a-zA-Z]/);
+      }
+
+      return true;
+    })
+    .filter(
+      (o) => !selectedOptions.some((so) => so.field === o.field)
+    );
 
   return (
     <FlexboxGrid justify="end">

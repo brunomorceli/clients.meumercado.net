@@ -32,6 +32,9 @@ export function Searchbar(props: SearchbarProps) {
           <List hover style={{ cursor: "pointer" }}>
             {options.map((item, index) => (
               <List.Item key={index} onClick={() => handleSelectOption(item)}>
+                {item.icon ? (
+                  <div style={{ marginRight: 10 }}>{item.icon}</div>
+                ) : null}
                 {item.label}: <strong>{search}</strong>
               </List.Item>
             ))}

@@ -10,4 +10,5 @@ export interface IProductSearch extends IPagination {
   categories?: string[];
   page?: number;
   size?: number;
+  random?: boolean;
 }

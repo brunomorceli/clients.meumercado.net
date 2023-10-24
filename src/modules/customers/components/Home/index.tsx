@@ -36,7 +36,7 @@ export function CustomerHome() {
   const { companyId } = authStore;
 
   useEffect(() => {
-    productStore.find({}).then((res) => setProducts(res.data));
+    productStore.find({ random: true }).then((res) => setProducts(res.data));
   }, []);
 
   function handleAddProduct(product: IProduct): void {

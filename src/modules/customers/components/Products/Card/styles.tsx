@@ -3,14 +3,13 @@ import { styled } from "styled-components";
 export const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: calc(100% - 20px);
-  height: calc(100% - 20px);
+  width: calc(100%);
+  height: calc(100%);
 
   border-style: solid;
   border-width: 1px;
   border-color: #dbdbdb;
   border-radius: 10px;
-  margin: 10px !important;
   margin-bottom: 10px;
 
   .button-container {

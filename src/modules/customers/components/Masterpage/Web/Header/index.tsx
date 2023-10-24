@@ -121,7 +121,7 @@ export function Header(props: HeaderProps) {
           ) : (
             <Item onClick={() => masterpageStore.toggleLogin()}>
               <FontAwesomeIcon icon={faRightToBracket} />
-              &nbsp; Entrar
+              &nbsp; Entrar | Cadastrar
             </Item>
           )}
         </Stack>

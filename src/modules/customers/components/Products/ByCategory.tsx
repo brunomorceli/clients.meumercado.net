@@ -11,12 +11,13 @@ import {
 import {
   CategoriesUtils,
   IProduct,
+  NoProductFoundResult,
   TitleBase,
   useToasterStore,
 } from "@root/modules/shared";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Placeholder } from "rsuite";
+import { Pagination, Placeholder } from "rsuite";
 import { useStore } from "zustand";
 
 const titleStyle = {
@@ -41,11 +42,12 @@ export function ProductsByCategory(props: ProductsByCategoryProps) {
   const masterpageStore = useStore(useMasterpageStore);
   const productStore = useStore(useProductStore);
   const toastStore = useStore(useToasterStore);
-  const [categories, setCategories] = useState<any[]>([]);
-  const [products, setProducts] = useState<IProduct[]>([]);
+  const [category, setCategory] = useState<any>({});
   const [processing, setProcessing] = useState<boolean>(true);
+  const [products, setProducts] = useState<IProduct[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
+  const resultsPerPage = 12;
 
   const { companyId } = authStore;
 
@@ -59,39 +61,44 @@ export function ProductsByCategory(props: ProductsByCategoryProps) {
     companyStore
       .get()
       .then((company) => {
-        const cats = CategoriesUtils.getPlainCategories(company);
-        setCategories(cats);
+        const plainCategories = CategoriesUtils.getPlainCategories(company);
 
-        const category = cats.find((cat) => cat.value === props.categoryId);
-        if (!category) {
+        const categoryFound = plainCategories.find(
+          (cat) => cat.value === props.categoryId
+        );
+        if (!categoryFound) {
           toastStore.error("Categoria inválida");
           router.replace("/customers");
           return;
         }
 
-        const catIds = [
-          category.value,
-          ...((category.children || []).map((c: any) => c.value) || []),
-        ];
-
-        loadProducts(catIds);
+        setCategory(categoryFound);
+        loadProducts([categoryFound.value], 1);
       })
       .catch(toastStore.error)
       .finally(() => setProcessing(false));
   }
 
-  function loadProducts(categories: string[]): void {
+  function loadProducts(categories: string[], page = 1): void {
     setProcessing(true);
 
     productStore
-      .find({ categories })
-      .then((res) => setProducts(res.data))
+      .find({ categories, limit: resultsPerPage, page })
+      .then((res) => {
+        setTotal(res.total);
+        setProducts(res.data);
+      })
       .finally(() => setProcessing(false));
   }
 
   function handleAddProduct(product: IProduct): void {
     cartStore.addProduct(companyId, { quantity: 1, product });
     masterpageStore.setCart(true);
+  }
+
+  function handleChangePage(newPage: number): void {
+    setPage(newPage);
+    loadProducts([category.value], newPage);
   }
 
   if (processing) {
@@ -116,21 +123,35 @@ export function ProductsByCategory(props: ProductsByCategoryProps) {
     );
   }
 
-  const categoryLabel =
-    (categories.find((c) => c.value === props.categoryId) || {}).label || "N/I";
   return (
     <>
-      <TitleBase title={`Categoria: ${categoryLabel}`} />
+      <TitleBase title={`Categoria: ${category.label}`} />
       <div style={titleStyle}>
         <FontAwesomeIcon icon={faCartShopping} />
-        &nbsp; Produtos de: {categoryLabel}
+        &nbsp; Produtos de: {category.label}
       </div>
-
-      <ProductCard
-        products={[...products]}
-        onAdd={handleAddProduct}
-        onDetails={(p) => router.replace(`/customers/products/${p.id}/details`)}
-      />
+      {products.length !== 0 && (
+        <ProductCard
+          products={[...products]}
+          onAdd={handleAddProduct}
+          onDetails={(p) =>
+            router.replace(`/customers/products/${p.id}/details`)
+          }
+        />
+      )}
+      {products.length > resultsPerPage && (
+        <Pagination
+          size="lg"
+          total={total}
+          activePage={page}
+          limit={resultsPerPage}
+          onChangePage={handleChangePage}
+          ellipsis
+        />
+      )}
+      {products.length === 0 &&
+        <NoProductFoundResult />
+      }
     </>
   );
 }

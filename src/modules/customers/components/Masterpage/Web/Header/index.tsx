@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 import { Badge, Col, Dropdown, FlexboxGrid, Stack } from "rsuite";
 import CogIcon from "@rsuite/icons/legacy/Cog";
 import { useRouter } from "next/router";
@@ -95,7 +97,11 @@ export function Header(props: HeaderProps) {
       <HeaderContainer backgroundColor={props.backgroundColor}>
         <Stack alignItems="center" justifyContent="flex-start">
           <CompanyName onClick={() => router.replace("/")} color={props.color}>
-            {company.name}
+            {company.logo ? (
+              <img src={company.logo} height={45} />
+            ) : (
+              company.name
+            )}
           </CompanyName>
           <Stack.Item grow={1}>
             <ProductAutocomplete onPick={handleAddProduct} />
@@ -115,8 +121,7 @@ export function Header(props: HeaderProps) {
           ) : (
             <Item onClick={() => masterpageStore.toggleLogin()}>
               <FontAwesomeIcon icon={faRightToBracket} />
-              &nbsp;
-              Entrar
+              &nbsp; Entrar
             </Item>
           )}
         </Stack>

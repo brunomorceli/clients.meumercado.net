@@ -6,7 +6,7 @@ import {
   ICompany,
   ICompanyHandler,
 } from "@shared/interfaces";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ImageGalery,
   InputText,
@@ -74,42 +74,37 @@ export function ProductForm(props: ProductFormProps) {
       "O Código de barras deve conter pelo menos 3 letras"
     ),
   });
-  const loadCompany = useCallback(
-    (companyId: string) => {
-      setProcessing(true);
-
-      companyStore
-        .get(companyId)
-        .then(setCompany)
-        .catch((e) => toasterStore.error(e))
-        .finally(() => setProcessing(false));
-    },
-    [companyStore, toasterStore]
-  );
-
-  const loadProduct = useCallback(
-    (id: string) => {
-      setProcessing(true);
-
-      productStore
-        .get(id)
-        .then(setProduct)
-        .catch((e) => toasterStore.error(e))
-        .finally(() => setProcessing(false));
-    },
-    [productStore, toasterStore]
-  );
 
   useEffect(() => {
-    loadCompany(authStore.companyId);
-  }, [loadCompany, authStore.companyId]);
+    authStore.companyId && loadCompany(authStore.companyId);
+  }, [authStore.companyId]);
 
   useEffect(() => {
     productId && loadProduct(productId);
-  }, [productId, loadProduct]);
+  }, [productId]);
 
   function handleChangeProductKey(key: string, val: any): void {
     setProduct({ ...product, [key]: val });
+  }
+
+  function loadCompany(companyId: string) {
+    setProcessing(true);
+
+    companyStore
+      .get(companyId)
+      .then(setCompany)
+      .catch((e) => toasterStore.error(e))
+      .finally(() => setProcessing(false));
+  }
+
+  function loadProduct(id: string) {
+    setProcessing(true);
+
+    productStore
+      .get(id)
+      .then(setProduct)
+      .catch((e) => toasterStore.error(e))
+      .finally(() => setProcessing(false));
   }
 
   function getFlatCategories(item: any, dst?: any[]) {
@@ -278,8 +273,10 @@ export function ProductForm(props: ProductFormProps) {
               <InputText
                 label="Unidade"
                 value={product.quantitySulfix}
-                options={{ placeholder: 'Ex: G, CM, KG'}}
-                onChange={(value) => handleChangeProductKey("quantitySulfix", value)}
+                options={{ placeholder: "Ex: G, CM, KG" }}
+                onChange={(value) =>
+                  handleChangeProductKey("quantitySulfix", value)
+                }
               />
             </Col>
           </FlexboxGrid>

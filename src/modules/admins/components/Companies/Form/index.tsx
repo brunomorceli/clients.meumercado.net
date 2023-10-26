@@ -9,7 +9,7 @@ import {
   PanelBase,
   SaveButton,
 } from "@shared/components";
-import { CategoryForm } from '../Categories';
+import { CategoryForm } from "../Categories";
 import { FlexboxGrid, Form, Row, Schema } from "rsuite";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -42,12 +42,15 @@ export function CompanyForm(props: CompanyFormProps) {
   const [company, setCompany] = useState<ICompany>(ICompanyHandler.empty());
   const formRef = useRef<any>();
   const [formError, setFormError] = useState<any>({});
-  const loadCompany = useCallback((companyId: string) => {
-    companyStore
-      .get(companyId)
-      .then((c) => setCompany(c))
-      .catch((e) => toasterStore.error(e));
-  }, [toasterStore, companyStore]);
+  const loadCompany = useCallback(
+    (companyId: string) => {
+      companyStore
+        .get(companyId)
+        .then((c) => setCompany(c))
+        .catch((e) => toasterStore.error(e));
+    },
+    [toasterStore, companyStore]
+  );
 
   useEffect(() => {
     companyId && loadCompany(companyId);
@@ -59,7 +62,7 @@ export function CompanyForm(props: CompanyFormProps) {
 
   function handleSave(): void {
     if (!formRef.current.check()) {
-      toasterStore.error('Por favor, preencha os campos obrigatórios.')
+      toasterStore.error("Por favor, preencha os campos obrigatórios.");
       return;
     }
 
@@ -70,7 +73,7 @@ export function CompanyForm(props: CompanyFormProps) {
       .then((updatedCompany) => {
         setCompany(updatedCompany);
         authStore.updateCompany(updatedCompany);
-        toasterStore.success('Empresa atualizada com sucesso.');
+        toasterStore.success("Empresa atualizada com sucesso.");
       })
       .catch(toasterStore.error);
   }
@@ -111,23 +114,36 @@ export function CompanyForm(props: CompanyFormProps) {
         </Row>
         <Row style={{ marginBottom: 20 }}>
           <ImageGalery
-            images={company.logo ?  [company.logo] : []}
-            onChange={(images) => handleChangeCompanyKey('logo', images?.[0] || null)}
+            images={company.logo ? [company.logo] : []}
+            onChange={(images) =>
+              handleChangeCompanyKey("logo", images?.[0] || null)
+            }
             disableAdd={Boolean(company.logo)}
+          />
+        </Row>
+        <Row>
+          <Form.ControlLabel>Imagens de capa</Form.ControlLabel>
+        </Row>
+        <Row style={{ marginBottom: 20 }}>
+          <ImageGalery
+            images={company.covers}
+            onChange={(images) => handleChangeCompanyKey("covers", images)}
           />
         </Row>
         <InputText
           label={`Descrição (${company.description?.length || 0}/${2024})`}
           value={company.description || ""}
           error={formError.description}
-          options={{ as: 'textarea', rows:5 }}
-          onChange={(value) => handleChangeCompanyKey("description", value.substring(0, 2024))}
+          options={{ as: "textarea", rows: 5 }}
+          onChange={(value) =>
+            handleChangeCompanyKey("description", value.substring(0, 2024))
+          }
         />
       </PanelBase>
 
       <PanelBase title="Localização">
         <AddressForm
-          data={{...company}}
+          data={{ ...company }}
           error={formError}
           onChange={(data: any) => setCompany({ ...company, ...data })}
         />

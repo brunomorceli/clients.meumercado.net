@@ -18,6 +18,7 @@ export interface ICompany {
   email?: string;
   responsible?: string;
   logo?: string | null | undefined;
+  covers: string[],
   categories: any[],
   status?: ECompanyStatusType;
   createdAt?: string;
@@ -40,6 +41,7 @@ export class ICompanyHandler {
       email: '',
       responsible: '',
       logo: null,
+      covers: [],
       categories: [],
       status: ECompanyStatusType.ACTIVE,
     };

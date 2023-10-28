@@ -15,22 +15,23 @@ import SearchIcon from "@rsuite/icons/Search";
 
 interface ProductCardProps {
   product: IProduct;
+  expanded?: boolean;
   onAdd: (product: IProduct) => void;
   onDetails: (product: IProduct) => void;
 }
 
 export function ProductCardItem(props: ProductCardProps) {
-  const { product, onAdd, onDetails } = props;
+  const { product, expanded, onAdd, onDetails } = props;
   const discount: any = null;
   const price = `${GeneralUtils.getAmountLabel(
     product.price
   )}${GeneralUtils.getSulfixLabel(product.quantitySulfix, "/")}`;
 
   return (
-    <CardContainer>
+    <CardContainer expanded={expanded}>
       <CardImage
         src={product.pictures?.[0] || "images/no-image.png"}
-        onClick={() => onDetails(product)}
+        onClick={() => onAdd(product)}
       />
       {discount && (
         <CardPercentFlag>

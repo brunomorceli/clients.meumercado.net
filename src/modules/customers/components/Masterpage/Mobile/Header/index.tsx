@@ -1,4 +1,4 @@
-import { Badge, Col, Dropdown, FlexboxGrid, Stack } from "rsuite";
+import { Badge, Dropdown, Stack } from "rsuite";
 import CogIcon from "@rsuite/icons/legacy/Cog";
 import { useRouter } from "next/router";
 import { useStore } from "zustand";
@@ -30,12 +30,7 @@ import MenuIcon from "@rsuite/icons/Menu";
 import { useState } from "react";
 import { Categories } from "./Categories";
 
-interface HeaderProps {
-  backgroundColor?: string;
-  color?: string;
-}
-
-export function Header(props: HeaderProps) {
+export function Header() {
   const router = useRouter();
   const authStore = useStore(useAuthStore);
   const masterpageStore = useStore(useMasterpageStore);
@@ -92,7 +87,7 @@ export function Header(props: HeaderProps) {
 
   return (
     <>
-      <HeaderContainer backgroundColor={props.backgroundColor}>
+      <HeaderContainer>
         <Stack alignItems="center" justifyContent="space-between">
           <Item
             style={{ marginLeft: 10 }}
@@ -101,23 +96,21 @@ export function Header(props: HeaderProps) {
             <MenuIcon />
           </Item>
           <Stack.Item grow={1}>
-            <CompanyName
-              onClick={() => router.replace("/")}
-              color={props.color}
-            >
+            <CompanyName onClick={() => router.replace("/")}>
               {company.name}
             </CompanyName>
           </Stack.Item>
           <Stack.Item style={{ width: 110 }}>
-            <Item onClick={masterpageStore.toggleCart}>
-              <FontAwesomeIcon
-                icon={faCartShopping}
-                style={{ marginRight: 5 }}
-              />
-              &nbsp;
-              {products.length !== 0 && <Badge content={products.length} />}
-            </Item>
-
+            {products.length !== 0 && (
+              <Item onClick={masterpageStore.toggleCart}>
+                <FontAwesomeIcon
+                  icon={faCartShopping}
+                  style={{ marginRight: 5 }}
+                />
+                &nbsp;
+                <Badge content={products.length} />
+              </Item>
+            )}
             {authStore.authenticated ? (
               <Settings />
             ) : (
@@ -128,7 +121,7 @@ export function Header(props: HeaderProps) {
           </Stack.Item>
         </Stack>
       </HeaderContainer>
-      <SecondaryHeader backgroundColor={props.backgroundColor}>
+      <SecondaryHeader>
         <ProductAutocomplete onPick={handleAddProduct} />
       </SecondaryHeader>
       <Categories

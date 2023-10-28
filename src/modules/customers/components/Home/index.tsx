@@ -28,13 +28,13 @@ const carouselImgStyle = {
 };
 
 const titleStyle = {
-  color: "white",
+  color: 'var(--header-text-color)',
   fontSize: 20,
   marginTop: 20,
   marginBottom: 20,
   padding: 10,
   borderRadius: 5,
-  backgroundColor: "#8bc34a",
+  backgroundColor: "var(--primary-color)",
 };
 
 export function CustomerHome() {

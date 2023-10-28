@@ -6,7 +6,7 @@ import { AdminMasterpage } from "@admins/components";
 import { CustomerMasterpage } from "@customers/components/Masterpage";
 
 import 'rsuite/dist/rsuite.min.css';
-import '../styles/globals.css'
+import '../styles/globals.css';
 
 import { Toaster } from "@shared/components";
 import { GeneralUtils } from "@root/modules/shared";
@@ -25,10 +25,13 @@ export default function App({ Component, pageProps }: AppProps) {
   const subdomain = GeneralUtils.getSubdomain(window! ? window.location.href : '');
   if (subdomain) {
     return (
-      <CustomerMasterpage>
-        <Component {...pageProps} />
-        <Toaster />
-      </CustomerMasterpage>
+      <div className="my-test">
+        <CustomerMasterpage>
+          <Component {...pageProps} />
+          <Toaster />
+        </CustomerMasterpage>
+
+      </div>
     );
   }
 

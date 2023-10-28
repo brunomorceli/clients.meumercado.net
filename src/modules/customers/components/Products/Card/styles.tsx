@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 
-export const CardContainer = styled.div`
+export const CardContainer = styled.div<{ expanded?: boolean }>`
   display: flex;
   flex-direction: column;
   width: calc(100%);
@@ -17,7 +17,7 @@ export const CardContainer = styled.div`
     width: 100%;
     vertical-align: bottom !important;
     overflow: hidden;
-    height: 0px;
+    height: ${(props) => props.expanded ? 40 : 0}px;
 
     transition: all 0.2s;
   }

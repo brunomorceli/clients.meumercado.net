@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable @next/next/no-img-element */
 import { Badge, Col, Dropdown, FlexboxGrid, Stack } from "rsuite";
 import CogIcon from "@rsuite/icons/legacy/Cog";
 import { useRouter } from "next/router";
@@ -34,12 +32,7 @@ import { useState } from "react";
 import { Categories } from "./Categories";
 import ArrowDownLineIcon from "@rsuite/icons/ArrowDownLine";
 
-interface HeaderProps {
-  backgroundColor?: string;
-  color?: string;
-}
-
-export function Header(props: HeaderProps) {
+export function Header() {
   const router = useRouter();
   const authStore = useStore(useAuthStore);
   const masterpageStore = useStore(useMasterpageStore);
@@ -94,9 +87,9 @@ export function Header(props: HeaderProps) {
 
   return (
     <>
-      <HeaderContainer backgroundColor={props.backgroundColor}>
+      <HeaderContainer>
         <Stack alignItems="center" justifyContent="flex-start">
-          <CompanyName onClick={() => router.replace("/")} color={props.color}>
+          <CompanyName onClick={() => router.replace("/")}>
             {company.logo ? (
               <img src={company.logo} height={45} />
             ) : (
@@ -106,16 +99,16 @@ export function Header(props: HeaderProps) {
           <Stack.Item grow={1}>
             <ProductAutocomplete onPick={handleAddProduct} />
           </Stack.Item>
-          <Item onClick={masterpageStore.toggleCart}>
-            <FontAwesomeIcon icon={faCartShopping} style={{ marginRight: 5 }} />{" "}
-            Carrinho
-            {products.length !== 0 && (
-              <>
-                &nbsp;
-                <Badge content={products.length} />
-              </>
-            )}
-          </Item>
+          {products.length !== 0 && (
+            <Item onClick={masterpageStore.toggleCart}>
+              <FontAwesomeIcon
+                icon={faCartShopping}
+                style={{ marginRight: 5 }}
+              />
+              Carrinho &nbsp;
+              <Badge content={products.length} />
+            </Item>
+          )}
           {authStore.authenticated ? (
             <Settings></Settings>
           ) : (
@@ -126,7 +119,7 @@ export function Header(props: HeaderProps) {
           )}
         </Stack>
       </HeaderContainer>
-      <SecondaryHeader backgroundColor={props.backgroundColor}>
+      <SecondaryHeader>
         <Item onClick={() => router.replace("/customers")}>
           <FontAwesomeIcon icon={faHouse} /> Início
         </Item>

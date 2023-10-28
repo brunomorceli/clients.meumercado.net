@@ -1,4 +1,4 @@
-import { ICompany, ICompanySearchResult } from "@shared/interfaces";
+import { ICompany, ICompanySearchResult, ITheme } from "@shared/interfaces";
 import { ICompanySearch } from "@shared/interfaces/company-search.interface";
 import { CompanyService } from "@admins/services";
 import { create } from "zustand";

@@ -14,3 +14,4 @@ export * from './cart-product.interface';
 export * from './stock-product.interface';
 export * from './check-stock.interface';
 export * from './check-stock-result.interface';
+export * from './theme.interface';

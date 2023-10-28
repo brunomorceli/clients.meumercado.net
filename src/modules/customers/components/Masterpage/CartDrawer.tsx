@@ -42,6 +42,9 @@ export function CartDrawer(props: CartDrawerProps) {
 
   function handleRemove(product: ICartProduct): void {
     cartStore.removeProduct(company.id!, product.product.id!);
+    if (products.length === 0) {
+      masterpageStore.setCart(false);
+    }
   }
 
   function handleFinish(): void {

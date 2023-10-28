@@ -12,3 +12,4 @@ export * from "./InputCurrency";
 export * from "./InputCpfCnpj";
 export * from "./InputQuantity";
 export * from "./InputSelect";
+export * from "./ColorPicker";

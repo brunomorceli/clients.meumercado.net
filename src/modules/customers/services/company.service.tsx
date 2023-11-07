@@ -1,4 +1,4 @@
-import { ICompany } from "@shared/interfaces";
+import { ICompany, IThemeHandler } from "@shared/interfaces";
 import { GeneralUtils } from "@shared/utils";
 import axios from "axios";
 
@@ -10,7 +10,16 @@ export class CompanyService {
       const url = `${this.baseURL}/customers/companies`;
       axios
         .get(url)
-        .then((res) => resolve(res.data))
+        .then((res) => {
+          const data = res.data || {};
+          resolve({
+            ...data,
+            theme: {
+              ...IThemeHandler.empty(),
+              ...data.theme || {},
+            }
+          });
+        })
         .catch((e) =>
           reject(
             GeneralUtils.getErrorMessage(e, "Erro ao tentar buscar empresa.")

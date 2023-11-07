@@ -1,6 +1,7 @@
-import { ButtonGroup, Divider, Panel, Stack } from "rsuite";
+import { ButtonGroup, Divider, Stack } from "rsuite";
 import { ReactNode } from "react";
 import { PlusButton } from "..";
+import { CustomPanel } from "./styles";
 
 interface PanelBaseProps {
   title: string;
@@ -20,14 +21,10 @@ export function PanelBase(props: PanelBaseProps) {
     </ButtonGroup>
   );
   return (
-    <Panel
+    <CustomPanel
       bordered
       shaded
-      style={{
-        backgroundColor: "white",
-        marginBottom: 20,
-        ...(props.style || {}),
-      }}
+      style={{ ...(props.style || {}) }}
       header={
         <>
           <Stack justifyContent="space-between">
@@ -39,6 +36,6 @@ export function PanelBase(props: PanelBaseProps) {
       }
     >
       {children}
-    </Panel>
+    </CustomPanel>
   );
 }

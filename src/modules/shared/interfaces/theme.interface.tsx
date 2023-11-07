@@ -5,6 +5,9 @@ export interface ITheme {
   backgroundColor: string;
   textColor: string;
   headerTextColor: string;
+  titleTextColor: string;
+  panelBackgroundColor: string;
+  panelTextColor: string;
 }
 
 export class IThemeHandler {
@@ -16,6 +19,9 @@ export class IThemeHandler {
       backgroundColor: '#e0e0e0',
       textColor: '#434343',
       headerTextColor: '#ffffff',
+      titleTextColor: '#434343',
+      panelBackgroundColor: '#ffffff',
+      panelTextColor: '#434343',
     };
   }
 }

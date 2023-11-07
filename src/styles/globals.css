@@ -1,14 +1,11 @@
-:root {
-  --primary-color: red;
-}
-
 body {
   margin: 0px;
   padding: 0px;
   height: 100vh;
 
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: rgb(247, 247, 247);
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .tox-statusbar {

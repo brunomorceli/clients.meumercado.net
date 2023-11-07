@@ -8,7 +8,7 @@ import {
   ShoppingOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
-import { faDolly, faTruck } from "@fortawesome/free-solid-svg-icons";
+import { faDolly, faPaintbrush, faTruck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Drawer, List, Typography, Modal } from "antd";
 import { useStore } from "zustand";
@@ -42,9 +42,10 @@ export function DrawerComp() {
       onClose={masterpageStore.toggleDrawer}
     >
       <List size="small">
-        <DrawerListItem onClick={() => handleGoTo('/admins/company')}>
+
+      <DrawerListItem onClick={() => handleGoTo('/admins/orders')}>
           <Typography.Title level={4}>
-            <ShopOutlined /> Empresa
+            <ShoppingCartOutlined /> Pedidos
           </Typography.Title>
         </DrawerListItem>
 
@@ -53,34 +54,28 @@ export function DrawerComp() {
             <ShoppingOutlined /> Produtos
           </Typography.Title>
         </DrawerListItem>
-
+        
         <DrawerListItem onClick={() => handleGoTo('/admins/customers')}>
           <Typography.Title level={4}>
             <TeamOutlined /> Clientes
           </Typography.Title>
         </DrawerListItem>
 
+        <DrawerListItem onClick={() => handleGoTo('/admins/company')}>
+          <Typography.Title level={4}>
+            <ShopOutlined /> Empresa
+          </Typography.Title>
+        </DrawerListItem>
+
+        <DrawerListItem onClick={() => handleGoTo('/admins/theme')}>
+          <Typography.Title level={4}>
+          <FontAwesomeIcon icon={faPaintbrush} /> Customizar tema
+          </Typography.Title>
+        </DrawerListItem>
+
         <DrawerListItem onClick={() => handleGoTo('/admins/members')}>
           <Typography.Title level={4}>
             <IdcardOutlined /> Colaboradores
-          </Typography.Title>
-        </DrawerListItem>
-
-        <DrawerListItem onClick={() => handleGoTo('/admins/orders')}>
-          <Typography.Title level={4}>
-            <ShoppingCartOutlined /> Pedidos
-          </Typography.Title>
-        </DrawerListItem>
-
-        <DrawerListItem onClick={() => handleGoTo('/admins/deliveries')}>
-          <Typography.Title level={4}>
-            <FontAwesomeIcon icon={faTruck} /> Entregas
-          </Typography.Title>
-        </DrawerListItem>
-
-        <DrawerListItem onClick={() => handleGoTo('/admins/stock')}>
-          <Typography.Title level={4}>
-            <FontAwesomeIcon icon={faDolly} /> Estoque
           </Typography.Title>
         </DrawerListItem>
 

@@ -1,6 +1,7 @@
 import { Button, Col, FlexboxGrid } from "rsuite";
 import { CustoCol, Label, Title } from "./styles";
 import {
+  Col24,
   EOrderStatus,
   EOrderStatusHandler,
   GeneralUtils,
@@ -89,6 +90,12 @@ export function GeneralData(props: GeneralDataProps) {
           </>
         )}
       </Col12>
+      <Col24>
+        <Label>Endereço de entrega</Label>
+        <Title>
+          {GeneralUtils.getFullAddress(order.user!)}
+        </Title>
+      </Col24>
     </FlexboxGrid>
   );
 }

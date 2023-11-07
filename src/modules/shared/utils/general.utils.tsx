@@ -1,3 +1,5 @@
+import { IUser } from "..";
+
 export class GeneralUtils {
   static getErrorMessage(error: any, defaultMsg: string): string {
     if (
@@ -122,5 +124,12 @@ export class GeneralUtils {
     const third = phoneNumber.slice(7);
 
     return `(${ddd}) ${first} ${second}-${third}`;
+  }
+
+  static getFullAddress(user: IUser): string {
+    const number = user.addressNumber || 'S/N';
+    const neighborhood = `Bairro ${user.neighborhood || 'N/I'}`;
+
+    return `${user.address}, ${number} - ${neighborhood} - ${user.city}, ${user.state} - CEP: ${user.cep}`;
   }
 }

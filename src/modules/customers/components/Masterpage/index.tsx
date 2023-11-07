@@ -13,6 +13,8 @@ export function CustomerMasterpage(props: CustomerMasterpageProps) {
   const companyStore = useStore(useCompanyStore);
   const { theme } = companyStore.company;
 
+  console.log(theme?.textColor)
+
   useEffect(() => {
     setCssProperty('--primary-color', theme?.primaryColor!);
     setCssProperty('--secondary-color', theme?.secondaryColor!);
@@ -20,6 +22,9 @@ export function CustomerMasterpage(props: CustomerMasterpageProps) {
     setCssProperty('--text-color', theme?.textColor!);
     setCssProperty('--background-color', theme?.backgroundColor!);
     setCssProperty('--header-text-color', theme?.headerTextColor!);
+    setCssProperty('--title-text-color', theme?.titleTextColor!);
+    setCssProperty('--panel-text-color', theme?.panelTextColor!);
+    setCssProperty('--panel-background-color', theme?.panelBackgroundColor!);
   }, []);
 
   function setCssProperty(name: string, value: string): void {

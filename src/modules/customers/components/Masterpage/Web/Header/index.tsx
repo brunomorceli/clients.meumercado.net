@@ -110,7 +110,7 @@ export function Header() {
             </Item>
           )}
           {authStore.authenticated ? (
-            <Settings></Settings>
+            <Settings />
           ) : (
             <Item onClick={() => masterpageStore.toggleLogin()}>
               <FontAwesomeIcon icon={faRightToBracket} />

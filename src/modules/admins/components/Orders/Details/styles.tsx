@@ -17,9 +17,6 @@ export const Title = styled.div`
   width: 100%;
   font-size: 16px;
   font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 export const Total = styled.div`

@@ -16,7 +16,7 @@ export function AuthGuard(props: any) {
     if (!isAuth) {
       router.replace(Boolean(subdomain) ? '/customers/signin' : '/admins/signin');
     }
-  }, [router.pathname])
+  }, [])
   
   return isAuth && props.children;
 }

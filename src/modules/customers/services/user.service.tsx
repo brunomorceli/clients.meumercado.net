@@ -1,4 +1,4 @@
-import { IUser } from "@shared/interfaces";
+import { INotification, IUser } from "@shared/interfaces";
 import { GeneralUtils } from "@shared/utils";
 import axios from "axios";
 
@@ -31,6 +31,16 @@ export class UserService {
             GeneralUtils.getErrorMessage(e, "Erro ao tentar salvar usuário.")
           )
         );
+    });
+  }
+
+  static findNotification(last: number): Promise<INotification[]> {
+    return new Promise((resolve, reject) => {
+      const url = `${this.baseURL}/customers/users/notifications?last=${last}`;
+      axios
+        .get(url)
+        .then((res) => resolve(res.data || []))
+        .catch(() => reject('Erro ao tentar baixar notificação.'));
     });
   }
 }

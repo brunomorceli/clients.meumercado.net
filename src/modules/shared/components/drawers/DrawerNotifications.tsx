@@ -21,16 +21,24 @@ export function DrawerNotifications(props: DrawerNotifications) {
       onClose={props.onClose}
     >
       <Drawer.Header>
-        <Drawer.Title>Notificações ({notifications.filter((n) => !n.viewed).length})</Drawer.Title>
+        <Drawer.Title>
+          Notificações ({notifications.filter((n) => !n.viewed).length})
+        </Drawer.Title>
       </Drawer.Header>
       <Drawer.Body style={{ padding: 20 }}>
         {notifications.map((item, index) => (
-          <div key={index} style={{ marginTop: 10, marginBottom: 10, cursor: 'pointer' }}>
-            <div style={{ color: '--text-color', fontWeight: 500 }}>
+          <div
+            key={index}
+            style={{ marginTop: 10, marginBottom: 10, cursor: "pointer" }}
+            onClick={() => props.onPick(item)}
+          >
+            <div style={{ color: "--text-color", fontWeight: 500 }}>
               {item.label}
             </div>
             <div>
-              <strong style={{ color: 'grey', fontSize: 14 }}>{GeneralUtils.localTime(item.createdAt, true)}</strong>
+              <strong style={{ color: "grey", fontSize: 14 }}>
+                {GeneralUtils.localTime(item.createdAt, true)}
+              </strong>
             </div>
             <hr />
           </div>

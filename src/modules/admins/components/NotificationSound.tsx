@@ -2,7 +2,7 @@ import { useStore } from "zustand";
 import { useUserStore } from "../stores";
 import { useEffect, useRef, useState } from "react";
 
-export function Notifications() {
+export function NotificationSound() {
   const userStore = useStore(useUserStore);
   const [last, setLast] = useState<number>(userStore.last);
   const audioRef = useRef<any>();

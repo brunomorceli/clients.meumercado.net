@@ -12,13 +12,13 @@ export class ENotificationTypeHandler {
   static adminPath(notification: INotification): string {
     switch(notification.type) {
       case ENotificationType.NEW_ORDER:
-        return `/admins/orders/${notification.orderId}`;
+        return `/admins/orders/${notification.orderId}/details`;
       case ENotificationType.UPDATE_ORDER:
-        return `/admins/orders/${notification.orderId}`;
+        return `/admins/orders/${notification.orderId}/details`;
       case ENotificationType.CANCEL_ORDER:
-        return `/admins/orders/${notification.orderId}`;
+        return `/admins/orders/${notification.orderId}/details`;
       case ENotificationType.DELIVERY_ORDER:
-        return `/admins/orders/${notification.orderId}`;
+        return `/admins/orders/${notification.orderId}/details`;
       case ENotificationType.MESSAGE:
         return `/admins`
     }

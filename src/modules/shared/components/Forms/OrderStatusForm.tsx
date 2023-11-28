@@ -1,4 +1,4 @@
-import { IOrderResult } from "@root/modules/admins/interfaces";
+import { IOrderResult } from "src/modules/admins/interfaces";
 import {
   EOrderStatus,
   EOrderStatusHandler,
@@ -7,7 +7,8 @@ import {
   IOrder,
   IOrderHandler,
   InputText,
-} from "@root/modules/shared";
+} from "src/modules/shared";
+
 import { useEffect, useState } from "react";
 import { FlexboxGrid, Form, SelectPicker } from "rsuite";
 
@@ -19,7 +20,9 @@ interface OrderStatusFormProps {
 
 export function OrdersStatusForm(props: OrderStatusFormProps) {
   const { onSave, onCancel } = props;
-  const [order, setOrder] = useState<IOrder | IOrderResult>(IOrderHandler.empty());
+  const [order, setOrder] = useState<IOrder | IOrderResult>(
+    IOrderHandler.empty()
+  );
   const statusKeys = Object.values(EOrderStatus);
   const [error, setError] = useState<any>({});
   const minChars = 20;

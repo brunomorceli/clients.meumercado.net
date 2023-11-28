@@ -1,24 +1,28 @@
-import { useRouter } from "next/router";
-import { PanelBase, TitleBase } from "@shared/components";
+import { useNavigate } from "react-router";
 import { useState } from "react";
+import { useStore } from "zustand";
+import { Avatar, FlexboxGrid, Placeholder } from "rsuite";
+import UserInfoIcon from "@rsuite/icons/UserInfo";
+import EmailIcon from "@rsuite/icons/EmailFill";
+import PhoneIcon from "@rsuite/icons/PhoneFill";
+import MemberIcon from "@rsuite/icons/Member";
+
+import { PanelBase, TitleBase } from "src/modules/shared/components";
+import { useCustomerStore } from "src/modules/admins/stores";
+import { HomePageHandler } from "src/modules/admins/pages/HomePage";
+import { CustomersCreateHandler } from "src/modules/admins/pages/Customers/CustomersCreatePage";
+import { CustomersDetailsHandler } from "src/modules/admins/pages/Customers/CustomersDetailsPage";
 import {
   ActionList,
   IUser,
   InputAsyncSearch,
   TooltipHover,
   useToasterStore,
-} from "@root/modules/shared";
-import { useStore } from "zustand";
-import { useCustomerStore } from "../../stores";
-import { Avatar, FlexboxGrid, Placeholder } from "rsuite";
-import UserInfoIcon from "@rsuite/icons/UserInfo";
-import EmailIcon from "@rsuite/icons/EmailFill";
-import PhoneIcon from '@rsuite/icons/PhoneFill';
-import MemberIcon from '@rsuite/icons/Member';
+} from "src/modules/shared";
 import { FlexboxGridItemEllipsis } from "./styles";
 
 export function Customers() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const toasterStore = useStore(useToasterStore);
   const customerStore = useStore(useCustomerStore);
   const [users, setUsers] = useState<IUser[]>([]);
@@ -57,11 +61,11 @@ export function Customers() {
     <>
       <TitleBase
         title={`Clientes${getLabelAmount(users.length)}`}
-        onBack={() => router.replace("/admins")}
+        onBack={() => navigate(HomePageHandler.navigate())}
       />
       <PanelBase
         title="Clientes"
-        onAdd={() => router.replace("/admins/customers/create")}
+        onAdd={() => navigate(CustomersCreateHandler.navigate())}
         hideTitleDivider
       >
         <div style={{ marginBottom: 20 }}>
@@ -101,7 +105,6 @@ export function Customers() {
               primary: user.name,
               secondary: (
                 <FlexboxGrid justify="space-between">
-
                   <TooltipHover title={`Email: ${user.email}`}>
                     <FlexboxGridItemEllipsis colspan={7}>
                       <EmailIcon /> {user.email}
@@ -119,7 +122,6 @@ export function Customers() {
                       <MemberIcon /> {user.cpfCnpj}
                     </FlexboxGridItemEllipsis>
                   </TooltipHover>
-
                 </FlexboxGrid>
               ),
               value: user,
@@ -130,7 +132,7 @@ export function Customers() {
               ),
             }))}
             onClick={(option) =>
-              router.replace(`/admins/customers/${option.value.id}/details`)
+              navigate(CustomersDetailsHandler.navigate(option.value.id))
             }
             onRemove={(item) => handleRemove(item.value)}
           />

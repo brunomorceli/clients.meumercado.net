@@ -1,12 +1,12 @@
-import { IOrder, IOrderUpdate } from "@shared/interfaces";
-import { GeneralUtils } from "@shared/utils";
+import { IOrder, IOrderUpdate } from "src/modules/shared/interfaces";
+import { GeneralUtils } from "src/modules/shared/utils";
 import axios from "axios";
 import { IFindOrder } from "../interfaces/find-order.interface";
 import { IFindOrderResult } from "../interfaces/find-order-result.interface";
 import { IFindOrderByUser, IFindOrderByUserResult } from "../interfaces";
 
 export class OrderService {
-  private static baseURL: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+  private static baseURL: string = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
   static find(data: IFindOrder): Promise<IFindOrderResult> {
     const params = new URLSearchParams(data as any).toString();

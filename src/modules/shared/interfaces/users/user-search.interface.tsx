@@ -1,4 +1,4 @@
-import { ERoleType } from "@shared/enums";
+import { ERoleType } from "src/modules/shared/enums";
 
 export interface IUserSearch {
   name?: string;

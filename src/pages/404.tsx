@@ -1,10 +1,10 @@
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/router";
+import { useNavigate } from 'react-router';
 import { Button, Col, FlexboxGrid } from "rsuite";
 
 export default function NotFound() {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -18,7 +18,7 @@ export default function NotFound() {
           size="lg"
           appearance="primary"
           startIcon={<FontAwesomeIcon icon={faChevronLeft} />}
-          onClick={() => router.back()}
+          onClick={() => navigate(-1)}
         >
           Voltar
         </Button>

@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { FormModal, InputQuantity } from "@shared/components";
+import { FormModal, InputQuantity } from "src/modules/shared/components";
 import { Col, Form, Schema } from "rsuite";
 import React from "react";
 import {
   GeneralUtils,
   ICartProduct,
   ICartProductHandler,
-} from "@root/modules/shared";
+} from "src/modules/shared";
 
 interface ProductFormProps {
   product?: ICartProduct | null | undefined;

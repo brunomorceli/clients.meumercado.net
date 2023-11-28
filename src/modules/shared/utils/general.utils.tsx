@@ -68,7 +68,7 @@ export class GeneralUtils {
   }
 
   static getSubdomain(url: string): string | null {
-    const clientUrl = process.env.NEXT_PUBLIC_CLIENT_URL as string;
+    const clientUrl = process.env.REACT_APP_CLIENT_URL as string;
     if (url.indexOf(clientUrl) === 0) {
       return null;
     }

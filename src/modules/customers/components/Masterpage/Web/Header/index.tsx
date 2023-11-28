@@ -1,13 +1,13 @@
 import { Badge, Col, Dropdown, FlexboxGrid, Stack } from "rsuite";
 import CogIcon from "@rsuite/icons/legacy/Cog";
-import { useRouter } from "next/router";
+import { useNavigate } from "react-router";
 import { useStore } from "zustand";
 import {
   useAuthStore,
   useCartStore,
   useCompanyStore,
   useMasterpageStore,
-} from "@customers/stores";
+} from "src/modules/customers/stores";
 import {
   HeaderContainer,
   Item,
@@ -15,9 +15,9 @@ import {
   SecondaryHeader,
   DropdownSettings,
 } from "./styles";
-import { ProductAutocomplete } from "../../..";
-import { ICartProductHandler, IProduct } from "@shared/interfaces";
-import { ConfirmModal } from "@shared/components";
+import { ProductAutocomplete } from "src/modules/customers/components";
+import { ICartProductHandler, IProduct } from "src/modules/shared/interfaces";
+import { ConfirmModal } from "src/modules/shared/components";
 import {
   faBagShopping,
   faCartShopping,
@@ -33,7 +33,7 @@ import { Categories } from "./Categories";
 import ArrowDownLineIcon from "@rsuite/icons/ArrowDownLine";
 
 export function Header() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const authStore = useStore(useAuthStore);
   const masterpageStore = useStore(useMasterpageStore);
   const companyStore = useStore(useCompanyStore);
@@ -65,13 +65,13 @@ export function Header() {
       )}
     >
       <Dropdown.Item
-        onSelect={() => router.replace("/customers/account")}
+        onSelect={() => navigate("/customers/account")}
         icon={<UserInfoIcon />}
       >
         Meus dados
       </Dropdown.Item>
       <Dropdown.Item
-        onSelect={() => router.replace("/customers/orders")}
+        onSelect={() => navigate("/customers/orders")}
         icon={<FontAwesomeIcon icon={faBagShopping} />}
       >
         Meus pedidos
@@ -89,7 +89,7 @@ export function Header() {
     <>
       <HeaderContainer>
         <Stack alignItems="center" justifyContent="flex-start">
-          <CompanyName onClick={() => router.replace("/")}>
+          <CompanyName onClick={() => navigate("/")}>
             {company.logo ? (
               <img src={company.logo} height={45} />
             ) : (
@@ -120,7 +120,7 @@ export function Header() {
         </Stack>
       </HeaderContainer>
       <SecondaryHeader>
-        <Item onClick={() => router.replace("/customers")}>
+        <Item onClick={() => navigate("/customers")}>
           <FontAwesomeIcon icon={faHouse} /> Início
         </Item>
         <Item>
@@ -136,7 +136,7 @@ export function Header() {
               <Categories
                 options={company.categories}
                 onPick={(id) =>
-                  router.replace(`/customers/products/categories/${id}`)
+                  navigate(`/customers/products/categories/${id}`)
                 }
               />
             </Col>

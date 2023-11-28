@@ -1,4 +1,4 @@
-import { IProduct } from "@shared/interfaces";
+import { IProduct } from "src/modules/shared/interfaces";
 import { ProductCardItem } from "./Item";
 import { Col, FlexboxGrid, Row } from "rsuite";
 

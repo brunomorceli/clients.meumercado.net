@@ -1,4 +1,4 @@
-import { ICompany, ICompanyHandler } from "@shared/interfaces";
+import { ICompany, ICompanyHandler } from "src/modules/shared/interfaces";
 import { create } from "zustand";
 import { CompanyService } from "../services/company.service";
 import { persist } from "zustand/middleware";

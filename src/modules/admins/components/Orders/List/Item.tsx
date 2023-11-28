@@ -1,12 +1,12 @@
 import { Button, Col, FlexboxGrid } from "rsuite";
 import { Label, Title } from "./styles";
-import { EOrderStatus, EOrderStatusHandler, GeneralUtils } from "@shared";
+import { EOrderStatus, EOrderStatusHandler, GeneralUtils } from "src/modules/shared";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUpRightFromSquare,
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
-import { IOrderResult } from "@root/modules/admins/interfaces";
+import { IOrderResult } from "src/modules/admins/interfaces";
 
 interface ItemProps {
   order: IOrderResult;

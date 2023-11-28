@@ -1,9 +1,9 @@
-import { IProduct, IProductSearch, IProductSearchResult } from "@shared/interfaces";
-import { GeneralUtils } from "@shared/utils";
+import { IProduct, IProductSearch, IProductSearchResult } from "src/modules/shared/interfaces";
+import { GeneralUtils } from "src/modules/shared/utils";
 import axios from "axios";
 
 export class ProductService {
-  private static baseURL: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+  private static baseURL: string = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
   static upsert(product: IProduct): Promise<IProduct> {
     return new Promise((resolve, reject) => {

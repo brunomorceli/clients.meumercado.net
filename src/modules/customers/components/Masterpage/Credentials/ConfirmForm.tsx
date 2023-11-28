@@ -1,8 +1,8 @@
-import { InputText, PublicGuard } from "@shared/components";
+import { InputText } from "src/modules/shared/components";
 import { useRef, useState } from "react";
 import { Schema, Form, Button, Panel } from "rsuite";
-import CheckIcon from '@rsuite/icons/Check';
-import CheckRoundIcon from '@rsuite/icons/CheckRound';
+import CheckIcon from "@rsuite/icons/Check";
+import CheckRoundIcon from "@rsuite/icons/CheckRound";
 
 interface ConfirmFormProps {
   onSubmit: (confirmationCode: string) => void;
@@ -14,8 +14,8 @@ export function ConfirmForm(props: ConfirmFormProps) {
   const [formData, setFormData] = useState<any>({ confirmationCode: "" });
   const model = Schema.Model({
     confirmationCode: Schema.Types.StringType()
-      .minLength(5, 'Código inválido')
-      .maxLength(5, 'Código inválido')
+      .minLength(5, "Código inválido")
+      .maxLength(5, "Código inválido")
       .isRequired("Este campo é obrigatório."),
   });
 
@@ -28,45 +28,45 @@ export function ConfirmForm(props: ConfirmFormProps) {
   }
 
   return (
-    <PublicGuard>
-      <Form
-        ref={formRef}
-        model={model}
-        formValue={formData}
-        formError={formError}
-        onChange={(data) => setFormData(data)}
-        onError={setFormError}
-        onSubmit={handleSubmit}
+    <Form
+      ref={formRef}
+      model={model}
+      formValue={formData}
+      formError={formError}
+      onChange={(data) => setFormData(data)}
+      onError={setFormError}
+      onSubmit={handleSubmit}
+    >
+      <h3 style={{ textAlign: "center" }}>
+        <CheckRoundIcon color="#40af00" />
+        &nbsp; Sucesso!
+      </h3>
+      <Panel
+        bordered
+        style={{ marginTop: 20, marginBottom: 20, backgroundColor: "#fbfbfb" }}
       >
-        <h3 style={{ textAlign: 'center'}}>
-          <CheckRoundIcon color="#40af00" />
-          &nbsp;
-          Sucesso!
-        </h3>
-        <Panel bordered style={{ marginTop: 20, marginBottom: 20, backgroundColor: '#fbfbfb' }}>
-          <p>
-            Um código de confirmação foi enviado para seu email cadastrado.
-            <br />
-            Por favor, digite o código para continuar:
-          </p>
-        </Panel>
-        <InputText
-          label="Código de confirmação"
-          value={formData.confirmationCode}
-          error={formError.confirmationCode}
-          onChange={(confirmationCode) => setFormData({ confirmationCode })}
-        />
-        <Button
-          appearance="primary"
-          color="green"
-          onClick={handleSubmit}
-          block
-          startIcon={<CheckIcon />}
-          size="lg"
-        >
-          Confirmar
-        </Button>
-      </Form>
-    </PublicGuard>
+        <p>
+          Um código de confirmação foi enviado para seu email cadastrado.
+          <br />
+          Por favor, digite o código para continuar:
+        </p>
+      </Panel>
+      <InputText
+        label="Código de confirmação"
+        value={formData.confirmationCode}
+        error={formError.confirmationCode}
+        onChange={(confirmationCode) => setFormData({ confirmationCode })}
+      />
+      <Button
+        appearance="primary"
+        color="green"
+        onClick={handleSubmit}
+        block
+        startIcon={<CheckIcon />}
+        size="lg"
+      >
+        Confirmar
+      </Button>
+    </Form>
   );
 }

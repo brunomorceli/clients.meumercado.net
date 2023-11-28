@@ -5,9 +5,9 @@ import PlusIcon from "@rsuite/icons/Plus";
 import EditIcon from "@rsuite/icons/Edit";
 import TrashIcon from "@rsuite/icons/Trash";
 import { ItemDataType } from "rsuite/esm/@types/common";
-import { InputText, PanelBase } from "@shared/components";
+import { InputText, PanelBase } from "src/modules/shared/components";
 import MoreIcon from '@rsuite/icons/More';
-import { ConfirmModal, FormModal } from "@shared/components";
+import { ConfirmModal, FormModal } from "src/modules/shared/components";
 
 export interface CustomItemDataType extends ItemDataType {
   edit?: boolean;

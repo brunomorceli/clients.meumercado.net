@@ -13,7 +13,7 @@ body {
 }
 
 .img-crop-media {
-  background-image: url("/images/image-editor-bg.png") !important;
+  background-image: url("../../public/images/image-editor-bg.png") !important;
 }
 
 .rs-picker-menu {

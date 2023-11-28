@@ -1,6 +1,6 @@
-import { useMasterpageStore } from "@admins/stores";
+import { useMasterpageStore } from "src/modules/admins/stores";
 import { useStore } from "zustand";
-import { useRouter } from "next/router";
+import { useNavigate } from 'react-router';
 import { SidenavContainer } from "./styles";
 import { MenuContent } from "./Content";
 
@@ -9,11 +9,11 @@ interface MenuWebProps {
 }
 
 export function MenuWeb(props: MenuWebProps) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const masterpageStore = useStore(useMasterpageStore);
 
   function handleGoTo(path: string): void {
-    router.replace(path);
+    navigate(path);
     masterpageStore.toggleDrawer();
   }
 

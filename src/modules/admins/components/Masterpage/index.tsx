@@ -3,9 +3,9 @@ import { WebMasterpage } from "./Web";
 import { ReactNode, useState } from "react";
 import { MobileMasterpage } from "./Mobile";
 import { NotificationSound } from "../NotificationSound";
-import { ConfirmModal } from "@root/modules/shared";
+import { ConfirmModal } from "src/modules/shared";
 import { useStore } from "zustand";
-import { useAuthStore } from '@admins/stores';
+import { useAuthStore } from 'src/modules/admins/stores';
 
 import "../../middlewares/axios.middleware";
 

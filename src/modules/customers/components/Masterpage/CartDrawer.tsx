@@ -13,8 +13,8 @@ import {
   ICartProduct,
   ICartProductHandler,
   IProduct,
-} from "@root/modules/shared";
-import { useRouter } from "next/router";
+} from "src/modules/shared";
+import { useNavigate } from 'react-router';
 
 interface CartDrawerProps {
   noRender?: boolean;
@@ -22,7 +22,7 @@ interface CartDrawerProps {
 }
 
 export function CartDrawer(props: CartDrawerProps) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const authStore = useStore(useAuthStore);
   const masterpageStore = useStore(useMasterpageStore);
   const companyStore = useStore(useCompanyStore);
@@ -55,7 +55,7 @@ export function CartDrawer(props: CartDrawerProps) {
       return;
     }
 
-    router.replace("/customers/checkout");
+    navigate("/customers/checkout");
   }
 
   const totalLabel = GeneralUtils.getAmountLabel(

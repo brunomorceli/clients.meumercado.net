@@ -1,4 +1,4 @@
-import { EOrderStatus } from "@root/modules/shared";
+import { EOrderStatus } from "src/modules/shared";
 
 export interface IOrderResult {
   id: number;

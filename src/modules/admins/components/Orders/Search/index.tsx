@@ -5,7 +5,7 @@ import { IOption } from "./interfaces/option.interface";
 import { Searchbar } from "./Searchbar";
 import { SelectedOptions } from "./SelectedOptions";
 import { StatusSelect } from "./StatusSelect";
-import { IFindOrder } from "@root/modules/admins/interfaces/find-order.interface";
+import { IFindOrder } from "src/modules/admins/interfaces/find-order.interface";
 
 interface SearchProps {
   onSearch: (search: IFindOrder) => void;

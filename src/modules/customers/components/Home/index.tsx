@@ -1,20 +1,20 @@
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ProductCard } from "@root/modules/customers/components";
+import { ProductCard } from "src/modules/customers/components";
 import {
   useAuthStore,
   useCartStore,
   useCompanyStore,
   useMasterpageStore,
   useProductStore,
-} from "@root/modules/customers/stores";
+} from "src/modules/customers/stores";
 import {
   ICompany,
   ICompanyHandler,
   IProduct,
   useToasterStore,
-} from "@root/modules/shared";
-import { useRouter } from "next/router";
+} from "src/modules/shared";
+import { useNavigate } from 'react-router';
 import { useEffect, useState } from "react";
 import { Carousel } from "rsuite";
 import { useStore } from "zustand";
@@ -38,7 +38,7 @@ const titleStyle = {
 };
 
 export function CustomerHome() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const authStore = useStore(useAuthStore);
   const compayStore = useStore(useCompanyStore);
   const cartStore = useStore(useCartStore);
@@ -61,9 +61,9 @@ export function CustomerHome() {
 
   return (
     <>
-      {company.covers.length > 0 &&
+      {(company.covers || []).length > 0 &&
         <Carousel autoplay shape="bar" style={{ width: "100%", borderRadius: 5 }}>
-          {company.covers.map((cover, index) => (
+          {(company.covers || []).map((cover, index) => (
             <div
               key={index}
               style={{
@@ -83,7 +83,7 @@ export function CustomerHome() {
       <ProductCard
         products={[...products, ...products, ...products]}
         onAdd={handleAddProduct}
-        onDetails={(p) => router.replace(`/customers/products/${p.id}/details`)}
+        onDetails={(p) => navigate(`/customers/products/${p.id}/details`)}
       />
 
       <div style={titleStyle}>
@@ -94,7 +94,7 @@ export function CustomerHome() {
       <ProductCard
         products={[...products, ...products, ...products]}
         onAdd={handleAddProduct}
-        onDetails={(p) => router.replace(`/customers/products/${p.id}/details`)}
+        onDetails={(p) => navigate(`/customers/products/${p.id}/details`)}
       />
     </>
   );

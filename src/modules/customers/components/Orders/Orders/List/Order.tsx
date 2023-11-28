@@ -4,7 +4,7 @@ import {
   EOrderStatusHandler,
   GeneralUtils,
   IOrder,
-} from "@shared";
+} from "src/modules/shared";
 
 interface OrderProps {
   order: IOrder;

@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useNavigate } from 'react-router';
 import { Drawer } from "rsuite";
 import { MenuContent } from "./Content";
 
@@ -9,10 +9,10 @@ interface MenuMobileProps {
 }
 
 export function MenuMobile(props: MenuMobileProps) {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   function handleGoTo(path: string): void {
-    router.replace(path);
+    navigate(path);
     props.onClose();
   }
 

@@ -1,9 +1,8 @@
 import { ProductDetails } from "@customers/components";
-
-import { useRouter } from "next/router";
+import { useParams } from 'react-router';
 
 export default function ProductDetailsPage() {
-  const router = useRouter();
-  const { id } = router.query;
+  const { id } = useParams();
+
   return <ProductDetails id={id as string} />;
 }

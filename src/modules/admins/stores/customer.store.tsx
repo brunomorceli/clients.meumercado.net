@@ -1,5 +1,5 @@
-import { IUser, IUserSearch, IUserSearchResult } from "@shared/interfaces";
-import { CustomerService } from "@admins/services";
+import { IUser, IUserSearch, IUserSearchResult } from "src/modules/shared/interfaces";
+import { CustomerService } from "src/modules/admins/services";
 import { create } from "zustand";
 
 interface useCustomerStoreProps {

@@ -1,14 +1,14 @@
 import { Badge, Button, FlexboxGrid, Stack } from "rsuite";
 import { useStore } from "zustand";
-import { useAuthStore, useUserStore } from "@admins/stores";
+import { useAuthStore, useUserStore } from "src/modules/admins/stores";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faHouse } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faBell, faHouse } from "@fortawesome/free-solid-svg-icons";
 import NoticeIcon from "@rsuite/icons/Notice";
 import { useEffect, useState } from "react";
-import { DrawerNotifications } from "@shared/components";
-import { useRouter } from "next/router";
-import { ENotificationTypeHandler } from "@shared/enums";
-import { INotification } from "@shared/interfaces";
+import { DrawerNotifications } from "src/modules/shared/components";
+import { useNavigate } from 'react-router';
+import { ENotificationTypeHandler } from "src/modules/shared/enums";
+import { INotification } from "src/modules/shared/interfaces";
 import { CustomHeader, HomeButtom } from "./styles";
 
 interface AppbarProps {
@@ -23,7 +23,7 @@ const btStyle = {
 };
 
 export function Appbar(props: AppbarProps) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const authStore = useStore(useAuthStore);
   const isAuth = authStore.authenticated;
   const userStore = useStore(useUserStore);
@@ -35,7 +35,7 @@ export function Appbar(props: AppbarProps) {
   }, []);
 
   function handlePick(notification: INotification): void {
-    router.replace(ENotificationTypeHandler.adminPath(notification));
+    navigate(ENotificationTypeHandler.adminPath(notification));
     handleClose();
   }
 
@@ -51,18 +51,18 @@ export function Appbar(props: AppbarProps) {
         <FlexboxGrid>
           {props.onMenu && (
             <Button style={btStyle} appearance="subtle" onClick={props.onMenu}>
-              <FontAwesomeIcon icon={faBars} />
+              <FontAwesomeIcon icon={faBars} style={{ fontSize: 20 }} />
             </Button>
           )}
 
           <HomeButtom
             appearance="subtle"
             onClick={props.onHome}
-            startIcon={<FontAwesomeIcon icon={faHouse} />}
+            startIcon={<FontAwesomeIcon icon={faHouse} style={{ fontSize: 20 }} />}
           >
             {isAuth
               ? authStore.companyName.toUpperCase()
-              : process.env.NEXT_PUBLIC_APP_NAME}
+              : process.env.REACT_APP_APP_NAME} 
           </HomeButtom>
           <Stack.Item flex={1}>
             <Stack justifyContent="flex-end">
@@ -71,7 +71,7 @@ export function Appbar(props: AppbarProps) {
                 appearance="subtle"
                 onClick={() => setOpen(true)}
               >
-                <NoticeIcon />
+                <FontAwesomeIcon icon={faBell} style={{ fontSize: 20 }} />
                 {unread.length !== 0 && <Badge content={unread.length} />}
               </Button>
             </Stack>

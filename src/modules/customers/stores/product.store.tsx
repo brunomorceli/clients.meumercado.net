@@ -1,5 +1,5 @@
-import { IProduct, IProductSearchResult } from "@shared/interfaces";
-import { IProductSearch } from "@shared/interfaces/product-search.interface";
+import { IProduct, IProductSearchResult } from "src/modules/shared/interfaces";
+import { IProductSearch } from "src/modules/shared/interfaces/product-search.interface";
 import { ProductService } from "@customers/services";
 import { create } from "zustand";
 

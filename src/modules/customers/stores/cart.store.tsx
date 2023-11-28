@@ -1,5 +1,5 @@
 
-import { ICartProduct, IStockProduct } from "@root/modules/shared";
+import { ICartProduct, IStockProduct } from "src/modules/shared";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 

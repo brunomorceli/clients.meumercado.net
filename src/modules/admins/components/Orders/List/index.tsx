@@ -1,6 +1,6 @@
 import { Item } from "./Item";
-import { IOrderResult } from "@root/modules/admins/interfaces";
-import { IOrder, OrdersStatusForm } from "@root/modules/shared";
+import { IOrderResult } from "src/modules/admins/interfaces";
+import { IOrder, OrdersStatusForm } from "src/modules/shared";
 import { useState } from "react";
 
 interface OrderListProps {

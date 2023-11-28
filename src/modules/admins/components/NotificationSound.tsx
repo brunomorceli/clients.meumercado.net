@@ -1,6 +1,6 @@
 import { useStore } from "zustand";
-import { useUserStore } from "../stores";
 import { useEffect, useRef, useState } from "react";
+import { useUserStore } from "src/modules/admins/stores";
 
 export function NotificationSound() {
   const userStore = useStore(useUserStore);
@@ -32,15 +32,11 @@ export function NotificationSound() {
       audio.pause();
       audio.currentTime = 0;
     }
-    
+
     audio.play();
   }
 
   return (
-    <audio
-      ref={audioRef}
-      src="/audios/ding.mp3"
-      style={{ display: "none" }}
-    />
+    <audio ref={audioRef} src="/audios/ding.mp3" style={{ display: "none" }} />
   );
 }

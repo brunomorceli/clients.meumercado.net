@@ -1,4 +1,4 @@
-import { IProduct } from "@shared/interfaces";
+import { IProduct } from "src/modules/shared/interfaces";
 import {
   CardContainer,
   CardTitle,
@@ -8,7 +8,7 @@ import {
   CardPrice,
   CardPriceContainer,
 } from "./styles";
-import { GeneralUtils } from "@shared/utils";
+import { GeneralUtils } from "src/modules/shared/utils";
 import { Button, Stack } from "rsuite";
 import PlusIcon from "@rsuite/icons/Plus";
 import SearchIcon from "@rsuite/icons/Search";

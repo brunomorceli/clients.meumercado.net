@@ -1,21 +1,4 @@
-"use client";
-
-import {
-  IProduct,
-  IProductHandler,
-  ICompany,
-  ICompanyHandler,
-} from "@shared/interfaces";
 import { useEffect, useRef, useState } from "react";
-import {
-  ImageGalery,
-  InputText,
-  InputNumber,
-  PanelBase,
-  SaveButton,
-  TitleBase,
-} from "@shared/components";
-
 import {
   Button,
   Col,
@@ -28,15 +11,34 @@ import {
   Toggle,
 } from "rsuite";
 import { useStore } from "zustand";
-import { useToasterStore } from "@shared/stores";
-import { useAuthStore, useCompanyStore, useProductStore } from "@admins/stores";
-import { EProductType } from "@shared/enums";
-import React from "react";
-import { Attributes } from "./Attributes";
-import { useRouter } from "next/router";
+import { useNavigate } from "react-router";
 import { FormOutlined } from "@ant-design/icons";
-import { FormModal, InputCurrency } from "@shared/components";
-import { Categories } from "../..";
+
+import { useToasterStore } from "src/modules/shared/stores";
+import { EProductType } from "src/modules/shared/enums";
+import { Attributes } from "./Attributes";
+import { FormModal, InputCurrency } from "src/modules/shared/components";
+import { Categories } from "src/modules/admins/components";
+import { ProductsHandler } from "src/modules/admins/pages/Products/ProductsPage";
+import {
+  useAuthStore,
+  useCompanyStore,
+  useProductStore,
+} from "src/modules/admins/stores";
+import {
+  ImageGalery,
+  InputText,
+  InputNumber,
+  PanelBase,
+  SaveButton,
+  TitleBase,
+} from "src/modules/shared/components";
+import {
+  IProduct,
+  IProductHandler,
+  ICompany,
+  ICompanyHandler,
+} from "src/modules/shared/interfaces";
 
 interface ProductFormProps {
   productId?: string;
@@ -44,7 +46,7 @@ interface ProductFormProps {
 
 export function ProductForm(props: ProductFormProps) {
   const { productId } = props;
-  const router = useRouter();
+  const navigate = useNavigate();
   const authStore = useStore(useAuthStore);
   const productStore = useStore(useProductStore);
   const companyStore = useStore(useCompanyStore);
@@ -140,7 +142,7 @@ export function ProductForm(props: ProductFormProps) {
       .upsert(product)
       .then(() => {
         toasterStore.success("Produto salvo com sucesso.");
-        router.replace("/admins/products");
+        navigate(ProductsHandler.navigate());
       })
       .catch((e) => toasterStore.error(e))
       .finally(() => setProcessing(false));
@@ -159,7 +161,7 @@ export function ProductForm(props: ProductFormProps) {
     >
       <TitleBase
         title="Formulário de produto"
-        onBack={() => router.replace("/admins/products")}
+        onBack={() => navigate(ProductsHandler.navigate())}
       />
       <PanelBase title="Informações gerais">
         <InputText

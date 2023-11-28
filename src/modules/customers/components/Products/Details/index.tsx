@@ -5,7 +5,7 @@ import {
   useCompanyStore,
   useMasterpageStore,
   useProductStore,
-} from "@root/modules/customers/stores";
+} from "src/modules/customers/stores";
 import {
   CategoriesUtils,
   GeneralUtils,
@@ -19,8 +19,8 @@ import {
   Property,
   TitleBase,
   useToasterStore,
-} from "@root/modules/shared";
-import { useRouter } from "next/router";
+} from "src/modules/shared";
+import { useNavigate } from 'react-router';
 import { useEffect, useState } from "react";
 import { Avatar, Button, FlexboxGrid, Stack } from "rsuite";
 import { useStore } from "zustand";
@@ -31,7 +31,7 @@ interface ProductDetailsProps {
 }
 
 export function ProductDetails(props: ProductDetailsProps) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const { id } = props;
   const productStore = useStore(useProductStore);
   const toasterStore = useStore(useToasterStore);
@@ -81,7 +81,7 @@ export function ProductDetails(props: ProductDetailsProps) {
 
   return (
     <>
-      <TitleBase title="Detalhes do produto" onBack={() => router.back()} />
+      <TitleBase title="Detalhes do produto" onBack={() => navigate(-1)} />
       <PanelBase title="Dados gerais">
         <FlexboxGrid justify="space-between" align="top">
           <Stack alignItems="center">
@@ -130,7 +130,7 @@ export function ProductDetails(props: ProductDetailsProps) {
                       <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
                     }
                     onClick={() =>
-                      router.replace(
+                      navigate(
                         `/customers/products/categories/${category.value}`
                       )
                     }

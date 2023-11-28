@@ -1,4 +1,4 @@
-import { EProductType } from "@shared/enums";
+import { EProductType } from "../enums";
 import { IAttribute } from ".";
 
 export interface IProduct {

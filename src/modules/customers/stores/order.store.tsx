@@ -1,4 +1,4 @@
-import { ICheckStock, ICheckStockResult, IOrder, IOrderSearchResult, IPagination } from "@shared/interfaces";
+import { ICheckStock, ICheckStockResult, IOrder, IOrderSearchResult, IPagination } from "src/modules/shared/interfaces";
 import { OrderService } from "@customers/services";
 import { create } from "zustand";
 

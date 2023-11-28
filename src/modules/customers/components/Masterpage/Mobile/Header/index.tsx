@@ -1,6 +1,6 @@
 import { Badge, Dropdown, Stack } from "rsuite";
 import CogIcon from "@rsuite/icons/legacy/Cog";
-import { useRouter } from "next/router";
+import { useNavigate } from 'react-router';
 import { useStore } from "zustand";
 import {
   useAuthStore,
@@ -16,8 +16,8 @@ import {
   DropdownSettings,
 } from "./styles";
 import { ProductAutocomplete } from "../../..";
-import { ICartProductHandler, IProduct } from "@shared/interfaces";
-import { ConfirmModal } from "@shared/components";
+import { ICartProductHandler, IProduct } from "src/modules/shared/interfaces";
+import { ConfirmModal } from "src/modules/shared/components";
 import {
   faBagShopping,
   faCartShopping,
@@ -31,7 +31,7 @@ import { useState } from "react";
 import { Categories } from "./Categories";
 
 export function Header() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const authStore = useStore(useAuthStore);
   const masterpageStore = useStore(useMasterpageStore);
   const companyStore = useStore(useCompanyStore);
@@ -65,13 +65,13 @@ export function Header() {
       )}
     >
       <Dropdown.Item
-        onSelect={() => router.replace("/customers/account")}
+        onSelect={() => navigate("/customers/account")}
         icon={<UserInfoIcon />}
       >
         Meus dados
       </Dropdown.Item>
       <Dropdown.Item
-        onSelect={() => router.replace("/customers/orders")}
+        onSelect={() => navigate("/customers/orders")}
         icon={<FontAwesomeIcon icon={faBagShopping} />}
       >
         Meus pedidos
@@ -96,7 +96,7 @@ export function Header() {
             <MenuIcon />
           </Item>
           <Stack.Item grow={1}>
-            <CompanyName onClick={() => router.replace("/")}>
+            <CompanyName onClick={() => navigate("/")}>
               {company.name}
             </CompanyName>
           </Stack.Item>
@@ -127,7 +127,7 @@ export function Header() {
       <Categories
         options={company.categories}
         open={showCategories}
-        onPick={(id) => router.replace(`/customers/products/categories/${id}`)}
+        onPick={(id) => navigate(`/customers/products/categories/${id}`)}
         onClose={() => setShowCategories(false)}
       />
 

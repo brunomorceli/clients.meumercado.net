@@ -1,16 +1,16 @@
 import { useStore } from "zustand";
-import { useUserStore } from "@admins/stores";
 import { Drawer } from "rsuite";
-import { GeneralUtils, INotification } from "@root/modules/shared";
+import { useUserStore } from "src/modules/admins/stores";
+import { INotification, GeneralUtils } from "src/modules/shared";
 
-interface DrawerNotifications {
+interface DrawerNotificationsProps {
   open?: boolean;
   notifications: INotification[];
   onPick: (notification: INotification) => void;
   onClose: () => void;
 }
 
-export function DrawerNotifications(props: DrawerNotifications) {
+export function DrawerNotifications(props: DrawerNotificationsProps) {
   const userStore = useStore(useUserStore);
   const { notifications } = userStore;
 

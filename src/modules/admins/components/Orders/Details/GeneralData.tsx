@@ -7,7 +7,7 @@ import {
   GeneralUtils,
   IOrder,
   IOrderHandler,
-} from "@shared";
+} from "src/modules/shared";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUpRightFromSquare,

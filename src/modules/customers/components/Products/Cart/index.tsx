@@ -1,8 +1,8 @@
 "use client";
 
-import { ConfirmModal, InputQuantity } from "@shared/components";
+import { ConfirmModal, InputQuantity } from "src/modules/shared/components";
 import React, { useState } from "react";
-import { GeneralUtils, ICartProduct } from "@root/modules/shared";
+import { GeneralUtils, ICartProduct } from "src/modules/shared";
 import { SubtitleCustom, TitleCustom } from "./styles";
 
 interface ProductCartProps {

@@ -1,6 +1,6 @@
 import { Avatar, Col, FlexboxGrid, Stack } from "rsuite";
 import { Label, Title, Total } from "./styles";
-import { GeneralUtils, IOrder, IProduct } from "@shared";
+import { GeneralUtils, IOrder, IProduct } from "src/modules/shared";
 
 interface ProductsProps {
   order: IOrder;

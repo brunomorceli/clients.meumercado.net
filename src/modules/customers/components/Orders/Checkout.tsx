@@ -20,15 +20,15 @@ import {
   PaymentMethodForm,
   TitleBase,
   useToasterStore,
-} from "@shared";
-import { useRouter } from "next/router";
+} from "src/modules/shared";
+import { useNavigate } from 'react-router';
 import { useState } from "react";
 import { Button, Message, Panel, Stack } from "rsuite";
 import CheckRoundIcon from "@rsuite/icons/CheckRound";
 import ArrowLeftLineIcon from "@rsuite/icons/ArrowLeftLine";
 
 export function OrderCheckout() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const toasterStore = useStore(useToasterStore);
   const companyStore = useStore(useCompanyStore);
   const { company } = companyStore;
@@ -135,7 +135,7 @@ export function OrderCheckout() {
             size="lg"
             appearance="ghost"
             color="green"
-            onClick={() => router.replace("/customers")}
+            onClick={() => navigate("/customers")}
           >
             <ArrowLeftLineIcon /> Voltar
           </Button>

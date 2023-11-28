@@ -1,36 +1,41 @@
 import { useCallback, useEffect, useState } from "react";
-import { IProduct, IProductSearch } from "@shared/interfaces";
+import { IProduct, IProductSearch } from "src/modules/shared";
 import { useStore } from "zustand";
-import { useProductStore } from "@admins/stores/product.store";
-import { PanelBase, InputSearch, TitleBase } from "@shared/components";
+import { useProductStore } from "src/modules/admins/stores/product.store";
+import {
+  PanelBase,
+  InputSearch,
+  TitleBase,
+} from "src/modules/shared/components";
 import { ProductList } from "./List";
-import { useRouter } from "next/router";
-import { Pagination } from "antd";
+import { useNavigate } from "react-router";
 import { FlexboxGrid } from "rsuite";
-import { useToasterStore } from "@shared/stores";
+import { useToasterStore } from "src/modules/shared/stores";
+import { ProductsCreateHandler } from "../../pages/Products/ProductsCreatePage";
+import { HomePageHandler } from "../../pages/HomePage";
+import { ProductsEditHandler } from "../../pages/Products/ProductsEditPage";
 
 export function Products() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const productStore = useStore(useProductStore);
   const toasterStore = useStore(useToasterStore);
-  const [search, setSearch] = useState<string>("");
-  const size = 20;
-  const [total, setTotal] = useState<number>(0);
   const [products, setProducts] = useState<IProduct[]>([]);
   const [processing, setProcessing] = useState<boolean>(false);
   const [searching, setSearching] = useState<boolean>(false);
-  const searchProducts = useCallback((search: IProductSearch = {}) => {
-    setSearching(true);
+  const searchProducts = useCallback(
+    (search: IProductSearch = {}) => {
+      setSearching(true);
 
-    productStore
-      .find(search)
-      .then((result) => {
-        setProducts(result.data);
-        setTotal(result.total);
-      })
-      .catch((e) => toasterStore.error(e))
-      .finally(() => setSearching(false));    
-  }, [productStore, toasterStore]);
+      productStore
+        .find(search)
+        .then((result) => {
+          setProducts(result.data);
+        })
+        .catch((e) => toasterStore.error(e))
+        .finally(() => setSearching(false));
+    },
+    [productStore, toasterStore]
+  );
 
   useEffect(() => {
     searchProducts();
@@ -48,7 +53,6 @@ export function Products() {
       .then(() => {
         toasterStore.success("Produto removido com sucesso.");
 
-        setSearch("");
         handleSearch();
       })
       .catch((e) => {
@@ -59,11 +63,11 @@ export function Products() {
 
   return (
     <>
-      <TitleBase title="Meus produtos" onBack={() => router.replace('/admins')} />
+      <TitleBase title="Meus produtos" onBack={() => navigate(HomePageHandler.navigate())} />
       <PanelBase
         title="Produtos"
         hideTitleDivider
-        onAdd={() => router.replace("/admins/products/create")}
+        onAdd={() => navigate(ProductsCreateHandler.navigate())}
       >
         <FlexboxGrid justify="space-between">
           <FlexboxGrid.Item colspan={24} style={{ marginBottom: 25 }}>
@@ -76,20 +80,9 @@ export function Products() {
           <FlexboxGrid.Item colspan={24}>
             <ProductList
               products={products}
-              onEdit={(p) => router.replace(`/admins/products/${p.id}`)}
+              onEdit={(p) => navigate(ProductsEditHandler.navigate(p.id!))}
               onRemove={handleRemove}
             />
-          </FlexboxGrid.Item>
-          <FlexboxGrid.Item colspan={24}>
-            {products.length >= size && (
-              <Pagination
-                defaultCurrent={1}
-                defaultPageSize={size}
-                total={total}
-                onChange={(page) => handleSearch({ page })}
-                showSizeChanger={false}
-              />
-            )}
           </FlexboxGrid.Item>
         </FlexboxGrid>
       </PanelBase>

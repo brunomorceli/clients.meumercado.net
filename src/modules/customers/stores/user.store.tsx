@@ -1,4 +1,4 @@
-import { IUser } from "@shared/interfaces";
+import { IUser } from "src/modules/shared/interfaces";
 import { UserService } from "@customers/services";
 import { create } from "zustand";
 

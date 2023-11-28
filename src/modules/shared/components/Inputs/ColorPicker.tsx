@@ -1,4 +1,3 @@
-import { ColorUtils } from "@root/modules/shared";
 import { CirclePicker } from "react-color";
 
 interface ColorPickerProps {
@@ -13,7 +12,7 @@ export function ColorPicker(props: ColorPickerProps) {
       <CirclePicker
         width="100%"
         colors={props.colors}
-        onChange={(color) => props.onChange(color.hex)}
+        onChange={(color: any) => props.onChange(color.hex)}
         color={props.color}
       />
     </div>

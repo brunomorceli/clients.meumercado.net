@@ -10,13 +10,15 @@ import {
   TitleBase,
   WhatsappIcon,
   useToasterStore,
-} from "@shared";
+} from "src/modules/shared";
 import { useStore } from "zustand";
-import { useCustomerStore } from "@root/modules/admins/stores";
-import { useRouter } from "next/router";
-import { useOrderStore } from "@admins/stores";
+import { useCustomerStore } from "src/modules/admins/stores";
+import { useNavigate } from 'react-router';
+import { useOrderStore } from "src/modules/admins/stores";
 import { Field, Label } from "./styles";
 import { OrdersList } from "./List";
+import { OrdersDetailsHandler } from "src/modules/admins/pages/Orders/OrdersDetailsPage";
+import { ProductsEditHandler } from "src/modules/admins/pages/Products/ProductsEditPage";
 
 interface CustomerDetailsProps {
   userId?: string | null | undefined;
@@ -24,7 +26,7 @@ interface CustomerDetailsProps {
 
 export function CustomerDetails(props: CustomerDetailsProps) {
   const { userId } = props;
-  const router = useRouter();
+  const navigate = useNavigate();
   const toasterStore = useStore(useToasterStore);
   const customerStore = useStore(useCustomerStore);
   const orderStore = useStore(useOrderStore);
@@ -85,7 +87,7 @@ export function CustomerDetails(props: CustomerDetailsProps) {
     <>
       <TitleBase
         title={user.id ? "Dados do cliente" : "Novo cliente"}
-        onBack={() => router.back()}
+        onBack={() => navigate(-1)}
       />
 
       <PanelBase title="Dados pessoais">
@@ -161,8 +163,8 @@ export function CustomerDetails(props: CustomerDetailsProps) {
         <OrdersList
           orders={orders}
           onChangeStatus={handleChangeStatus}
-          onDetails={(o) => router.replace(`/admins/orders/${o.id}/details`)}
-          onProductDetails={(p) => router.replace(`/admins/products/${p.id}`)}
+          onDetails={(o) => navigate(OrdersDetailsHandler.navigate(o.id!.toString()))}
+          onProductDetails={(p) => navigate(ProductsEditHandler.navigate(p.id!.toString()))}
         />
         {orders.length === 0 && <h4>Nenhum resultado.</h4>}
       </PanelBase>

@@ -1,11 +1,11 @@
-import { Orders } from "@root/modules/customers/components/Orders/Orders";
-import { AuthGuard, TitleBase } from "@shared/components";
+import { Orders } from "src/modules/customers/components/Orders/Orders";
+import { TitleBase } from "src/modules/shared/components";
 
-export default function OrdersPage() { 
+export default function OrdersPage() {
   return (
-    <AuthGuard>
+    <>
       <TitleBase title="Meus pedidos" />
       <Orders />
-    </AuthGuard>
-  )
+    </>
+  );
 }

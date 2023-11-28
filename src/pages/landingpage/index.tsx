@@ -1,12 +1,12 @@
-import { useRouter } from "next/router";
+import { useNavigate } from 'react-router';
 import { Button, Divider } from "rsuite";
 
 export default function Landingpage() {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   return (
     <>
-      <Button appearance="primary" onClick={() => router.replace("/admins")}>
+      <Button appearance="primary" onClick={() => navigate("/admins")}>
         Entrar
       </Button>
       <Divider />

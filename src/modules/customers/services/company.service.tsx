@@ -1,9 +1,9 @@
-import { ICompany, IThemeHandler } from "@shared/interfaces";
-import { GeneralUtils } from "@shared/utils";
+import { ICompany, IThemeHandler } from "src/modules/shared/interfaces";
+import { GeneralUtils } from "src/modules/shared/utils";
 import axios from "axios";
 
 export class CompanyService {
-  private static baseURL: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+  private static baseURL: string = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
   static get(): Promise<ICompany> {
     return new Promise((resolve, reject) => {

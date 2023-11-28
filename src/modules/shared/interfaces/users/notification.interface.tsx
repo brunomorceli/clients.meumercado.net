@@ -1,4 +1,4 @@
-import { ENotificationTarget, ENotificationType } from "@shared/enums";
+import { ENotificationTarget, ENotificationType } from "src/modules/shared/enums";
 
 export interface INotification {
   id: number;

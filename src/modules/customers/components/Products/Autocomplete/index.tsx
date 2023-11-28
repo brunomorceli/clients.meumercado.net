@@ -1,5 +1,5 @@
-import { useProductStore } from "@root/modules/customers/stores";
-import { IProduct, useToasterStore } from "@root/modules/shared";
+import { useProductStore } from "src/modules/customers/stores";
+import { IProduct, useToasterStore } from "src/modules/shared";
 import { ReactNode, useState } from "react";
 import { AutoComplete, Avatar, InputGroup, Stack } from "rsuite";
 import { useStore } from "zustand";

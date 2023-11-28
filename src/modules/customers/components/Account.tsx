@@ -7,15 +7,15 @@ import {
   UserForm,
   UserFormSchema,
   useToasterStore,
-} from "@root/modules/shared";
-import { useRouter } from "next/router";
+} from "src/modules/shared";
+import { useNavigate } from 'react-router';
 import { useEffect, useRef, useState } from "react";
 import { FlexboxGrid, Form, Placeholder, Schema } from "rsuite";
 import { useStore } from "zustand";
 import { useUserStore } from "../stores";
 
 export function Account() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const userStore = useStore(useUserStore);
   const toasterStore = useStore(useToasterStore);
   const [user, setUser] = useState<IUser>(IUserHandler.empty());
@@ -84,7 +84,7 @@ export function Account() {
     <>
       <TitleBase
         title="Meus dados"
-        onBack={() => router.replace("/customers")}
+        onBack={() => navigate("/customers")}
       />
       <Form
         fluid={true}

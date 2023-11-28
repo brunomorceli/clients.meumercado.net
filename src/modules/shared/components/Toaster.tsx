@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
-import { useToasterStore } from "@shared/stores";
+import { useToasterStore } from "../stores";
 import React, { useEffect } from "react";
-import { Notification, Placeholder, toaster } from "rsuite";
+import { Notification, toaster } from "rsuite";
 import { useStore } from "zustand";
 
 const Message = React.forwardRef(({ type, title, message, ...rest }: any, ref) => {

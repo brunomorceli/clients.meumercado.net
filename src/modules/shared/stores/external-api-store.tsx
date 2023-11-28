@@ -1,5 +1,5 @@
-import { IFindAddressResult } from "@shared/interfaces/find-address-result.interface";
-import { ExternalApiService } from "@shared/services";
+import { IFindAddressResult } from "../interfaces/find-address-result.interface";
+import { ExternalApiService } from "../services";
 import { create } from "zustand";
 
 interface useExternalApiStoreProps {

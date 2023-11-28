@@ -1,4 +1,4 @@
-import { IAttribute, IAttributeHandler } from "@shared/interfaces";
+import { IAttribute, IAttributeHandler } from "src/modules/shared/interfaces";
 import { Col, FlexboxGrid, Form, Input, Message, useToaster } from "rsuite";
 import { useState } from "react";
 import Slug from "slug";
@@ -7,7 +7,7 @@ import {
   FormModal,
   InputButton,
   PanelBase,
-} from "@shared/components";
+} from "src/modules/shared/components";
 
 interface AttributesProps {
   attributes: IAttribute[];

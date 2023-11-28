@@ -1,4 +1,4 @@
-import { ERoleType, EUSerStatusType } from "@shared/enums";
+import { ERoleType, EUSerStatusType } from "../../enums";
 import { IBillingData, IDeliveryData } from ".";
 
 export interface IUser {

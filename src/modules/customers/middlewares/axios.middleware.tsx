@@ -1,9 +1,9 @@
 "use client";
 
-import { useToasterStore } from "@shared/stores";
+import { useToasterStore } from "src/modules/shared/stores";
 import { useAuthStore } from "@customers/stores";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { useNavigate } from 'react-router';
 import { useStore } from "zustand";
 
 function getFromLocalStorage(key: string): any {
@@ -34,18 +34,18 @@ axios.interceptors.request.use(
         });
       }
 
-      const router = useRouter();
+      const navigate = useNavigate();
       const authStore = useStore(useAuthStore);
       const toasterStore = useStore(useToasterStore);
       const status = error.response.status;
       if (status === 401) {
         authStore.signout();
-        router.replace("/");
+        navigate("/");
       }
 
       if (status === 403) {
         toasterStore.warning("Você não tem permissão para acessar essa rota.");
-        router.replace("/");
+        navigate("/");
       }
 
       reject(error);

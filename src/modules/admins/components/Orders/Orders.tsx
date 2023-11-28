@@ -1,24 +1,35 @@
-import { useOrderStore } from "@admins/stores";
-import { useToasterStore } from "@shared/stores";
 import { useEffect, useState } from "react";
 import { useStore } from "zustand";
-import { OrdersList } from "./List";
 import { Panel } from "rsuite";
-import { EOrderStatus, TitleBase } from "@shared";
-import { useRouter } from "next/router";
-import { Search } from "./Search";
-import { IFindOrder } from "../../interfaces/find-order.interface";
-import { IOrderResult } from "../../interfaces";
+import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping, faHourglassEnd } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCartShopping,
+  faHourglassEnd,
+} from "@fortawesome/free-solid-svg-icons";
+
+import { EOrderStatus, TitleBase } from "src/modules/shared";
+import { useOrderStore } from "src/modules/admins/stores";
+import { useToasterStore } from "src/modules/shared/stores";
+import { OrdersList } from "./List";
+import { Search } from "./Search";
+import { IFindOrder } from "src/modules/admins/interfaces/find-order.interface";
+import { IOrderResult } from "src/modules/admins/interfaces";
+import { HomePageHandler } from "src/modules/admins/pages/HomePage";
+import { OrdersDetailsHandler } from "src/modules/admins/pages/Orders/OrdersDetailsPage";
+import { CustomersDetailsHandler } from "src/modules/admins/pages/Customers/CustomersDetailsPage";
 
 export function Orders() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const toasterStore = useStore(useToasterStore);
   const orderStore = useStore(useOrderStore);
   const [orders, setOrders] = useState<IOrderResult[]>([]);
   const [processing, setProcessing] = useState<boolean>(false);
-  const inactiveStatuses = [EOrderStatus.CANCELED_BY_CLIENT, EOrderStatus.CANCELED_BY_COMPANY, EOrderStatus.DONE];
+  const inactiveStatuses = [
+    EOrderStatus.CANCELED_BY_CLIENT,
+    EOrderStatus.CANCELED_BY_COMPANY,
+    EOrderStatus.DONE,
+  ];
 
   useEffect(() => {
     loadOrders();
@@ -37,7 +48,7 @@ export function Orders() {
   function filterActiveOrders(order: IOrderResult) {
     return !inactiveStatuses.includes(order.status);
   }
-  
+
   function filterInactiveOrders(order: IOrderResult) {
     return inactiveStatuses.includes(order.status);
   }
@@ -54,7 +65,7 @@ export function Orders() {
       .update(updateData)
       .then(() => {
         toasterStore.success("Pedido atualizado com sucesso.");
-        
+
         const list = [...orders];
         const index = list.findIndex((o) => o.id === order.id);
         list[index].status = order.status;
@@ -77,30 +88,46 @@ export function Orders() {
 
   return (
     <>
-      <TitleBase title="Pedidos" onBack={() => router.replace("/admins")} />
+      <TitleBase
+        title="Pedidos"
+        onBack={() => navigate(HomePageHandler.navigate())}
+      />
       <Panel
         bordered
         header={<Search onSearch={handleSearch} />}
         style={{ backgroundColor: "white" }}
       >
-        <h5 style={{ marginBottom: 10 }}><FontAwesomeIcon icon={faCartShopping} /> Pedidos em andamento</h5>
+        <h5 style={{ marginBottom: 10 }}>
+          <FontAwesomeIcon icon={faCartShopping} /> Pedidos em andamento
+        </h5>
         <Panel bordered style={{ backgroundColor: "white", marginBottom: 30 }}>
           <OrdersList
             orders={orders.filter(filterActiveOrders)}
             loading={processing}
-            onOrderDetails={(o) => router.replace(`/admins/orders/${o.id}/details`)}
-            onClientDetails={(o) => router.replace(`/admins/customers/${o.userId}/details`)}
+            onOrderDetails={(o) =>
+              navigate(OrdersDetailsHandler.navigate(o.id.toString()))
+            }
+            onClientDetails={(o) =>
+              navigate(CustomersDetailsHandler.navigate(o.userId.toString()))
+            }
             onChangeStatus={handleChangeStatus}
           />
         </Panel>
 
-        <h5 style={{ marginBottom: 10 }}><FontAwesomeIcon icon={faHourglassEnd} /> Pedidos concluídos/cancelados</h5>
+        <h5 style={{ marginBottom: 10 }}>
+          <FontAwesomeIcon icon={faHourglassEnd} /> Pedidos
+          concluídos/cancelados
+        </h5>
         <Panel bordered style={{ backgroundColor: "white" }}>
           <OrdersList
             orders={orders.filter(filterInactiveOrders)}
             loading={processing}
-            onOrderDetails={(o) => router.replace(`/admins/orders/${o.id}/details`)}
-            onClientDetails={(o) => router.replace(`/admins/customers/${o.userId}`)}
+            onOrderDetails={(o) =>
+              navigate(OrdersDetailsHandler.navigate(o.id.toString()))
+            }
+            onClientDetails={(o) =>
+              navigate(CustomersDetailsHandler.navigate(o.userId.toString()))
+            }
             onChangeStatus={handleChangeStatus}
           />
         </Panel>

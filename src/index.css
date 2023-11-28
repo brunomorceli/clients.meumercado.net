@@ -1,0 +1,21 @@
+body {
+  margin: 0px;
+  padding: 0px;
+  height: 100vh;
+
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.tox-statusbar {
+  display: none !important;
+}
+
+.img-crop-media {
+  background-image: url("../public/images/image-editor-bg.png") !important;
+}
+
+.rs-picker-menu {
+  z-index: 9;
+}

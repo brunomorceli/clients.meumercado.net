@@ -1,17 +1,19 @@
-import { ICompany, ICompanyHandler } from "@shared/interfaces";
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { FlexboxGrid, Message } from "rsuite";
+import { useStore } from "zustand";
+
+import { useToasterStore } from "src/modules/shared/stores";
+import { ICompany, ICompanyHandler } from "src/modules/shared/interfaces";
+import { useCompanyStore, useAuthStore } from "src/modules/admins/stores";
+import { ColorUtils } from "src/modules/shared";
+import { HomePageHandler } from "src/modules/admins/pages/HomePage";
 import {
   ColorPicker,
   PanelBase,
   SaveButton,
   TitleBase,
-} from "@shared/components";
-import { FlexboxGrid, Message } from "rsuite";
-import { useStore } from "zustand";
-import { useToasterStore } from "@shared/stores";
-import { useCompanyStore, useAuthStore } from "@admins/stores";
-import { useRouter } from "next/router";
-import { ColorUtils } from "@root/modules/shared";
+} from "src/modules/shared/components";
 import { Container, Label } from "./styles";
 
 interface ProductThemeFormProps {
@@ -20,7 +22,7 @@ interface ProductThemeFormProps {
 
 export function ProductThemeForm(props: ProductThemeFormProps) {
   const { companyId } = props;
-  const router = useRouter();
+  const navigate = useNavigate();
   const toasterStore = useStore(useToasterStore);
   const authStore = useStore(useAuthStore);
   const companyStore = useStore(useCompanyStore);
@@ -61,7 +63,7 @@ export function ProductThemeForm(props: ProductThemeFormProps) {
     <>
       <TitleBase
         title="Customizar tema"
-        onBack={() => router.replace("/admins")}
+        onBack={() => navigate(HomePageHandler.navigate())}
       />
 
       <Message style={{ marginTop: 20, marginBottom: 20 }} type="info">

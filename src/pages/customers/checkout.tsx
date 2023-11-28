@@ -1,10 +1,5 @@
-import { OrderCheckout } from "@root/modules/customers/components";
-import { AuthGuard } from "@shared/components";
+import { OrderCheckout } from "src/modules/customers/components";
 
-export default function CheckoutPage() { 
-  return (
-    <AuthGuard>
-      <OrderCheckout />
-    </AuthGuard>
-  )
+export default function CheckoutPage() {
+  return <OrderCheckout />;
 }

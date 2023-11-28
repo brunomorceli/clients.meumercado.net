@@ -1,11 +1,11 @@
-import { GeneralUtils } from "@root/modules/shared";
-import { useRouter } from "next/router";
+import { GeneralUtils } from "src/modules/shared";
+import { useNavigate } from 'react-router';
 
 export default function ProductsPage() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const subdomain = GeneralUtils.getSubdomain(window.location.href);
 
-  router.replace(Boolean(subdomain) ? '/customers' : '/landingpage');
+  navigate(Boolean(subdomain) ? '/customers' : '/landingpage');
 
   return null;
 }

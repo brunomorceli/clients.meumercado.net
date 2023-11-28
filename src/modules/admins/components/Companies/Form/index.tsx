@@ -1,4 +1,4 @@
-import { ICompany, ICompanyHandler } from "@shared/interfaces";
+import { ICompany, ICompanyHandler } from "src/modules/shared/interfaces";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   AddressForm,
@@ -8,14 +8,14 @@ import {
   InputText,
   PanelBase,
   SaveButton,
-} from "@shared/components";
+} from "src/modules/shared/components";
 import { CategoryForm } from "../Categories";
 import { FlexboxGrid, Form, Row, Schema } from "rsuite";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useStore } from "zustand";
-import { useToasterStore } from "@shared/stores";
-import { useCompanyStore, useAuthStore } from "@admins/stores";
+import { useToasterStore } from "src/modules/shared/stores";
+import { useCompanyStore, useAuthStore } from "src/modules/admins/stores";
 
 const model = Schema.Model({
   ...AddressFormSchema,
@@ -78,7 +78,7 @@ export function CompanyForm(props: CompanyFormProps) {
       .catch(toasterStore.error);
   }
 
-  const subdomain = (process.env.NEXT_PUBLIC_TENANT_URL as string).replace(
+  const subdomain = (process.env.REACT_APP_TENANT_URL as string).replace(
     "{tenant}",
     company.tenantId!
   );
@@ -126,7 +126,7 @@ export function CompanyForm(props: CompanyFormProps) {
         </Row>
         <Row style={{ marginBottom: 20 }}>
           <ImageGalery
-            images={company.covers}
+            images={company.covers || []}
             onChange={(images) => handleChangeCompanyKey("covers", images)}
           />
         </Row>

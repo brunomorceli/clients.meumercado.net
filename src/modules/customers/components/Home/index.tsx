@@ -1,6 +1,18 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { useStore } from "zustand";
+import { Carousel } from "rsuite";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { ProductCard } from "src/modules/customers/components";
+import { ProductDetailsPageHandler } from "src/modules/customers/pages/Products/ProductDetailsPage";
+import {
+  ICompany,
+  ICompanyHandler,
+  IProduct,
+  useToasterStore,
+} from "src/modules/shared";
 import {
   useAuthStore,
   useCartStore,
@@ -8,16 +20,6 @@ import {
   useMasterpageStore,
   useProductStore,
 } from "src/modules/customers/stores";
-import {
-  ICompany,
-  ICompanyHandler,
-  IProduct,
-  useToasterStore,
-} from "src/modules/shared";
-import { useNavigate } from 'react-router';
-import { useEffect, useState } from "react";
-import { Carousel } from "rsuite";
-import { useStore } from "zustand";
 
 const carouselImgStyle = {
   width: "100%",
@@ -28,7 +30,7 @@ const carouselImgStyle = {
 };
 
 const titleStyle = {
-  color: 'var(--header-text-color)',
+  color: "var(--header-text-color)",
   fontSize: 20,
   marginTop: 20,
   marginBottom: 20,
@@ -61,8 +63,12 @@ export function CustomerHome() {
 
   return (
     <>
-      {(company.covers || []).length > 0 &&
-        <Carousel autoplay shape="bar" style={{ width: "100%", borderRadius: 5 }}>
+      {(company.covers || []).length > 0 && (
+        <Carousel
+          autoplay
+          shape="bar"
+          style={{ width: "100%", borderRadius: 5 }}
+        >
           {(company.covers || []).map((cover, index) => (
             <div
               key={index}
@@ -73,7 +79,7 @@ export function CustomerHome() {
             />
           ))}
         </Carousel>
-      }
+      )}
 
       <div style={titleStyle}>
         <FontAwesomeIcon icon={faCartShopping} />
@@ -81,9 +87,11 @@ export function CustomerHome() {
       </div>
 
       <ProductCard
-        products={[...products, ...products, ...products]}
+        products={products}
         onAdd={handleAddProduct}
-        onDetails={(p) => navigate(`/customers/products/${p.id}/details`)}
+        onDetails={(p) =>
+          navigate(ProductDetailsPageHandler.navigate(p.id!.toString()))
+        }
       />
 
       <div style={titleStyle}>
@@ -92,9 +100,11 @@ export function CustomerHome() {
       </div>
 
       <ProductCard
-        products={[...products, ...products, ...products]}
+        products={products}
         onAdd={handleAddProduct}
-        onDetails={(p) => navigate(`/customers/products/${p.id}/details`)}
+        onDetails={(p) =>
+          navigate(ProductDetailsPageHandler.navigate(p.id!.toString()))
+        }
       />
     </>
   );

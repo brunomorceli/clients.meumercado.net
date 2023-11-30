@@ -1,5 +1,3 @@
-"use client";
-
 import { useToasterStore } from "src/modules/shared/stores";
 import { useAuthStore } from "../stores";
 import axios from "axios";

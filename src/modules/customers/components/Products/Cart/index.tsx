@@ -1,7 +1,6 @@
-"use client";
+import React, { useState } from "react";
 
 import { ConfirmModal, InputQuantity } from "src/modules/shared/components";
-import React, { useState } from "react";
 import { GeneralUtils, ICartProduct } from "src/modules/shared";
 import { SubtitleCustom, TitleCustom } from "./styles";
 

@@ -1,10 +1,17 @@
+import { useNavigate } from "react-router";
+import { useState } from "react";
 import { useStore } from "zustand";
+import { Button, Message, Panel, Stack } from "rsuite";
+import CheckRoundIcon from "@rsuite/icons/CheckRound";
+import ArrowLeftLineIcon from "@rsuite/icons/ArrowLeftLine";
+
+import { ProductCart } from "src/modules/customers/components";
+import { HomePageHandler } from "src/modules/customers/pages/HompePage";
 import {
   useCartStore,
   useCompanyStore,
   useOrderStore,
 } from "src/modules/customers/stores";
-import { ProductCart } from "src/modules/customers/components";
 import {
   CartButton,
   ECreditCardType,
@@ -21,11 +28,6 @@ import {
   TitleBase,
   useToasterStore,
 } from "src/modules/shared";
-import { useNavigate } from 'react-router';
-import { useState } from "react";
-import { Button, Message, Panel, Stack } from "rsuite";
-import CheckRoundIcon from "@rsuite/icons/CheckRound";
-import ArrowLeftLineIcon from "@rsuite/icons/ArrowLeftLine";
 
 export function OrderCheckout() {
   const navigate = useNavigate();
@@ -135,7 +137,7 @@ export function OrderCheckout() {
             size="lg"
             appearance="ghost"
             color="green"
-            onClick={() => navigate("/customers")}
+            onClick={() => navigate(HomePageHandler.navigate())}
           >
             <ArrowLeftLineIcon /> Voltar
           </Button>

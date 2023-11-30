@@ -24,6 +24,7 @@ import { useEffect, useState } from "react";
 import { Avatar, Button, FlexboxGrid, Stack } from "rsuite";
 import { useStore } from "zustand";
 import { Label } from "./style";
+import { ProductsByCategoryPageHandler } from "src/modules/customers/pages/Products/ProductsByCategoryPage";
 
 interface ProductDetailsProps {
   id: string;
@@ -129,9 +130,7 @@ export function ProductDetails(props: ProductDetailsProps) {
                       <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
                     }
                     onClick={() =>
-                      navigate(
-                        `/customers/products/categories/${category.value}`
-                      )
+                      navigate(ProductsByCategoryPageHandler.navigate(category.value))
                     }
                   >
                     {category.label}

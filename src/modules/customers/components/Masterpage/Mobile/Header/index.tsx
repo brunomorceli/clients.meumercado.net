@@ -1,7 +1,26 @@
+import { useStore } from "zustand";
+import { useState } from "react";
+import { useNavigate } from "react-router";
 import { Badge, Dropdown, Stack } from "rsuite";
 import CogIcon from "@rsuite/icons/legacy/Cog";
-import { useNavigate } from 'react-router';
-import { useStore } from "zustand";
+import UserInfoIcon from "@rsuite/icons/UserInfo";
+import MenuIcon from "@rsuite/icons/Menu";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBagShopping,
+  faCartShopping,
+  faRightToBracket,
+  faUpRightFromSquare,
+} from "@fortawesome/free-solid-svg-icons";
+
+import { ProductAutocomplete } from "src/modules/customers/components";
+import { ICartProductHandler, IProduct } from "src/modules/shared/interfaces";
+import { ConfirmModal } from "src/modules/shared/components";
+import { Categories } from "./Categories";
+import { AccountPageHandler } from "src/modules/customers/pages/Account/AccountPage";
+import { OrdersPageHandler } from "src/modules/customers/pages/Orders/OrderPage";
+import { HomePageHandler } from "src/modules/customers/pages/HompePage";
+import { ProductsByCategoryPageHandler } from "src/modules/customers/pages/Products/ProductsByCategoryPage";
 import {
   useAuthStore,
   useCartStore,
@@ -15,20 +34,6 @@ import {
   SecondaryHeader,
   DropdownSettings,
 } from "./styles";
-import { ProductAutocomplete } from "../../..";
-import { ICartProductHandler, IProduct } from "src/modules/shared/interfaces";
-import { ConfirmModal } from "src/modules/shared/components";
-import {
-  faBagShopping,
-  faCartShopping,
-  faRightToBracket,
-  faUpRightFromSquare,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import UserInfoIcon from "@rsuite/icons/UserInfo";
-import MenuIcon from "@rsuite/icons/Menu";
-import { useState } from "react";
-import { Categories } from "./Categories";
 
 export function Header() {
   const navigate = useNavigate();
@@ -65,13 +70,13 @@ export function Header() {
       )}
     >
       <Dropdown.Item
-        onSelect={() => navigate("/customers/account")}
+        onSelect={() => navigate(AccountPageHandler.navigate())}
         icon={<UserInfoIcon />}
       >
         Meus dados
       </Dropdown.Item>
       <Dropdown.Item
-        onSelect={() => navigate("/customers/orders")}
+        onSelect={() => navigate(OrdersPageHandler.navigate())}
         icon={<FontAwesomeIcon icon={faBagShopping} />}
       >
         Meus pedidos
@@ -96,7 +101,7 @@ export function Header() {
             <MenuIcon />
           </Item>
           <Stack.Item grow={1}>
-            <CompanyName onClick={() => navigate("/")}>
+            <CompanyName onClick={() => navigate(HomePageHandler.navigate())}>
               {company.name}
             </CompanyName>
           </Stack.Item>
@@ -127,7 +132,9 @@ export function Header() {
       <Categories
         options={company.categories}
         open={showCategories}
-        onPick={(id) => navigate(`/customers/products/categories/${id}`)}
+        onPick={(id) =>
+          navigate(ProductsByCategoryPageHandler.navigate(id.toString()))
+        }
         onClose={() => setShowCategories(false)}
       />
 

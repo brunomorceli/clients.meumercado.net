@@ -19,18 +19,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
-    "paths": {
-      "@root/*": ["./src/*"],
-      "@pages": ["./src/pages"],
-      "@pages/*": ["./src/pages/*"],
-      "src/modules/shared": ["./src/modules/shared"],
-      "src/modules/shared/*": ["./src/modules/shared/*"],
-      "src/modules/admins": ["./src/modules/admins"],
-      "src/modules/admins/*": ["./src/modules/admins/*"],
-      "src/modules/customers": ["./src/modules/customers"],
-      "src/modules/customers/*": ["./src/modules/customers/*"],
-    }
+    "baseUrl": "."
   },
   "include": ["src"],
   "exclude": ["node_modules"]

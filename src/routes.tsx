@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
-import Landingpage from "./pages/landingpage";
+import Landingpage from "src/modules/landingpage/pages/Landingpage";
 import AdminsRoutes from "src/modules/admins/pages/Routes";
 import CustomersRoutes from "src/modules/customers/pages/Routes";
 import { GeneralUtils } from "src/modules/shared";

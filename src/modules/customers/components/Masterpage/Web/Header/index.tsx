@@ -1,7 +1,29 @@
-import { Badge, Col, Dropdown, FlexboxGrid, Stack } from "rsuite";
-import CogIcon from "@rsuite/icons/legacy/Cog";
+/* eslint-disable jsx-a11y/alt-text */
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useStore } from "zustand";
+import { Badge, Col, Dropdown, FlexboxGrid, Stack } from "rsuite";
+import CogIcon from "@rsuite/icons/legacy/Cog";
+import UserInfoIcon from "@rsuite/icons/UserInfo";
+import ArrowDownLineIcon from "@rsuite/icons/ArrowDownLine";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBagShopping,
+  faCartShopping,
+  faHouse,
+  faPhone,
+  faRightToBracket,
+  faUpRightFromSquare,
+} from "@fortawesome/free-solid-svg-icons";
+
+import { ProductAutocomplete } from "src/modules/customers/components";
+import { ICartProductHandler, IProduct } from "src/modules/shared/interfaces";
+import { ConfirmModal } from "src/modules/shared/components";
+import { Categories } from "./Categories";
+import { OrdersPageHandler } from "src/modules/customers/pages/Orders/OrderPage";
+import { AccountPageHandler } from "src/modules/customers/pages/Account/AccountPage";
+import { HomePageHandler } from "src/modules/admins/pages/HomePage";
+import { ProductsByCategoryPageHandler } from "src/modules/customers/pages/Products/ProductsByCategoryPage";
 import {
   useAuthStore,
   useCartStore,
@@ -15,22 +37,6 @@ import {
   SecondaryHeader,
   DropdownSettings,
 } from "./styles";
-import { ProductAutocomplete } from "src/modules/customers/components";
-import { ICartProductHandler, IProduct } from "src/modules/shared/interfaces";
-import { ConfirmModal } from "src/modules/shared/components";
-import {
-  faBagShopping,
-  faCartShopping,
-  faHouse,
-  faPhone,
-  faRightToBracket,
-  faUpRightFromSquare,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import UserInfoIcon from "@rsuite/icons/UserInfo";
-import { useState } from "react";
-import { Categories } from "./Categories";
-import ArrowDownLineIcon from "@rsuite/icons/ArrowDownLine";
 
 export function Header() {
   const navigate = useNavigate();
@@ -65,13 +71,13 @@ export function Header() {
       )}
     >
       <Dropdown.Item
-        onSelect={() => navigate("/customers/account")}
+        onSelect={() => navigate(AccountPageHandler.navigate())}
         icon={<UserInfoIcon />}
       >
         Meus dados
       </Dropdown.Item>
       <Dropdown.Item
-        onSelect={() => navigate("/customers/orders")}
+        onSelect={() => navigate(OrdersPageHandler.navigate())}
         icon={<FontAwesomeIcon icon={faBagShopping} />}
       >
         Meus pedidos
@@ -89,7 +95,7 @@ export function Header() {
     <>
       <HeaderContainer>
         <Stack alignItems="center" justifyContent="flex-start">
-          <CompanyName onClick={() => navigate("/")}>
+          <CompanyName onClick={() => navigate(HomePageHandler.navigate())}>
             {company.logo ? (
               <img src={company.logo} height={45} />
             ) : (
@@ -120,7 +126,7 @@ export function Header() {
         </Stack>
       </HeaderContainer>
       <SecondaryHeader>
-        <Item onClick={() => navigate("/customers")}>
+        <Item onClick={() => navigate(HomePageHandler.navigate())}>
           <FontAwesomeIcon icon={faHouse} /> Início
         </Item>
         <Item>
@@ -136,7 +142,9 @@ export function Header() {
               <Categories
                 options={company.categories}
                 onPick={(id) =>
-                  navigate(`/customers/products/categories/${id}`)
+                  navigate(
+                    ProductsByCategoryPageHandler.navigate(id.toString())
+                  )
                 }
               />
             </Col>

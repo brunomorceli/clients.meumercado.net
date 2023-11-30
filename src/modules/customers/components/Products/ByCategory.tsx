@@ -1,13 +1,12 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { useStore } from "zustand";
+import { Pagination, Placeholder } from "rsuite";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { ProductCard } from "src/modules/customers/components";
-import {
-  useAuthStore,
-  useCartStore,
-  useCompanyStore,
-  useMasterpageStore,
-  useProductStore,
-} from "src/modules/customers/stores";
+import { HomePageHandler } from "src/modules/customers/pages/HompePage";
 import {
   CategoriesUtils,
   IProduct,
@@ -15,10 +14,14 @@ import {
   TitleBase,
   useToasterStore,
 } from "src/modules/shared";
-import { useNavigate } from 'react-router';
-import { useEffect, useState } from "react";
-import { Pagination, Placeholder } from "rsuite";
-import { useStore } from "zustand";
+import {
+  useAuthStore,
+  useCartStore,
+  useCompanyStore,
+  useMasterpageStore,
+  useProductStore,
+} from "src/modules/customers/stores";
+import { ProductDetailsPageHandler } from "src/modules/customers/pages/Products/ProductDetailsPage";
 
 const titleStyle = {
   color: "white",
@@ -68,7 +71,7 @@ export function ProductsByCategory(props: ProductsByCategoryProps) {
         );
         if (!categoryFound) {
           toastStore.error("Categoria inválida");
-          navigate("/customers");
+          navigate(HomePageHandler.navigate());
           return;
         }
 
@@ -134,9 +137,7 @@ export function ProductsByCategory(props: ProductsByCategoryProps) {
         <ProductCard
           products={[...products]}
           onAdd={handleAddProduct}
-          onDetails={(p) =>
-            navigate(`/customers/products/${p.id}/details`)
-          }
+          onDetails={(p) => navigate(ProductDetailsPageHandler.navigate(p.id!.toString()))}
         />
       )}
       {products.length > resultsPerPage && (
@@ -149,9 +150,7 @@ export function ProductsByCategory(props: ProductsByCategoryProps) {
           ellipsis
         />
       )}
-      {products.length === 0 &&
-        <NoProductFoundResult />
-      }
+      {products.length === 0 && <NoProductFoundResult />}
     </>
   );
 }

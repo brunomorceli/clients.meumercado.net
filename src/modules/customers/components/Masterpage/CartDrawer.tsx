@@ -1,12 +1,18 @@
 import { useStore } from "zustand";
+import { useNavigate } from "react-router";
+import { Drawer } from "rsuite";
+
+import { CheckoutPageHandler } from "src/modules/customers/pages/Checkout/CheckoutPage";
+import {
+  ProductAutocomplete,
+  ProductCart,
+} from "src/modules/customers/components";
 import {
   useAuthStore,
   useCartStore,
   useCompanyStore,
   useMasterpageStore,
 } from "src/modules/customers/stores";
-import { Drawer } from "rsuite";
-import { ProductAutocomplete, ProductCart } from "..";
 import {
   CartButton,
   GeneralUtils,
@@ -14,7 +20,6 @@ import {
   ICartProductHandler,
   IProduct,
 } from "src/modules/shared";
-import { useNavigate } from 'react-router';
 
 interface CartDrawerProps {
   noRender?: boolean;
@@ -55,7 +60,7 @@ export function CartDrawer(props: CartDrawerProps) {
       return;
     }
 
-    navigate("/customers/checkout");
+    navigate(CheckoutPageHandler.navigate());
   }
 
   const totalLabel = GeneralUtils.getAmountLabel(
@@ -68,7 +73,7 @@ export function CartDrawer(props: CartDrawerProps) {
 
   return (
     <Drawer
-      style={{ minWidth: '25vw', maxWidth: '300px' }}
+      style={{ minWidth: "25vw", maxWidth: "300px" }}
       open={masterpageStore.cart}
       onClose={() => masterpageStore.toggleCart()}
     >
@@ -88,7 +93,9 @@ export function CartDrawer(props: CartDrawerProps) {
           </h6>
         )}
 
-        <h3 style={{ color: '#8bc34a', textAlign: 'right'}}>Total: {totalLabel}</h3>
+        <h3 style={{ color: "#8bc34a", textAlign: "right" }}>
+          Total: {totalLabel}
+        </h3>
         {products.length !== 0 && (
           <CartButton
             title="Finalizar"

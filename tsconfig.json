@@ -28,8 +28,8 @@
       "src/modules/shared/*": ["./src/modules/shared/*"],
       "src/modules/admins": ["./src/modules/admins"],
       "src/modules/admins/*": ["./src/modules/admins/*"],
-      "@customers": ["./src/modules/customers"],
-      "@customers/*": ["./src/modules/customers/*"],
+      "src/modules/customers": ["./src/modules/customers"],
+      "src/modules/customers/*": ["./src/modules/customers/*"],
     }
   },
   "include": ["src"],

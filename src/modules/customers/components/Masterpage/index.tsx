@@ -3,7 +3,7 @@ import { WebMasterpage } from "..";
 import { ReactNode, useEffect } from "react";
 import { MobileMasterpage } from "./Mobile";
 import { useStore } from "zustand";
-import { useCompanyStore } from "@customers/stores";
+import { useCompanyStore } from "src/modules/customers/stores";
 
 interface CustomerMasterpageProps {
   children: ReactNode;

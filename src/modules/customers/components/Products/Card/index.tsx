@@ -1,6 +1,6 @@
 import { IProduct } from "src/modules/shared/interfaces";
 import { ProductCardItem } from "./Item";
-import { Col, FlexboxGrid, Row } from "rsuite";
+import { Col, FlexboxGrid } from "rsuite";
 
 interface ProductCardListProps {
   products: IProduct[];

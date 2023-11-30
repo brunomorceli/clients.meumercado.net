@@ -9,3 +9,13 @@ export default function OrdersPage() {
     </>
   );
 }
+
+export class OrdersPageHandler {
+  static route(): string {
+    return '/orders';
+  }
+
+  static navigate(): string {
+    return '/orders';
+  }
+}

@@ -7,7 +7,7 @@ import {
 import { useStore } from "zustand";
 import { useNavigate } from 'react-router';
 import { useEffect, useState } from "react";
-import { useAuthStore, useMasterpageStore } from "@customers/stores";
+import { useAuthStore, useMasterpageStore } from "src/modules/customers/stores";
 import { SignupForm } from "./SignupForm";
 import { ConfirmForm } from "./ConfirmForm";
 import { SigninForm } from "./SigninForm";

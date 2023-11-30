@@ -9,7 +9,6 @@ import {
 import {
   CategoriesUtils,
   GeneralUtils,
-  ICategory,
   ICompany,
   ICompanyHandler,
   IProduct,

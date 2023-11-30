@@ -1,5 +1,5 @@
-import { ISignup, IConfirm, IAuthentication } from "@customers/interfaces";
-import { ISigninResponse } from "@customers/interfaces/signin-response.interface";
+import { ISignup, IConfirm, IAuthentication } from "src/modules/customers/interfaces";
+import { ISigninResponse } from "src/modules/customers/interfaces/signin-response.interface";
 import axios from "axios";
 
 export class AuthService {

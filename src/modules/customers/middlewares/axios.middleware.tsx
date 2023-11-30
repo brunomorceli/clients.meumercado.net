@@ -1,7 +1,7 @@
 "use client";
 
 import { useToasterStore } from "src/modules/shared/stores";
-import { useAuthStore } from "@customers/stores";
+import { useAuthStore } from "src/modules/customers/stores";
 import axios from "axios";
 import { useNavigate } from 'react-router';
 import { useStore } from "zustand";

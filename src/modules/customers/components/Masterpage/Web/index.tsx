@@ -1,10 +1,10 @@
 import { ReactNode, useEffect } from "react";
 import { Header } from "./Header";
 
-import "@customers/middlewares/axios.middleware";
+import "src/modules/customers/middlewares/axios.middleware";
 import { Col, FlexboxGrid, Stack } from "rsuite";
 import { useStore } from "zustand";
-import { useCompanyStore } from "@customers/stores";
+import { useCompanyStore } from "src/modules/customers/stores";
 import { CartDrawer } from "../CartDrawer";
 import { Credentials } from "../Credentials";
 import { Container } from "./styles";

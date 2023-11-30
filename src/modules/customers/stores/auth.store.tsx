@@ -3,9 +3,9 @@ import {
   IConfirm,
   IAuthenticationHandler,
   ISigninResponse,
-} from "@customers/interfaces";
+} from "src/modules/customers/interfaces";
 import { ICompany } from "src/modules/shared/interfaces";
-import { AuthService } from "@customers/services";
+import { AuthService } from "src/modules/customers/services";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 

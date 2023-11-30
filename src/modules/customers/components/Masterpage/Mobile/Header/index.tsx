@@ -7,7 +7,7 @@ import {
   useCartStore,
   useCompanyStore,
   useMasterpageStore,
-} from "@customers/stores";
+} from "src/modules/customers/stores";
 import {
   HeaderContainer,
   Item,

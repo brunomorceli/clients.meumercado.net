@@ -3,7 +3,6 @@ import { useStore } from "zustand";
 import { useAuthStore, useUserStore } from "src/modules/admins/stores";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faBell, faHouse } from "@fortawesome/free-solid-svg-icons";
-import NoticeIcon from "@rsuite/icons/Notice";
 import { useEffect, useState } from "react";
 import { DrawerNotifications } from "src/modules/shared/components";
 import { useNavigate } from 'react-router';

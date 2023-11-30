@@ -3,8 +3,8 @@ import {
   useCartStore,
   useCompanyStore,
   useOrderStore,
-} from "@customers/stores";
-import { ProductCart } from "@customers/components";
+} from "src/modules/customers/stores";
+import { ProductCart } from "src/modules/customers/components";
 import {
   CartButton,
   ECreditCardType,

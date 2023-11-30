@@ -1,6 +1,6 @@
 import { IProduct, IProductSearchResult } from "src/modules/shared/interfaces";
 import { IProductSearch } from "src/modules/shared/interfaces/product-search.interface";
-import { ProductService } from "@customers/services";
+import { ProductService } from "src/modules/customers/services";
 import { create } from "zustand";
 
 interface useProductStoreProps {

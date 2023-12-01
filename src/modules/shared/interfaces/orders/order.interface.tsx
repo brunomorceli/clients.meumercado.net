@@ -1,5 +1,5 @@
 import { IOrderPayment, IOrderProduct } from ".";
-import { EOrderStatus, IOrderLog, IUser } from "../..";
+import { EDeliveryType, EOrderStatus, IOrderLog, IUser } from "../..";
 
 export interface IOrder {
   id?: number;
@@ -10,6 +10,7 @@ export interface IOrder {
   observation?: string;
   orderProducts: IOrderProduct[];
   payments: IOrderPayment[];
+  deliveryType: EDeliveryType;
   orderLogs: IOrderLog[];
   createdAt?: string;
   deletedAt?: string;
@@ -19,6 +20,7 @@ export class IOrderHandler {
   static empty(): IOrder {
     return {
       orderProducts: [],
+      deliveryType: EDeliveryType.DELIVERY,
       payments: [],
       orderLogs: [],
       status: EOrderStatus.PENDING,

@@ -1,7 +1,14 @@
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import { useStore } from "zustand";
-import { Button, Message, Panel, Stack } from "rsuite";
+import {
+  Button,
+  Message,
+  Panel,
+  RadioTile,
+  RadioTileGroup,
+  Stack,
+} from "rsuite";
 import CheckRoundIcon from "@rsuite/icons/CheckRound";
 import ArrowLeftLineIcon from "@rsuite/icons/ArrowLeftLine";
 
@@ -15,6 +22,7 @@ import {
 import {
   CartButton,
   ECreditCardType,
+  EDeliveryType,
   GeneralUtils,
   ICartProduct,
   ICheckStock,
@@ -28,6 +36,11 @@ import {
   TitleBase,
   useToasterStore,
 } from "src/modules/shared";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBagShopping,
+  faBoxOpen,
+} from "@fortawesome/free-solid-svg-icons";
 
 export function OrderCheckout() {
   const navigate = useNavigate();
@@ -37,6 +50,7 @@ export function OrderCheckout() {
   const cartStore = useStore(useCartStore);
   const orderStore = useStore(useOrderStore);
   const products = cartStore.getProducts(company.id || "");
+  const [deliveryType, setDeliveryType] = useState<EDeliveryType>(EDeliveryType.DELIVERY);
   const [payment, setPayment] = useState<IOrderPayment>({
     ...IOrderPaymentHandler.empty(),
     creditCardType: ECreditCardType.DEBIT,
@@ -76,6 +90,7 @@ export function OrderCheckout() {
   function handleCheckout(): void {
     const order: IOrder = {
       payments: [payment],
+      deliveryType,
       orderLogs: [],
       orderProducts: products.map((p) =>
         IOrderProductHandler.fromProduct(p.product, p.quantity)
@@ -163,6 +178,30 @@ export function OrderCheckout() {
       </PanelBase>
       <PanelBase title="Pagamento">
         <PaymentMethodForm payment={payment} onChange={setPayment} />
+      </PanelBase>
+
+      <PanelBase title="Entrega">
+        <RadioTileGroup
+          defaultValue={deliveryType}
+          aria-label="Tipo de entrega"
+          onChange={(t) => setDeliveryType(t as EDeliveryType)}
+        >
+          <RadioTile
+            icon={<FontAwesomeIcon icon={faBoxOpen} />}
+            label="Quero receber em casa"
+            value={EDeliveryType.DELIVERY}
+          >
+            Quero que receber em minha casa por meio de um entregador.
+          </RadioTile>
+
+          <RadioTile
+            icon={<FontAwesomeIcon icon={faBagShopping} />}
+            label="Quero retirar no local"
+            value={EDeliveryType.CARRY}
+          >
+            Quero retirar minha compra/entrega no local.
+          </RadioTile>
+        </RadioTileGroup>
       </PanelBase>
       <PanelBase title="Resumo" hideTitleDivider>
         <h3 style={{ color: "#00a700", textAlign: "right" }}>

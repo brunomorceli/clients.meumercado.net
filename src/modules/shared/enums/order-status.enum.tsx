@@ -5,13 +5,16 @@ import {
   faXmark,
   faTape,
   faTruckArrowRight,
+  faGift,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactNode } from "react";
+import { EDeliveryType } from "./delivery-type.enum";
 
 export enum EOrderStatus {
   PENDING = "PENDING",
   PREPARING = "PREPARING",
+  READY = "READY",
   SHIPPING = "SHIPPING",
   DELIVERING = "DELIVERING",
   DONE = "DONE",
@@ -26,6 +29,8 @@ export class EOrderStatusHandler {
         return "Aguardando resposta";
       case EOrderStatus.PREPARING:
         return "Em preparo";
+      case EOrderStatus.READY:
+        return "Aguardando retirada";
       case EOrderStatus.SHIPPING:
         return "Em trânsito";
       case EOrderStatus.DELIVERING:
@@ -45,6 +50,8 @@ export class EOrderStatusHandler {
         return "#59c3dd";
       case EOrderStatus.PREPARING:
         return "#283593";
+      case EOrderStatus.READY:
+        return "#039be5";
       case EOrderStatus.SHIPPING:
         return "#ffa600";
       case EOrderStatus.DELIVERING:
@@ -68,6 +75,9 @@ export class EOrderStatusHandler {
       case EOrderStatus.PREPARING:
         icon = faTape;
         break;
+      case EOrderStatus.READY:
+        icon = faGift;
+        break;
       case EOrderStatus.SHIPPING:
         icon = faTruckArrowRight;
         break;
@@ -88,8 +98,18 @@ export class EOrderStatusHandler {
     return <FontAwesomeIcon icon={icon} style={style} />;
   }
 
-  static options(): any[] {
-    return Object.values(EOrderStatus).map((value) => ({
+  static options(deliveryType?: EDeliveryType ): any[] {
+    let values = Object.values(EOrderStatus);
+
+    if (deliveryType) {
+      if (deliveryType === EDeliveryType.CARRY) {
+        values = values.filter((v) => ![EOrderStatus.DELIVERING, EOrderStatus.SHIPPING].includes(v));
+      } else {
+        values = values.filter((v) => v !== EOrderStatus.READY);
+      }
+    }
+
+    return values.map((value) => ({
       label: this.label(value),
       value,
     }));

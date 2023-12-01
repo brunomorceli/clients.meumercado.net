@@ -1,4 +1,4 @@
-import { EOrderStatus } from "src/modules/shared";
+import { EDeliveryType, EOrderStatus } from "src/modules/shared";
 
 export interface IOrderResult {
   id: number;
@@ -8,6 +8,7 @@ export interface IOrderResult {
   cpfCnpj: string;
   companyId: string;
   status: EOrderStatus;
+  deliveryType: EDeliveryType;
   observation?: string;
   total: number;
   productCount: number;

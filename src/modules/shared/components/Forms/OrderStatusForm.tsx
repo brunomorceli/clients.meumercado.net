@@ -129,7 +129,7 @@ export function OrdersStatusForm(props: OrderStatusFormProps) {
                 defaultValue={order.status}
                 value={order.status}
                 data={[
-                  ...EOrderStatusHandler.options().slice(
+                  ...EOrderStatusHandler.options(order.deliveryType).slice(
                     statusKeys.indexOf(order.status!),
                     statusKeys.length
                   ),

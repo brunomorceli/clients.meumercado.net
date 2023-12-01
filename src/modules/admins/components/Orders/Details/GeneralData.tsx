@@ -1,7 +1,8 @@
-import { Button, Col, FlexboxGrid } from "rsuite";
+import { Button, FlexboxGrid } from "rsuite";
 import { CustoCol, Label, Title } from "./styles";
 import {
   Col24,
+  EDeliveryType,
   EOrderStatus,
   EOrderStatusHandler,
   GeneralUtils,
@@ -90,12 +91,20 @@ export function GeneralData(props: GeneralDataProps) {
           </>
         )}
       </Col12>
-      <Col24>
-        <Label>Endereço de entrega</Label>
+      <Col12>
+        <Label>Tipo de entrega</Label>
         <Title>
-          {GeneralUtils.getFullAddress(order.user!)}
+          {order.deliveryType === EDeliveryType.DELIVERY ? 'Entrega a domicílio': 'Retirada na loja'}
         </Title>
-      </Col24>
+      </Col12>
+      {order.deliveryType === EDeliveryType.DELIVERY &&
+        <Col24>
+          <Label>Endereço de entrega</Label>
+          <Title>
+            {GeneralUtils.getFullAddress(order.user!)}
+          </Title>
+        </Col24>
+      }
     </FlexboxGrid>
   );
 }

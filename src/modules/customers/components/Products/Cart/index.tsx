@@ -8,6 +8,7 @@ interface ProductCartProps {
   products: ICartProduct[];
   onChange: (product: ICartProduct) => void;
   onRemove: (product: ICartProduct) => void;
+  onPick?: ((product: ICartProduct) => void);
 }
 
 export function ProductCart(props: ProductCartProps) {
@@ -44,7 +45,12 @@ export function ProductCart(props: ProductCartProps) {
             marginBottom: 20,
           }}
         >
-          <TitleCustom>{cartProduct.product.label.toUpperCase()}</TitleCustom>
+          <TitleCustom
+            appearance="link"
+            onClick={() => props.onPick && props.onPick(cartProduct)}
+          >
+            {cartProduct.product.label.toUpperCase()}
+          </TitleCustom>
           <SubtitleCustom>
             Preço : {GeneralUtils.getAmountLabel(cartProduct.product.price)}
             {GeneralUtils.getSulfixLabel(

@@ -19,7 +19,7 @@ import {
   TitleBase,
   useToasterStore,
 } from "src/modules/shared";
-import { useNavigate } from 'react-router';
+import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { Avatar, Button, FlexboxGrid, Stack } from "rsuite";
 import { useStore } from "zustand";
@@ -106,7 +106,7 @@ export function ProductDetails(props: ProductDetailsProps) {
                 ? "Ilimitado"
                 : GeneralUtils.getSulfixLabel(
                     product.quantity,
-                    product.quantitySulfix
+                    product.quantitySulfix || ""
                   )
             }
             colSize={12}
@@ -130,7 +130,9 @@ export function ProductDetails(props: ProductDetailsProps) {
                       <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
                     }
                     onClick={() =>
-                      navigate(ProductsByCategoryPageHandler.navigate(category.value))
+                      navigate(
+                        ProductsByCategoryPageHandler.navigate(category.value)
+                      )
                     }
                   >
                     {category.label}
@@ -171,11 +173,17 @@ export function ProductDetails(props: ProductDetailsProps) {
         </FlexboxGrid>
       </PanelBase>
       <PanelBase title="Ações">
-        <PlusButton
-          title="Adicionar produto"
-          options={{ color: "primary" }}
-          onClick={handleAddProduct}
-        />
+        {product.unlimited || product.quantity > 0 ? (
+          <PlusButton
+            title="Adicionar produto"
+            options={{ color: "primary" }}
+            onClick={handleAddProduct}
+          />
+        ) : (
+          <Button disabled appearance="default">
+            Esgotado
+          </Button>
+        )}
       </PanelBase>
     </>
   );

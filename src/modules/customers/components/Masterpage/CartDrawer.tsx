@@ -20,6 +20,7 @@ import {
   ICartProductHandler,
   IProduct,
 } from "src/modules/shared";
+import { ProductDetailsPageHandler } from "../../pages/Products/ProductDetailsPage";
 
 interface CartDrawerProps {
   noRender?: boolean;
@@ -50,6 +51,11 @@ export function CartDrawer(props: CartDrawerProps) {
     if (products.length === 0) {
       masterpageStore.setCart(false);
     }
+  }
+
+  function handlePickProduct(product: ICartProduct): void {
+    navigate(ProductDetailsPageHandler.navigate(product.product.id!));
+    masterpageStore.setCart(false);
   }
 
   function handleFinish(): void {
@@ -86,6 +92,7 @@ export function CartDrawer(props: CartDrawerProps) {
           products={products}
           onChange={handleChageProduct}
           onRemove={handleRemove}
+          onPick={handlePickProduct}
         />
         {products.length === 0 && (
           <h6 style={{ marginTop: 30, marginBottom: 30 }}>

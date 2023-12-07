@@ -22,44 +22,52 @@ interface ProductCardProps {
 
 export function ProductCardItem(props: ProductCardProps) {
   const { product, expanded, onAdd, onDetails } = props;
-  const discount: any = null;
   const price = `${GeneralUtils.getAmountLabel(
     product.price
   )}${GeneralUtils.getSulfixLabel(product.quantitySulfix, "/")}`;
 
   return (
     <CardContainer expanded={expanded}>
-      <CardImage
-        src={product.pictures?.[0] || "images/no-image.png"}
-        onClick={() => onAdd(product)}
-      />
-      {discount && (
+      {!!product.discountPrice && (
         <CardPercentFlag>
-          {GeneralUtils.getPercentDifference(product.price, discount.price)} de
-          desconto
+          {GeneralUtils.getPercentDifference(
+            product.price,
+            product.discountPrice
+          )}{" "}
+          de desconto
         </CardPercentFlag>
       )}
+      <CardImage
+        src={product.pictures?.[0] || "images/no-image.png"}
+        onClick={() => onDetails(product)}
+      />
 
       <CardTitle>{product.label.toLocaleUpperCase()}</CardTitle>
 
       <CardPriceContainer>
-        {discount && <CardOldPrice>{price}</CardOldPrice>}
-        <CardPrice isPromotion={Boolean(discount)}>
+        {!!product.discountPrice && <CardOldPrice>{price}</CardOldPrice>}
+        <CardPrice isPromotion={Boolean(product.discountPrice)}>
           {GeneralUtils.getAmountLabel(
-            discount ? discount.price : product.price
+            product.discountPrice ? product.discountPrice : product.price
           )}
         </CardPrice>
         <div className="button-container">
           <Stack justifyContent="center" spacing={5}>
             <Stack.Item grow={1}>
-              <Button
-                onClick={() => onAdd(product)}
-                appearance="primary"
-                block
-                startIcon={<PlusIcon />}
-              >
-                Adicionar
-              </Button>
+              {product.unlimited || product.quantity > 0 ? (
+                <Button
+                  onClick={() => onAdd(product)}
+                  appearance="primary"
+                  block
+                  startIcon={<PlusIcon />}
+                >
+                  Adicionar
+                </Button>
+              ) : (
+                <Button disabled appearance="default" block>
+                  Esgotado
+                </Button>
+              )}
             </Stack.Item>
             <Stack.Item>
               <Button

@@ -32,16 +32,13 @@ export const CardContainer = styled.div<{ expanded?: boolean }>`
 
 export const CardPercentFlag = styled.div`
   text-align: center;
-  position: absolute !important;
-  top: 09px;
-  left: 10px;
   background-color: #f5222d;
   color: white;
   font-weight: bold;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   padding: 2px;
-  width: calc(100% - 22px);
+  width: 100%;
 `;
 
 export const CardImage = styled.img`

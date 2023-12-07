@@ -1,6 +1,8 @@
+import { Button } from "rsuite";
 import styled from "styled-components";
 
-export const TitleCustom = styled.div`
+export const TitleCustom = styled(Button)`
+  justify-content: flex-start;
   width: 100%;
   font-size: 16px;
   font-weight: 600;

@@ -118,12 +118,7 @@ export class GeneralUtils {
       return phoneNumber || '';
     }
 
-    const ddd = phoneNumber.slice(0, 2);
-    const first = phoneNumber.slice(2, 3);
-    const second = phoneNumber.slice(3, 7);
-    const third = phoneNumber.slice(7);
-
-    return `(${ddd}) ${first} ${second}-${third}`;
+    return phoneNumber.toString().replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, "($1) $2 $3-$4");
   }
 
   static getFullAddress(user: IUser): string {

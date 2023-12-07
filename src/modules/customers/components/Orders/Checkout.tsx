@@ -12,7 +12,7 @@ import {
 import CheckRoundIcon from "@rsuite/icons/CheckRound";
 import ArrowLeftLineIcon from "@rsuite/icons/ArrowLeftLine";
 
-import { ProductCart } from "src/modules/customers/components";
+import { ProductCart, ProductDetails } from "src/modules/customers/components";
 import { HomePageHandler } from "src/modules/customers/pages/HompePage";
 import {
   useCartStore,
@@ -37,10 +37,8 @@ import {
   useToasterStore,
 } from "src/modules/shared";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBagShopping,
-  faBoxOpen,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBagShopping, faBoxOpen } from "@fortawesome/free-solid-svg-icons";
+import { ProductDetailsPageHandler } from "../../pages/Products/ProductDetailsPage";
 
 export function OrderCheckout() {
   const navigate = useNavigate();
@@ -50,7 +48,9 @@ export function OrderCheckout() {
   const cartStore = useStore(useCartStore);
   const orderStore = useStore(useOrderStore);
   const products = cartStore.getProducts(company.id || "");
-  const [deliveryType, setDeliveryType] = useState<EDeliveryType>(EDeliveryType.DELIVERY);
+  const [deliveryType, setDeliveryType] = useState<EDeliveryType>(
+    EDeliveryType.DELIVERY
+  );
   const [payment, setPayment] = useState<IOrderPayment>({
     ...IOrderPaymentHandler.empty(),
     creditCardType: ECreditCardType.DEBIT,
@@ -169,6 +169,9 @@ export function OrderCheckout() {
           products={products}
           onChange={handleChageProduct}
           onRemove={handleRemoveProduct}
+          onPick={(product) =>
+            navigate(ProductDetailsPageHandler.navigate(product.product.id!))
+          }
         />
         {products.length === 0 && (
           <h6 style={{ marginTop: 30, marginBottom: 30 }}>

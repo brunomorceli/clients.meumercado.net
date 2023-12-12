@@ -23,9 +23,23 @@ export function WebMasterpage(props: MasterpageProps) {
 
   return (
     <>
-      <Container alignItems="flex-start" justifyContent="center" direction="column">
+      <Container
+        alignItems="flex-start"
+        justifyContent="center"
+        direction="column"
+      >
         <Header />
-        <Stack.Item grow={1} style={{ width: '100%', overflow: 'hidden', overflowY: 'auto', marginTop: 40, paddingTop: 40 }}>
+        <Stack.Item
+          className="ns-content"
+          grow={1}
+          style={{
+            width: "100%",
+            overflow: "hidden",
+            overflowY: "auto",
+            marginTop: 40,
+            paddingTop: 40,
+          }}
+        >
           <FlexboxGrid justify="center">
             <Col xs={24} sm={24} md={16} lg={16} xl={16} xxl={16}>
               {props.children}
@@ -34,7 +48,7 @@ export function WebMasterpage(props: MasterpageProps) {
           <Footer />
         </Stack.Item>
       </Container>
-      <CartDrawer options={{ size: 'sm'}} />
+      <CartDrawer options={{ size: "sm" }} />
       <Credentials />
     </>
   );

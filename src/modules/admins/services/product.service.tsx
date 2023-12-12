@@ -1,4 +1,4 @@
-import { IProduct, IProductSearch, IProductSearchResult } from "src/modules/shared/interfaces";
+import { IProduct, IProductBaseSearch, IProductBaseSearchResult, IProductSearch, IProductSearchResult } from "src/modules/shared/interfaces";
 import { GeneralUtils } from "src/modules/shared/utils";
 import axios from "axios";
 
@@ -22,6 +22,17 @@ export class ProductService {
         .get(url)
         .then((res) => resolve(res.data))
         .catch((e) => reject(GeneralUtils.getErrorMessage(e, 'Erro ao tentar carregar produtos.')));
+    });
+  }
+
+  static findBaseProduct(data: IProductBaseSearch): Promise<IProductBaseSearchResult> {
+    const params = new URLSearchParams(data as any).toString();
+    return new Promise((resolve, reject) => {
+      const url = `${this.baseURL}/admins/product-bases/find?${params}`;
+      axios
+        .get(url)
+        .then((res) => resolve(res.data))
+        .catch((e) => reject(GeneralUtils.getErrorMessage(e, 'Erro ao tentar carregar produtos base.')));
     });
   }
   

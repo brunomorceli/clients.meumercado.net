@@ -31,7 +31,7 @@ export function MobileMasterpage(props: MobileMasterpageProps) {
         onSignout={handleSignout}
       />
       <FlexboxGrid justify="space-between" align="top">
-        <ContentContainer md={24} lg={24} xl={24} xxl={24}>
+        <ContentContainer className="ns-content" md={24} lg={24} xl={24} xxl={24}>
           {props.children}
         </ContentContainer>
       </FlexboxGrid>

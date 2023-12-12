@@ -121,6 +121,15 @@ export class GeneralUtils {
     return phoneNumber.toString().replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, "($1) $2 $3-$4");
   }
 
+  static maskCpfCnpj(cpfCnpj: string): string {
+    let result = cpfCnpj.replace(/\D/g, '');
+    if (result.length === 11) {
+      return cpfCnpj.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+    }
+
+    return cpfCnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
+  }
+
   static getFullAddress(user: IUser): string {
     const number = user.addressNumber || 'S/N';
     const neighborhood = `Bairro ${user.neighborhood || 'N/I'}`;

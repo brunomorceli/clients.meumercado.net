@@ -5,7 +5,7 @@ export default function HomePage() {
 
 export class HomePageHandler {
   static route(): string {
-    return '/';
+    return '/admins';
   }
   static navigate(): string {
     return '/admins';

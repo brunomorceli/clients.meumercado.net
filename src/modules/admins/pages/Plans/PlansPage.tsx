@@ -6,7 +6,7 @@ export default function PlansPage() {
 
 export class PlansPageHandler {
   static route(): string {
-    return '/plans/';
+    return '/admins/plans';
   }
   static navigate(): string {
     return '/admins/plans';

@@ -24,7 +24,7 @@ export default function CompaniesPage() {
 
 export class CompaniesHandler {
   static route(): string {
-    return "/companies";
+    return "/admins/companies";
   }
   static navigate(): string {
     return "/admins/companies";

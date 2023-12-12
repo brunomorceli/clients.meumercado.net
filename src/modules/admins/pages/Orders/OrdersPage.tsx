@@ -6,7 +6,7 @@ export default function OrdersPage() {
 
 export class OrdersHandler {
   static route(): string {
-    return '/orders';
+    return '/admins/orders';
   }
   static navigate(): string {
     return '/admins/orders';

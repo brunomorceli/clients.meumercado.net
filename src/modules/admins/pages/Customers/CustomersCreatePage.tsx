@@ -6,7 +6,7 @@ export default function CustomersCreatePage() {
 
 export class CustomersCreateHandler {
   static route(): string {
-    return '/customers/create';
+    return '/admins/customers/create';
   }
   static navigate(): string {
     return '/admins/customers/create';

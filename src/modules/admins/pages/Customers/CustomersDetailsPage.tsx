@@ -8,7 +8,7 @@ export default function CustomersDetailsPage() {
 
 export class CustomersDetailsHandler {
   static route(): string {
-    return '/customers/details/:id';
+    return '/admins/customers/details/:id';
   }
   static navigate(id: string): string {
     return '/admins/customers/details/:id'.replace(':id', id);

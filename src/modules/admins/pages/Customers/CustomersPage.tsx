@@ -6,7 +6,7 @@ export default function CustomersPage() {
 
 export class CustomersHandler {
   static route(): string {
-    return '/customers';
+    return '/admins/customers';
   }
   static navigate(): string {
     return '/admins/customers';

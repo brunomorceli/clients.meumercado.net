@@ -104,10 +104,7 @@ export function ProductDetails(props: ProductDetailsProps) {
             title={
               product.unlimited
                 ? "Ilimitado"
-                : GeneralUtils.getSulfixLabel(
-                    product.quantity,
-                    product.quantitySulfix || ""
-                  )
+                : `${product.quantity} ${GeneralUtils.getSulfixLabel(product.quantitySulfix,"")}`
             }
             colSize={12}
           />

@@ -6,7 +6,7 @@ export default function ProductsCreatePage() {
 
 export class ProductsCreateHandler {
   static route(): string {
-    return '/products/create';
+    return '/admins/products/create';
   }
   static navigate(): string {
     return '/admins/products/create';

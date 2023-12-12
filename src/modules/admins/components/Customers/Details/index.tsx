@@ -13,7 +13,7 @@ import {
 } from "src/modules/shared";
 import { useStore } from "zustand";
 import { useCustomerStore } from "src/modules/admins/stores";
-import { useNavigate } from 'react-router';
+import { useNavigate } from "react-router";
 import { useOrderStore } from "src/modules/admins/stores";
 import { Field, Label } from "./styles";
 import { OrdersList } from "./List";
@@ -105,7 +105,7 @@ export function CustomerDetails(props: CustomerDetailsProps) {
             <Field>
               {user.phoneNumber ? (
                 <Button
-                  style={{ marginLeft: -10 }}
+                  style={{ padding: 0 }}
                   appearance="subtle"
                   onClick={() =>
                     window.open(
@@ -114,7 +114,7 @@ export function CustomerDetails(props: CustomerDetailsProps) {
                     )
                   }
                 >
-                  {GeneralUtils.maskPhonenumber(user.phoneNumber)}
+                  <strong>{GeneralUtils.maskPhonenumber(user.phoneNumber)}</strong>
                   &nbsp;
                   <WhatsappIcon />
                 </Button>
@@ -125,7 +125,9 @@ export function CustomerDetails(props: CustomerDetailsProps) {
           </Col>
           <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
             <Label>CPF/CNPJ</Label>
-            <Field>{user.cpfCnpj}</Field>
+            <Field>
+              {user.cpfCnpj ? GeneralUtils.maskCpfCnpj(user.cpfCnpj!) : "N/I"}
+            </Field>
           </Col>
         </FlexboxGrid>
       </PanelBase>
@@ -163,8 +165,12 @@ export function CustomerDetails(props: CustomerDetailsProps) {
         <OrdersList
           orders={orders}
           onChangeStatus={handleChangeStatus}
-          onDetails={(o) => navigate(OrdersDetailsHandler.navigate(o.id!.toString()))}
-          onProductDetails={(p) => navigate(ProductsEditHandler.navigate(p.id!.toString()))}
+          onDetails={(o) =>
+            navigate(OrdersDetailsHandler.navigate(o.id!.toString()))
+          }
+          onProductDetails={(p) =>
+            navigate(ProductsEditHandler.navigate(p.id!.toString()))
+          }
         />
         {orders.length === 0 && <h4>Nenhum resultado.</h4>}
       </PanelBase>

@@ -10,10 +10,11 @@ import {
 } from "src/modules/shared";
 
 import { useEffect, useState } from "react";
-import { FlexboxGrid, Form, SelectPicker } from "rsuite";
+import { RadioTile, RadioTileGroup } from "rsuite";
 
 interface OrderStatusFormProps {
   order?: IOrder | IOrderResult | null | undefined;
+  minChars?: number;
   onSave: (order: IOrder | IOrderResult) => void;
   onCancel: () => void;
 }
@@ -23,9 +24,12 @@ export function OrdersStatusForm(props: OrderStatusFormProps) {
   const [order, setOrder] = useState<IOrder | IOrderResult>(
     IOrderHandler.empty()
   );
-  const statusKeys = Object.values(EOrderStatus);
+  const [initialStatus, setInitialStatus] = useState<EOrderStatus>(
+    order.status!
+  );
+  const statusList = Object.values(EOrderStatus);
   const [error, setError] = useState<any>({});
-  const minChars = 20;
+  const disableIndex = Math.max(statusList.indexOf(initialStatus), 0);
 
   useEffect(() => {
     if (Boolean(props.order)) {
@@ -33,6 +37,8 @@ export function OrdersStatusForm(props: OrderStatusFormProps) {
         ...props.order!,
         status: getNextStatus(props.order!.status!),
       });
+
+      setInitialStatus(props.order!.status!);
     }
   }, [props.order]);
 
@@ -41,10 +47,10 @@ export function OrdersStatusForm(props: OrderStatusFormProps) {
       return EOrderStatus.PENDING;
     }
 
-    const index = statusKeys.indexOf(status);
-    const nextIndex = GeneralUtils.clamp(index + 1, 0, statusKeys.length - 1);
+    const index = statusList.indexOf(status);
+    const nextIndex = GeneralUtils.clamp(index + 1, 0, statusList.length - 1);
 
-    return statusKeys[nextIndex];
+    return statusList[nextIndex];
   }
 
   function handleClose() {
@@ -67,7 +73,7 @@ export function OrdersStatusForm(props: OrderStatusFormProps) {
         EOrderStatus.CANCELED_BY_COMPANY,
         EOrderStatus.CANCELED_BY_COMPANY,
       ].includes(order.status!) &&
-      (order.observation || "").length < minChars
+      (order.observation || "").length < (props.minChars || 20)
     ) {
       newError.observation =
         "Para este tipo de stauts você deve escrever uma observação de pelo menos 20 caracteres";
@@ -80,7 +86,7 @@ export function OrdersStatusForm(props: OrderStatusFormProps) {
     }
 
     setError({});
-    onSave(order!);
+    onSave(order);
   }
 
   return (
@@ -91,58 +97,24 @@ export function OrdersStatusForm(props: OrderStatusFormProps) {
       onClose={handleClose}
       saveText="Salvar"
     >
-      <>
-        <Form.Group style={{ width: "100%", marginBottom: 40 }}>
-          <Form.ControlLabel>Status</Form.ControlLabel>
-          <FlexboxGrid justify="space-between">
-            <FlexboxGrid.Item style={{ width: "calc(50% - 5px)" }}>
-              <SelectPicker
-                style={{ width: "100%" }}
-                label="De"
-                searchable={false}
-                cleanable={false}
-                readOnly
-                block
-                caretAs={() => null}
-                defaultValue={
-                  props.order ? props.order.status! : EOrderStatus.PENDING
-                }
-                data={[
-                  {
-                    value: props.order
-                      ? props.order.status
-                      : EOrderStatus.PENDING,
-                    label: EOrderStatusHandler.label(
-                      props.order ? props.order.status! : EOrderStatus.PENDING
-                    ),
-                  },
-                ]}
-              />
-            </FlexboxGrid.Item>
-            <FlexboxGrid.Item style={{ width: "calc(50% - 5px)" }}>
-              <SelectPicker
-                style={{ width: "100%" }}
-                label="Para"
-                searchable={false}
-                cleanable={false}
-                block
-                defaultValue={order.status}
-                value={order.status}
-                data={[
-                  ...EOrderStatusHandler.options(order.deliveryType).slice(
-                    statusKeys.indexOf(order.status!),
-                    statusKeys.length
-                  ),
-                ]}
-                onSelect={(status) => setOrder({ ...order!, status })}
-              />
-            </FlexboxGrid.Item>
-          </FlexboxGrid>
-          <Form.ErrorMessage show={Boolean(error.status)}>
-            {error.status}
-          </Form.ErrorMessage>
-        </Form.Group>
-      </>
+      <RadioTileGroup
+        defaultValue={order.status}
+        value={order.status}
+        aria-label="Status do pedido"
+        onChange={(status: any) => setOrder({ ...order, status })}
+      >
+        {statusList.map((status, index) => (
+          <RadioTile
+            key={index}
+            icon={EOrderStatusHandler.icon(status)}
+            label={EOrderStatusHandler.label(status)}
+            value={status}
+            disabled={index <= disableIndex}
+          >
+            {EOrderStatusHandler.label(status)}
+          </RadioTile>
+        ))}
+      </RadioTileGroup>
       <div style={{ marginBottom: 40 }}>
         <InputText
           label={`Observação (${(order.observation || "")!.length})`}

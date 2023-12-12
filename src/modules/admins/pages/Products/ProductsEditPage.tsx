@@ -9,7 +9,7 @@ export default function ProductsEditPage() {
 
 export class ProductsEditHandler {
   static route(): string {
-    return '/products/edit/:id';
+    return '/admins/products/edit/:id';
   }
   static navigate(id: string): string {
     return '/admins/products/edit/:id'.replace(':id', id);

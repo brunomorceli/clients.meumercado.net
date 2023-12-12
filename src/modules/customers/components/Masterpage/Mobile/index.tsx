@@ -22,9 +22,24 @@ export function MobileMasterpage(props: MasterpageProps) {
 
   return (
     <>
-      <Container alignItems="flex-start" justifyContent="center" direction="column">
+      <Container
+        alignItems="flex-start"
+        justifyContent="center"
+        direction="column"
+      >
         <Header />
-        <Stack.Item grow={1} style={{ width: '100%', overflow: 'hidden', overflowY: 'auto', marginTop: 45, paddingTop: 20, paddingBottom: 20 }}>
+        <Stack.Item
+          className="ns-content"
+          grow={1}
+          style={{
+            width: "100%",
+            overflow: "hidden",
+            overflowY: "auto",
+            marginTop: 45,
+            paddingTop: 20,
+            paddingBottom: 20,
+          }}
+        >
           <FlexboxGrid justify="center">
             <Col xs={24} sm={24} md={16} lg={16} xl={16} xxl={16}>
               {props.children}

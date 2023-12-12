@@ -25,7 +25,7 @@ export default function AdminsRoutes() {
   if (!authenticated) {
     return (
       <Routes>
-        <Route path="/*" element={<Navigate to={`/admins${CredentialsSigninHandler.route()}`} replace />} />
+        <Route path="/*" element={<Navigate to={CredentialsSigninHandler.route()} replace />} />
         <Route path={CredentialsSigninHandler.route()} element={<CredentialsSigninPage />} />
         <Route path={CredentialsSignupHandler.route()} element={<CredentialsSignupPage />} />
         <Route path={CredentialsConfirmHandler.route()} element={<CredentialsConfirmPage />} />
@@ -36,7 +36,7 @@ export default function AdminsRoutes() {
   return (
     <AdminMasterpage>
       <Routes>
-        <Route path="/*" element={<Navigate to={`/admins${HomePageHandler.route()}`} replace />} />
+        <Route path="/*" element={<Navigate to={HomePageHandler.route()} replace />} />
         <Route path={HomePageHandler.route()} element={<HomePage />} />
 
         <Route path={CompaniesHandler.route()} element={<CompaniesPage />} />

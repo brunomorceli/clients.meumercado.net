@@ -11,7 +11,7 @@ export default function ThemePage() {
 
 export class ThemePageHandler {
   static route(): string {
-    return '/theme';
+    return '/admins/theme';
   }
 
   static navigate(): string {

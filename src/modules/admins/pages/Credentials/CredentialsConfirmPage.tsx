@@ -9,7 +9,7 @@ export default function CredentialsConfirmPage() {
 
 export class CredentialsConfirmHandler {
   static route(): string {
-    return '/credentials/confirm/:id';
+    return '/admins/credentials/confirm/:id';
   }
   static navigate(id: string): string {
     return '/admins/credentials/confirm/:id'.replace(':id', id);

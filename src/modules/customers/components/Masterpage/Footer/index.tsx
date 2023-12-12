@@ -2,6 +2,7 @@ import { useStore } from "zustand";
 import { FooterContainer } from "./styles";
 import { useCompanyStore } from "src/modules/customers/stores";
 import { Button } from "rsuite";
+import { GeneralUtils } from "src/modules/shared";
 
 export function Footer() {
   const companyStore = useStore(useCompanyStore);
@@ -15,7 +16,7 @@ export function Footer() {
       </h5>
       <p>
         Contato - Email: {company.email}
-        {company.phoneNumber ? `, - Telefone: ${company.phoneNumber}` : null}
+        {company.phoneNumber ? `, - Telefone: ${GeneralUtils.maskPhonenumber(company.phoneNumber)}` : null}
       </p>
       <p>
         Endereço: &nbsp;{company.address}, &nbsp;

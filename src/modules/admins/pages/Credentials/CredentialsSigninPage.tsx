@@ -83,7 +83,7 @@ export default function CredentialsSigninPage() {
 
 export class CredentialsSigninHandler {
   static route(): string {
-    return '/credentials/signin';
+    return '/admins/credentials/signin';
   }
   static navigate(): string {
     return '/admins/credentials/signin';

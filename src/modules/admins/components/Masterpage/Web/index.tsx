@@ -25,7 +25,7 @@ export function WebMasterpage(props: WebMasterpageProps) {
         <Col md={6} lg={6} xl={4} xxl={4} style={{ padding: 0, margin: 0 }}>
           <MenuWeb onSignout={handleSignout} />
         </Col>
-        <ContentContainer md={18} lg={18} xl={20} xxl={20}>
+        <ContentContainer className="ns-content" md={18} lg={18} xl={20} xxl={20}>
           {props.children}
         </ContentContainer>
       </FlexboxGrid>

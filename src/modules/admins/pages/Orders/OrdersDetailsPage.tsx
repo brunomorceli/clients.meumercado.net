@@ -9,7 +9,7 @@ export default function OrdersDetailsPage() {
 
 export class OrdersDetailsHandler {
   static route(): string {
-    return '/orders/details/:id';
+    return '/admins/orders/details/:id';
   }
   static navigate(id: string): string {
     return '/admins/orders/details/:id'.replace(':id', id);

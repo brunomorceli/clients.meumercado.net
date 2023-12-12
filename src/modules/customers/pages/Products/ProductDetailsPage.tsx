@@ -13,7 +13,6 @@ export class ProductDetailsPageHandler {
   }
 
   static navigate(id: string): string {
-    console.log('----------------------', id)
     return '/products/:id/details'.replace(':id', id);
   }
 }

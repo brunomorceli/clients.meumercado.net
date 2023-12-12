@@ -6,7 +6,7 @@ export default function ProductsPage() {
 
 export class ProductsHandler {
   static route(): string {
-    return '/products';
+    return '/admins/products';
   }
   static navigate(): string {
     return '/admins/products';

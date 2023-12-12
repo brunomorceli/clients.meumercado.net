@@ -97,7 +97,7 @@ export default function CredentialsSignupPage() {
 
 export class CredentialsSignupHandler {
   static route(): string {
-    return "/credentials/signup";
+    return "/admins/credentials/signup";
   }
   static navigate(): string {
     return "/admins/credentials/signup";

@@ -11,7 +11,7 @@ import {
   Toggle,
 } from "rsuite";
 import { useStore } from "zustand";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { FormOutlined } from "@ant-design/icons";
 
 import { useToasterStore } from "src/modules/shared/stores";
@@ -39,6 +39,7 @@ import {
   ICompany,
   ICompanyHandler,
 } from "src/modules/shared/interfaces";
+import { ProductWizzardForm } from "./Wizzard";
 
 interface ProductFormProps {
   productId?: string;
@@ -47,10 +48,12 @@ interface ProductFormProps {
 export function ProductForm(props: ProductFormProps) {
   const { productId } = props;
   const navigate = useNavigate();
+  const location = useLocation();
   const authStore = useStore(useAuthStore);
   const productStore = useStore(useProductStore);
   const companyStore = useStore(useCompanyStore);
   const toasterStore = useStore(useToasterStore);
+  const [showWizzard, setShowWizzard] = useState<boolean>(false);
   const [company, setCompany] = useState<ICompany>(ICompanyHandler.empty());
   const [processing, setProcessing] = useState<boolean>(false);
   const formRef = useRef<any>();
@@ -78,11 +81,17 @@ export function ProductForm(props: ProductFormProps) {
   });
 
   useEffect(() => {
+    location.pathname &&
+      location.pathname.indexOf("/create") >= 0 &&
+      setShowWizzard(true);
+  }, [location.pathname]);
+
+  useEffect(() => {
     authStore.companyId && loadCompany(authStore.companyId);
   }, [authStore.companyId]);
 
   useEffect(() => {
-    productId && loadProduct(productId);
+    productId && !processing && loadProduct(productId);
   }, [productId]);
 
   function handleChangeProductKey(key: string, val: any): void {
@@ -160,7 +169,7 @@ export function ProductForm(props: ProductFormProps) {
       onError={setFormError}
     >
       <TitleBase
-        title="Formulário de produto"
+        title={`${productId ? "Editar" : "Novo"} produto`}
         onBack={() => navigate(ProductsHandler.navigate())}
       />
       <PanelBase title="Informações gerais">
@@ -373,6 +382,11 @@ export function ProductForm(props: ProductFormProps) {
       <FlexboxGrid justify="end">
         <SaveButton onClick={handleSubmit} />
       </FlexboxGrid>
+      <ProductWizzardForm
+        open={showWizzard}
+        onPick={setProduct}
+        onClose={() => setShowWizzard(false)}
+      />
     </Form>
   );
 }

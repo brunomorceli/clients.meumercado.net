@@ -23,6 +23,10 @@ export function ProductAutocomplete(props: ProductAutocompleteProps) {
   const debounce = props.debounce || 300;
 
   function getSubtitle(product: IProduct): ReactNode {
+    if (product.unlimited) {
+      return <div>Em estoque</div>;
+    }
+
     if (product.quantity === 0) {
       return <div style={{ color: "#a3a3a3" }}>(Esgotado)</div>;
     }

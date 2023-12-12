@@ -9,6 +9,7 @@ import ArrowDownLineIcon from "@rsuite/icons/ArrowDownLine";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBagShopping,
+  faBasketShopping,
   faCartShopping,
   faHouse,
   faPhone,
@@ -71,22 +72,22 @@ export function Header() {
       )}
     >
       <Dropdown.Item
+        onSelect={() => navigate(OrdersPageHandler.navigate())}
+        icon={<FontAwesomeIcon icon={faBasketShopping} />}
+      >
+        &nbsp;Meus pedidos
+      </Dropdown.Item>
+      <Dropdown.Item
         onSelect={() => navigate(AccountPageHandler.navigate())}
         icon={<UserInfoIcon />}
       >
         Meus dados
       </Dropdown.Item>
       <Dropdown.Item
-        onSelect={() => navigate(OrdersPageHandler.navigate())}
-        icon={<FontAwesomeIcon icon={faBagShopping} />}
-      >
-        Meus pedidos
-      </Dropdown.Item>
-      <Dropdown.Item
         onSelect={() => setShowExitModal(true)}
         icon={<FontAwesomeIcon icon={faUpRightFromSquare} />}
       >
-        Sair
+        &nbsp;Sair
       </Dropdown.Item>
     </DropdownSettings>
   );

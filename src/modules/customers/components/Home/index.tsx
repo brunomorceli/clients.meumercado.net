@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProductCard } from "src/modules/customers/components";
 import { ProductDetailsPageHandler } from "src/modules/customers/pages/Products/ProductDetailsPage";
 import {
+  ICartProductHandler,
   ICompany,
   ICompanyHandler,
   IProduct,
@@ -49,15 +50,17 @@ export function CustomerHome() {
   const productStore = useStore(useProductStore);
   const [company, setCompany] = useState<ICompany>(ICompanyHandler.empty());
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [onSaleProducts, setOnSaleProducts] = useState<IProduct[]>([]);
   const { companyId } = authStore;
 
   useEffect(() => {
     compayStore.get().then(setCompany).catch(toasterStore.error);
     productStore.find({ random: true }).then((res) => setProducts(res.data));
+    productStore.find({ random: true, onSale: true }).then((res) => setOnSaleProducts(res.data));
   }, []);
 
   function handleAddProduct(product: IProduct): void {
-    cartStore.addProduct(companyId, { quantity: 1, product });
+    cartStore.addProduct(companyId, ICartProductHandler.empty(product), true);
     masterpageStore.setCart(true);
   }
 
@@ -87,7 +90,7 @@ export function CustomerHome() {
       </div>
 
       <ProductCard
-        products={products}
+        products={onSaleProducts}
         onAdd={handleAddProduct}
         onDetails={(p) =>
           navigate(ProductDetailsPageHandler.navigate(p.id!.toString()))

@@ -70,6 +70,19 @@ export function ProductForm(props: ProductFormProps) {
       (price) => !product.showPrice || Number(price) > 0,
       "Este campo é obrigatório"
     ),
+    discountPrice: Schema.Types.NumberType(
+      "Este campo deve ser um número."
+    ).addRule(() => {
+      if (!product.showPrice || Number.isNaN(product.discountPrice)) {
+        return true;
+      }
+      
+      if (Number(product.discountPrice) >= Number(product.price)) {
+        return false;
+      }
+
+      return true;
+    }, "O valor do preço de desconto deve ser menor que o do preço."),
     sku: Schema.Types.StringType().minLength(
       3,
       "O SKU deve conter pelo menos 3 letras"
@@ -140,6 +153,7 @@ export function ProductForm(props: ProductFormProps) {
 
   function handleSubmit(): void {
     if (!formRef.current.check()) {
+      toasterStore.error('Por favor, verifique os erros antes de prosseguir.');
       return;
     }
 
@@ -221,7 +235,7 @@ export function ProductForm(props: ProductFormProps) {
               <InputCurrency
                 label="Preço (obrigatório)"
                 cents={product.price}
-                placeholder="R$ 100,00"
+                placeholder="ex: R$ 100,00"
                 error={formError.price}
                 onChange={(c) => handleChangeProductKey("price", c)}
               />
@@ -230,7 +244,7 @@ export function ProductForm(props: ProductFormProps) {
               <InputCurrency
                 label="Preço de desconto"
                 cents={product.discountPrice!}
-                placeholder="R$ 89,99"
+                placeholder="ex: R$ 89,99"
                 error={formError.discountPrice}
                 onChange={(c) => handleChangeProductKey("discountPrice", c)}
               />

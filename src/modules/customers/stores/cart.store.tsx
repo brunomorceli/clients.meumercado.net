@@ -1,16 +1,22 @@
-
 import { ICartProduct, IStockProduct } from "src/modules/shared";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface useCartStoreProps {
   carts: any;
-  addProduct: (companyId: string, product: ICartProduct) => void;
+  addProduct: (
+    companyId: string,
+    product: ICartProduct,
+    dontReplaceQuantity?: boolean
+  ) => void;
   getProduct: (companyId: string, productId: string) => ICartProduct | null;
   getProducts: (companyId: string) => ICartProduct[];
   removeProduct: (companyId: string, productId: string) => void;
   clear: (companyId: string) => void;
-  updateStock: (companyId: string, stockProducts: IStockProduct[]) => ICartProduct[];
+  updateStock: (
+    companyId: string,
+    stockProducts: IStockProduct[]
+  ) => ICartProduct[];
 }
 
 export const useCartStore = create(
@@ -18,12 +24,16 @@ export const useCartStore = create(
     (set, get) => ({
       carts: {},
 
-      addProduct: (companyId: string, product: ICartProduct) => {
+      addProduct: (
+        companyId: string,
+        product: ICartProduct,
+        dontReplaceQuantity?: boolean
+      ) => {
         const cache = get();
         const carts = cache.carts;
 
         if (!carts[companyId]) {
-          carts[companyId] = { products: [] }
+          carts[companyId] = { products: [] };
         }
 
         const index = carts[companyId].products.findIndex(
@@ -33,7 +43,12 @@ export const useCartStore = create(
         if (index < 0) {
           carts[companyId].products.push(product);
         } else {
-          carts[companyId].products[index] = product;
+          carts[companyId].products[index] = {
+            ...product,
+            quantity: dontReplaceQuantity
+              ? carts[companyId].products[index].quantity
+              : product.quantity,
+          };
         }
 
         set({ ...cache, carts });
@@ -54,7 +69,7 @@ export const useCartStore = create(
 
         return carts[companyId].products[index];
       },
-      
+
       getProducts: (companyId: string) => {
         const carts = get().carts;
         if (!carts[companyId]) {
@@ -103,13 +118,15 @@ export const useCartStore = create(
         }
 
         carts[companyId].products.map((cartProduct: ICartProduct) => {
-          const stockProduct = stockProducts.find((stockProduct) => stockProduct.productId === cartProduct.product.id);
+          const stockProduct = stockProducts.find(
+            (stockProduct) => stockProduct.productId === cartProduct.product.id
+          );
           if (stockProduct) {
             cartProduct.product.quantity = stockProduct.quantity;
           }
 
           return cartProduct;
-        })
+        });
 
         set({ ...get(), carts });
 

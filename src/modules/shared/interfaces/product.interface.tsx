@@ -35,7 +35,7 @@ export class IProductHandler {
       pictures: [],
       showPrice: true,
       price: 0,
-      unlimited: false,
+      unlimited: true,
       quantity: 0,
       categories: [],
       width: '',

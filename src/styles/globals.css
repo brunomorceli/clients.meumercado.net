@@ -1,3 +1,5 @@
+iframe#webpack-dev-server-client-overlay{display:none!important}
+
 body {
   margin: 0px;
   padding: 0px;
@@ -19,3 +21,8 @@ body {
 .rs-picker-menu {
   z-index: 9;
 }
+
+#ReactSimpleImageViewer {
+  z-index: 10;
+}
+

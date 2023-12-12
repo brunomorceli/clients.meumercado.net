@@ -17,6 +17,10 @@ export function ProductCart(props: ProductCartProps) {
   function getError(cartProduct: ICartProduct): string | undefined {
     const quantity = cartProduct.quantity;
     const stock = cartProduct.product.quantity;
+    
+    if (cartProduct.product.unlimited) {
+      return;
+    }
 
     if (stock === 0) {
       return "O estoque deste produto está esgotado. Por favor, remove o produto.";

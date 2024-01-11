@@ -40,6 +40,8 @@ import {
   ICompanyHandler,
 } from "src/modules/shared/interfaces";
 import { ProductWizzardForm } from "./Wizzard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWandMagicSparkles } from "@fortawesome/free-solid-svg-icons";
 
 interface ProductFormProps {
   productId?: string;
@@ -76,7 +78,7 @@ export function ProductForm(props: ProductFormProps) {
       if (!product.showPrice || Number.isNaN(product.discountPrice)) {
         return true;
       }
-      
+
       if (Number(product.discountPrice) >= Number(product.price)) {
         return false;
       }
@@ -153,7 +155,7 @@ export function ProductForm(props: ProductFormProps) {
 
   function handleSubmit(): void {
     if (!formRef.current.check()) {
-      toasterStore.error('Por favor, verifique os erros antes de prosseguir.');
+      toasterStore.error("Por favor, verifique os erros antes de prosseguir.");
       return;
     }
 
@@ -186,7 +188,19 @@ export function ProductForm(props: ProductFormProps) {
         title={`${productId ? "Editar" : "Novo"} produto`}
         onBack={() => navigate(ProductsHandler.navigate())}
       />
-      <PanelBase title="Informações gerais">
+      <PanelBase
+        title="Informações gerais"
+        actionEl={
+          !product.id && (
+            <Button
+              startIcon={<FontAwesomeIcon icon={faWandMagicSparkles} />}
+              onClick={() => setShowWizzard(true)}
+            >
+              Abrir assistente
+            </Button>
+          )
+        }
+      >
         <InputText
           label="Nome (obrigatório)"
           value={product.label}

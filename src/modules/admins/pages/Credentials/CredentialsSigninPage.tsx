@@ -47,7 +47,7 @@ export default function CredentialsSigninPage() {
 
   return (
     <>
-      <TitleBase title="Nearstore - Entrar" />
+      <TitleBase title="Meumercado - Entrar" />
       <Form
         ref={formRef}
         model={model}

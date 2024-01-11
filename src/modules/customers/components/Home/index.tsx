@@ -23,10 +23,9 @@ import {
 } from "src/modules/customers/stores";
 
 const carouselImgStyle = {
-  width: "100%",
-  paddingTop: "-100%",
   backgroundImage: 'url("images/carousel/1.jpg")',
-  backgroundSize: "cover",
+  backgroundSize: "contain",
+  backgroundRepeat: 'no-repeat',
   backgroundPosition: "center center",
 };
 
@@ -69,7 +68,7 @@ export function CustomerHome() {
       {(company.covers || []).length > 0 && (
         <Carousel
           autoplay
-          shape="bar"
+          shape="dot"
           style={{ width: "100%", borderRadius: 5 }}
         >
           {(company.covers || []).map((cover, index) => (

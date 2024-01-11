@@ -1,8 +1,12 @@
-import { useState } from "react";
-import { Button, Modal } from "rsuite";
+import { useEffect, useState } from "react";
+import { Modal, RadioTile, RadioTileGroup } from "rsuite";
 import { ProductBases } from "src/modules/admins/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartPlus, faCopy } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCartPlus,
+  faCopy,
+  faWandMagicSparkles,
+} from "@fortawesome/free-solid-svg-icons";
 import { IProduct, IProductBase, IProductHandler } from "src/modules/shared";
 
 interface ProductFormWizzardProps {
@@ -13,8 +17,11 @@ interface ProductFormWizzardProps {
 
 export function ProductWizzardForm(props: ProductFormWizzardProps) {
   const { open, onPick, onClose } = props;
-
   const [step, setStep] = useState<"start" | "find">("start");
+
+  useEffect(() => {
+    open && setStep("start");
+  }, [open]);
 
   function handlePick(productBase: IProductBase): void {
     onPick({
@@ -29,34 +36,37 @@ export function ProductWizzardForm(props: ProductFormWizzardProps) {
 
   const StartContet = () => (
     <>
-      <p>Como você deseja cadastrar o produto?</p>
+      <h5>Como você deseja cadastrar o produto?</h5>
       <div style={{ marginTop: 20 }}></div>
-      <Button
-        size="lg"
-        appearance="primary"
-        startIcon={<FontAwesomeIcon icon={faCopy} />}
-        block
-        onClick={() => setStep("find")}
-      >
-        Quero utilizar um produto existente
-      </Button>
-      <div style={{ marginTop: 20 }}></div>
-      <Button
-        size="lg"
-        appearance="default"
-        startIcon={<FontAwesomeIcon icon={faCartPlus} />}
-        block
-        onClick={onClose}
-      >
-        Quero criar um novo produto
-      </Button>
+
+      <RadioTileGroup aria-label="Tipo de cadastro de produto">
+        <RadioTile
+          icon={<FontAwesomeIcon icon={faCopy} />}
+          label="Utilizar produtos existentes"
+          onClick={() => setStep("find")}
+        >
+          Você pode utilizar os dados de mais de meio milhão de produtos já
+          cadastrados para facilitar seu cadastro.
+        </RadioTile>
+
+        <RadioTile
+          icon={<FontAwesomeIcon icon={faCartPlus} />}
+          label="Quero um novo cadastro."
+          onClick={onClose}
+        >
+          Quero iniciar o cadastro de um produto totalmente do zero.
+        </RadioTile>
+      </RadioTileGroup>
     </>
   );
 
   return (
-    <Modal open={open}>
-      <Modal.Header closeButton={false}>
-        <h4>Assistente de criação</h4>
+    <Modal open={open} onClose={onClose}>
+      <Modal.Header>
+        <h4>
+          <FontAwesomeIcon icon={faWandMagicSparkles} />
+          &nbsp; Assistente de criação
+        </h4>
       </Modal.Header>
       <Modal.Body>
         {step === "start" && <StartContet />}

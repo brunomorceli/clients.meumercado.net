@@ -45,7 +45,7 @@ export default function CredentialsSignupPage() {
 
   return (
     <Container>
-      <TitleBase title="Nearstore - Cadastrar" />
+      <TitleBase title="Meumercado - Cadastrar" />
       <Form
         ref={formRef}
         model={model}

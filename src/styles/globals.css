@@ -8,6 +8,8 @@ body {
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
+
+  --rs-carousel-bg: none;
 }
 
 .tox-statusbar {
@@ -25,4 +27,3 @@ body {
 #ReactSimpleImageViewer {
   z-index: 10;
 }
-

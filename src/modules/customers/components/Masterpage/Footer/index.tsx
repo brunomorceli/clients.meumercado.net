@@ -25,9 +25,9 @@ export function Footer() {
       </p>
       <Button
         appearance="subtle"
-        onClick={() => window.open("https://nearstore.com.br", "_blank")}
+        onClick={() => window.open("https://meumercado.com.br", "_blank")}
       >
-        created by Nearstore
+        created by Meumercado
       </Button>
     </FooterContainer>
   );

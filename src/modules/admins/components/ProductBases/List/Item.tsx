@@ -31,7 +31,7 @@ export function ProductBaseListItem(props: ProductBaseListItemProps) {
         >
           <div>{productBase.label}</div>
           <div>
-            <EanLabel>{productBase.ean || "N/I"}</EanLabel>
+            Cód. de barras:<EanLabel> {productBase.ean || "N/I"}</EanLabel>
           </div>
         </FlexboxGrid.Item>
       </FlexboxGrid>

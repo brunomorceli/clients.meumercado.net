@@ -1,9 +1,9 @@
-import { ISignup, IConfirm, IAuthentication } from "@customers/interfaces";
-import { ISigninResponse } from "@customers/interfaces/signin-response.interface";
+import { ISignup, IConfirm, IAuthentication } from "src/modules/customers/interfaces";
+import { ISigninResponse } from "src/modules/customers/interfaces/signin-response.interface";
 import axios from "axios";
 
 export class AuthService {
-  private static baseURL: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+  private static baseURL: string = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
   static signin(email: string): Promise<ISigninResponse | null> {
     return new Promise((resolve, reject) => {

@@ -1,11 +1,11 @@
-import { ERoleType } from "@root/modules/shared";
-import { IUser, IUserSearch, IUserSearchResult } from "@shared/interfaces";
-import { GeneralUtils } from "@shared/utils";
+import { ERoleType } from "src/modules/shared";
+import { IUser, IUserSearch, IUserSearchResult } from "src/modules/shared/interfaces";
+import { GeneralUtils } from "src/modules/shared/utils";
 import axios from "axios";
 
 export class CustomerService {
   private static baseURL: string =
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+    process.env.REACT_APP_API_URL || "http://localhost:3001";
 
   static create(data: IUser): Promise<IUser> {
     return new Promise((resolve, reject) => {

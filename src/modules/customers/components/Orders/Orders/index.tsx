@@ -1,5 +1,5 @@
-import { useOrderStore } from "@root/modules/customers/stores";
-import { IOrder, useToasterStore } from "@root/modules/shared";
+import { useOrderStore } from "src/modules/customers/stores";
+import { IOrder, useToasterStore } from "src/modules/shared";
 import { useEffect, useState } from "react";
 import { useStore } from "zustand";
 import { OrdersList } from "./List";

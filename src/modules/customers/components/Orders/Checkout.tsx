@@ -1,13 +1,28 @@
+import { useNavigate } from "react-router";
+import { useState } from "react";
 import { useStore } from "zustand";
+import {
+  Button,
+  Message,
+  Panel,
+  RadioTile,
+  RadioTileGroup,
+  Stack,
+} from "rsuite";
+import CheckRoundIcon from "@rsuite/icons/CheckRound";
+import ArrowLeftLineIcon from "@rsuite/icons/ArrowLeftLine";
+
+import { ProductCart, ProductDetails } from "src/modules/customers/components";
+import { HomePageHandler } from "src/modules/customers/pages/HompePage";
 import {
   useCartStore,
   useCompanyStore,
   useOrderStore,
-} from "@customers/stores";
-import { ProductCart } from "@customers/components";
+} from "src/modules/customers/stores";
 import {
   CartButton,
   ECreditCardType,
+  EDeliveryType,
   GeneralUtils,
   ICartProduct,
   ICheckStock,
@@ -20,21 +35,22 @@ import {
   PaymentMethodForm,
   TitleBase,
   useToasterStore,
-} from "@shared";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { Button, Message, Panel, Stack } from "rsuite";
-import CheckRoundIcon from "@rsuite/icons/CheckRound";
-import ArrowLeftLineIcon from "@rsuite/icons/ArrowLeftLine";
+} from "src/modules/shared";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBagShopping, faBoxOpen } from "@fortawesome/free-solid-svg-icons";
+import { ProductDetailsPageHandler } from "../../pages/Products/ProductDetailsPage";
 
 export function OrderCheckout() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const toasterStore = useStore(useToasterStore);
   const companyStore = useStore(useCompanyStore);
   const { company } = companyStore;
   const cartStore = useStore(useCartStore);
   const orderStore = useStore(useOrderStore);
   const products = cartStore.getProducts(company.id || "");
+  const [deliveryType, setDeliveryType] = useState<EDeliveryType>(
+    EDeliveryType.DELIVERY
+  );
   const [payment, setPayment] = useState<IOrderPayment>({
     ...IOrderPaymentHandler.empty(),
     creditCardType: ECreditCardType.DEBIT,
@@ -74,6 +90,7 @@ export function OrderCheckout() {
   function handleCheckout(): void {
     const order: IOrder = {
       payments: [payment],
+      deliveryType,
       orderLogs: [],
       orderProducts: products.map((p) =>
         IOrderProductHandler.fromProduct(p.product, p.quantity)
@@ -135,7 +152,7 @@ export function OrderCheckout() {
             size="lg"
             appearance="ghost"
             color="green"
-            onClick={() => router.replace("/customers")}
+            onClick={() => navigate(HomePageHandler.navigate())}
           >
             <ArrowLeftLineIcon /> Voltar
           </Button>
@@ -152,6 +169,9 @@ export function OrderCheckout() {
           products={products}
           onChange={handleChageProduct}
           onRemove={handleRemoveProduct}
+          onPick={(product) =>
+            navigate(ProductDetailsPageHandler.navigate(product.product.id!))
+          }
         />
         {products.length === 0 && (
           <h6 style={{ marginTop: 30, marginBottom: 30 }}>
@@ -161,6 +181,30 @@ export function OrderCheckout() {
       </PanelBase>
       <PanelBase title="Pagamento">
         <PaymentMethodForm payment={payment} onChange={setPayment} />
+      </PanelBase>
+
+      <PanelBase title="Entrega">
+        <RadioTileGroup
+          defaultValue={deliveryType}
+          aria-label="Tipo de entrega"
+          onChange={(t) => setDeliveryType(t as EDeliveryType)}
+        >
+          <RadioTile
+            icon={<FontAwesomeIcon icon={faBoxOpen} />}
+            label="Quero receber em casa"
+            value={EDeliveryType.DELIVERY}
+          >
+            Quero que receber em minha casa por meio de um entregador.
+          </RadioTile>
+
+          <RadioTile
+            icon={<FontAwesomeIcon icon={faBagShopping} />}
+            label="Quero retirar no local"
+            value={EDeliveryType.CARRY}
+          >
+            Quero retirar minha compra/entrega no local.
+          </RadioTile>
+        </RadioTileGroup>
       </PanelBase>
       <PanelBase title="Resumo" hideTitleDivider>
         <h3 style={{ color: "#00a700", textAlign: "right" }}>

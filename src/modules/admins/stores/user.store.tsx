@@ -1,7 +1,7 @@
-import { INotification } from "@shared/interfaces";
+import { INotification } from "src/modules/shared";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { UserService } from "@admins/services";
+import { UserService } from "src/modules/admins/services";
 
 interface useUserStoreProps {
   notifications: INotification[];

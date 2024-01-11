@@ -1,10 +1,15 @@
+iframe#webpack-dev-server-client-overlay{display:none!important}
+
 body {
   margin: 0px;
   padding: 0px;
   height: 100vh;
 
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: rgb(247, 247, 247);
+  background-color: var(--background-color);
+  color: var(--text-color);
+
+  --rs-carousel-bg: none;
 }
 
 .tox-statusbar {
@@ -12,9 +17,13 @@ body {
 }
 
 .img-crop-media {
-  background-image: url("/images/image-editor-bg.png") !important;
+  background-image: url("../../public/images/image-editor-bg.png") !important;
 }
 
 .rs-picker-menu {
   z-index: 9;
+}
+
+#ReactSimpleImageViewer {
+  z-index: 10;
 }

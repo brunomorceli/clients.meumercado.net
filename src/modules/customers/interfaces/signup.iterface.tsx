@@ -1,4 +1,4 @@
-import { IUser, IUserHandler } from "@root/modules/shared";
+import { IUser, IUserHandler } from "src/modules/shared";
 
 export interface ISignup extends IUser {
 }

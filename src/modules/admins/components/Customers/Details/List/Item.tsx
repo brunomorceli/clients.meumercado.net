@@ -1,9 +1,9 @@
 import { Button, List, Panel } from "rsuite";
 import { CustomPanel } from "./styles";
-import { IOrder, IProduct } from "@shared";
+import { IOrder, IProduct } from "src/modules/shared";
 import { Products } from "./Products";
 import { Order } from "./Order";
-import { OrderProgress } from "@shared/components";
+import { OrderProgress } from "src/modules/shared/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 

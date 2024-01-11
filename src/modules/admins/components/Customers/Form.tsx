@@ -1,5 +1,10 @@
+import { useStore } from "zustand";
 import { FlexboxGrid, Form, Placeholder, Schema } from "rsuite";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from 'react-router';
+
+import { useCustomerStore } from "src/modules/admins/stores";
+import { CustomersHandler } from "src/modules/admins/pages/Customers/CustomersPage";
 import {
   ERoleType,
   IUser,
@@ -10,10 +15,7 @@ import {
   UserForm,
   UserFormSchema,
   useToasterStore,
-} from "@shared";
-import { useStore } from "zustand";
-import { useCustomerStore } from "@root/modules/admins/stores";
-import { useRouter } from "next/router";
+} from "src/modules/shared";
 
 interface CustomerFormProps {
   userId?: string | null | undefined;
@@ -21,7 +23,7 @@ interface CustomerFormProps {
 
 export function CustomerForm(props: CustomerFormProps) {
   const { userId } = props;
-  const router = useRouter();
+  const navigate = useNavigate();
   const toasterStore = useStore(useToasterStore);
   const customerStore = useStore(useCustomerStore);
   const [user, setUser] = useState<IUser>(
@@ -83,7 +85,7 @@ export function CustomerForm(props: CustomerFormProps) {
     >
       <TitleBase
         title={user.id ? "Dados do cliente" : "Novo cliente"}
-        onBack={() => router.replace("/admins/customers")}
+        onBack={() => navigate(CustomersHandler.navigate())}
       />
       <PanelBase title="Cliente">
         <UserForm user={user} error={formError} onChange={setUser} />

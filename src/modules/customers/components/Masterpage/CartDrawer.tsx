@@ -1,20 +1,26 @@
 import { useStore } from "zustand";
+import { useNavigate } from "react-router";
+import { Drawer } from "rsuite";
+
+import { CheckoutPageHandler } from "src/modules/customers/pages/Checkout/CheckoutPage";
+import {
+  ProductAutocomplete,
+  ProductCart,
+} from "src/modules/customers/components";
 import {
   useAuthStore,
   useCartStore,
   useCompanyStore,
   useMasterpageStore,
-} from "@customers/stores";
-import { Drawer } from "rsuite";
-import { ProductAutocomplete, ProductCart } from "..";
+} from "src/modules/customers/stores";
 import {
   CartButton,
   GeneralUtils,
   ICartProduct,
   ICartProductHandler,
   IProduct,
-} from "@root/modules/shared";
-import { useRouter } from "next/router";
+} from "src/modules/shared";
+import { ProductDetailsPageHandler } from "../../pages/Products/ProductDetailsPage";
 
 interface CartDrawerProps {
   noRender?: boolean;
@@ -22,7 +28,7 @@ interface CartDrawerProps {
 }
 
 export function CartDrawer(props: CartDrawerProps) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const authStore = useStore(useAuthStore);
   const masterpageStore = useStore(useMasterpageStore);
   const companyStore = useStore(useCompanyStore);
@@ -42,6 +48,14 @@ export function CartDrawer(props: CartDrawerProps) {
 
   function handleRemove(product: ICartProduct): void {
     cartStore.removeProduct(company.id!, product.product.id!);
+    if (products.length === 0) {
+      masterpageStore.setCart(false);
+    }
+  }
+
+  function handlePickProduct(product: ICartProduct): void {
+    navigate(ProductDetailsPageHandler.navigate(product.product.id!));
+    masterpageStore.setCart(false);
   }
 
   function handleFinish(): void {
@@ -52,7 +66,7 @@ export function CartDrawer(props: CartDrawerProps) {
       return;
     }
 
-    router.replace("/customers/checkout");
+    navigate(CheckoutPageHandler.navigate());
   }
 
   const totalLabel = GeneralUtils.getAmountLabel(
@@ -65,7 +79,7 @@ export function CartDrawer(props: CartDrawerProps) {
 
   return (
     <Drawer
-      style={{ minWidth: '25vw', maxWidth: '300px' }}
+      style={{ minWidth: "25vw", maxWidth: "300px" }}
       open={masterpageStore.cart}
       onClose={() => masterpageStore.toggleCart()}
     >
@@ -78,6 +92,7 @@ export function CartDrawer(props: CartDrawerProps) {
           products={products}
           onChange={handleChageProduct}
           onRemove={handleRemove}
+          onPick={handlePickProduct}
         />
         {products.length === 0 && (
           <h6 style={{ marginTop: 30, marginBottom: 30 }}>
@@ -85,7 +100,9 @@ export function CartDrawer(props: CartDrawerProps) {
           </h6>
         )}
 
-        <h3 style={{ color: '#8bc34a', textAlign: 'right'}}>Total: {totalLabel}</h3>
+        <h3 style={{ color: "#8bc34a", textAlign: "right" }}>
+          Total: {totalLabel}
+        </h3>
         {products.length !== 0 && (
           <CartButton
             title="Finalizar"

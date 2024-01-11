@@ -6,20 +6,22 @@ import {
   PanelBase,
   TitleBase,
   useToasterStore,
-} from "@shared";
-import { useRouter } from "next/router";
+} from "src/modules/shared";
+import { useNavigate } from 'react-router';
 import { useEffect, useState } from "react";
 import { GeneralData } from "./GeneralData";
 import { useStore } from "zustand";
-import { useOrderStore } from "@admins/stores";
+import { useOrderStore } from "src/modules/admins/stores";
 import { Products } from "./Products";
+import { CustomersDetailsHandler } from "src/modules/admins/pages/Customers/CustomersDetailsPage";
+import { ProductsEditHandler } from "src/modules/admins/pages/Products/ProductsEditPage";
 
 interface ItemProps {
   orderId?: number | null | undefined;
 }
 
 export function OrderDetails(props: ItemProps) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const { orderId } = props;
   const toasterStore = useStore(useToasterStore);
   const orderStore = useStore(useOrderStore);
@@ -82,14 +84,14 @@ export function OrderDetails(props: ItemProps) {
 
   return (
     <>
-      <TitleBase title="Detalhes do pedido" onBack={() => router.back()} />
+      <TitleBase title="Detalhes do pedido" onBack={() => navigate(-1)} />
       <PanelBase title="Dados gerais">
         {order && (
           <GeneralData
             order={order}
             onChangeStatus={setOrderForm}
             onCustomerDetails={(order) =>
-              router.replace(`/admins/customers/${order.userId}/details`)
+              navigate(CustomersDetailsHandler.navigate(order.userId!))
             }
           />
         )}
@@ -102,7 +104,7 @@ export function OrderDetails(props: ItemProps) {
       <PanelBase title="Produtos adicionados">
         <Products
           order={order!}
-          onDetails={(p) => router.replace(`/admins/products/${p.id}`)}
+          onDetails={(p) => navigate(ProductsEditHandler.navigate(p.id!))}
         />
       </PanelBase>
       <OrdersStatusForm

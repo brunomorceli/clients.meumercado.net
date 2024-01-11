@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { Col, FlexboxGrid } from "rsuite";
 
 export function NoProductFoundResult() {

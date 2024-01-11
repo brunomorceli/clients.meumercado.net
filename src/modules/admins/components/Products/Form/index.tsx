@@ -1,21 +1,4 @@
-"use client";
-
-import {
-  IProduct,
-  IProductHandler,
-  ICompany,
-  ICompanyHandler,
-} from "@shared/interfaces";
 import { useEffect, useRef, useState } from "react";
-import {
-  ImageGalery,
-  InputText,
-  InputNumber,
-  PanelBase,
-  SaveButton,
-  TitleBase,
-} from "@shared/components";
-
 import {
   Button,
   Col,
@@ -28,15 +11,37 @@ import {
   Toggle,
 } from "rsuite";
 import { useStore } from "zustand";
-import { useToasterStore } from "@shared/stores";
-import { useAuthStore, useCompanyStore, useProductStore } from "@admins/stores";
-import { EProductType } from "@shared/enums";
-import React from "react";
-import { Attributes } from "./Attributes";
-import { useRouter } from "next/router";
+import { useNavigate, useLocation } from "react-router";
 import { FormOutlined } from "@ant-design/icons";
-import { FormModal, InputCurrency } from "@shared/components";
-import { Categories } from "../..";
+
+import { useToasterStore } from "src/modules/shared/stores";
+import { EProductType } from "src/modules/shared/enums";
+import { Attributes } from "./Attributes";
+import { FormModal, InputCurrency } from "src/modules/shared/components";
+import { Categories } from "src/modules/admins/components";
+import { ProductsHandler } from "src/modules/admins/pages/Products/ProductsPage";
+import {
+  useAuthStore,
+  useCompanyStore,
+  useProductStore,
+} from "src/modules/admins/stores";
+import {
+  ImageGalery,
+  InputText,
+  InputNumber,
+  PanelBase,
+  SaveButton,
+  TitleBase,
+} from "src/modules/shared/components";
+import {
+  IProduct,
+  IProductHandler,
+  ICompany,
+  ICompanyHandler,
+} from "src/modules/shared/interfaces";
+import { ProductWizzardForm } from "./Wizzard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWandMagicSparkles } from "@fortawesome/free-solid-svg-icons";
 
 interface ProductFormProps {
   productId?: string;
@@ -44,11 +49,13 @@ interface ProductFormProps {
 
 export function ProductForm(props: ProductFormProps) {
   const { productId } = props;
-  const router = useRouter();
+  const navigate = useNavigate();
+  const location = useLocation();
   const authStore = useStore(useAuthStore);
   const productStore = useStore(useProductStore);
   const companyStore = useStore(useCompanyStore);
   const toasterStore = useStore(useToasterStore);
+  const [showWizzard, setShowWizzard] = useState<boolean>(false);
   const [company, setCompany] = useState<ICompany>(ICompanyHandler.empty());
   const [processing, setProcessing] = useState<boolean>(false);
   const formRef = useRef<any>();
@@ -65,6 +72,19 @@ export function ProductForm(props: ProductFormProps) {
       (price) => !product.showPrice || Number(price) > 0,
       "Este campo é obrigatório"
     ),
+    discountPrice: Schema.Types.NumberType(
+      "Este campo deve ser um número."
+    ).addRule(() => {
+      if (!product.showPrice || Number.isNaN(product.discountPrice)) {
+        return true;
+      }
+
+      if (Number(product.discountPrice) >= Number(product.price)) {
+        return false;
+      }
+
+      return true;
+    }, "O valor do preço de desconto deve ser menor que o do preço."),
     sku: Schema.Types.StringType().minLength(
       3,
       "O SKU deve conter pelo menos 3 letras"
@@ -76,11 +96,17 @@ export function ProductForm(props: ProductFormProps) {
   });
 
   useEffect(() => {
+    location.pathname &&
+      location.pathname.indexOf("/create") >= 0 &&
+      setShowWizzard(true);
+  }, [location.pathname]);
+
+  useEffect(() => {
     authStore.companyId && loadCompany(authStore.companyId);
   }, [authStore.companyId]);
 
   useEffect(() => {
-    productId && loadProduct(productId);
+    productId && !processing && loadProduct(productId);
   }, [productId]);
 
   function handleChangeProductKey(key: string, val: any): void {
@@ -129,6 +155,7 @@ export function ProductForm(props: ProductFormProps) {
 
   function handleSubmit(): void {
     if (!formRef.current.check()) {
+      toasterStore.error("Por favor, verifique os erros antes de prosseguir.");
       return;
     }
 
@@ -140,7 +167,7 @@ export function ProductForm(props: ProductFormProps) {
       .upsert(product)
       .then(() => {
         toasterStore.success("Produto salvo com sucesso.");
-        router.replace("/admins/products");
+        navigate(ProductsHandler.navigate());
       })
       .catch((e) => toasterStore.error(e))
       .finally(() => setProcessing(false));
@@ -158,10 +185,22 @@ export function ProductForm(props: ProductFormProps) {
       onError={setFormError}
     >
       <TitleBase
-        title="Formulário de produto"
-        onBack={() => router.replace("/admins/products")}
+        title={`${productId ? "Editar" : "Novo"} produto`}
+        onBack={() => navigate(ProductsHandler.navigate())}
       />
-      <PanelBase title="Informações gerais">
+      <PanelBase
+        title="Informações gerais"
+        actionEl={
+          !product.id && (
+            <Button
+              startIcon={<FontAwesomeIcon icon={faWandMagicSparkles} />}
+              onClick={() => setShowWizzard(true)}
+            >
+              Abrir assistente
+            </Button>
+          )
+        }
+      >
         <InputText
           label="Nome (obrigatório)"
           value={product.label}
@@ -210,7 +249,7 @@ export function ProductForm(props: ProductFormProps) {
               <InputCurrency
                 label="Preço (obrigatório)"
                 cents={product.price}
-                placeholder="R$ 100,00"
+                placeholder="ex: R$ 100,00"
                 error={formError.price}
                 onChange={(c) => handleChangeProductKey("price", c)}
               />
@@ -219,7 +258,7 @@ export function ProductForm(props: ProductFormProps) {
               <InputCurrency
                 label="Preço de desconto"
                 cents={product.discountPrice!}
-                placeholder="R$ 89,99"
+                placeholder="ex: R$ 89,99"
                 error={formError.discountPrice}
                 onChange={(c) => handleChangeProductKey("discountPrice", c)}
               />
@@ -371,6 +410,11 @@ export function ProductForm(props: ProductFormProps) {
       <FlexboxGrid justify="end">
         <SaveButton onClick={handleSubmit} />
       </FlexboxGrid>
+      <ProductWizzardForm
+        open={showWizzard}
+        onPick={setProduct}
+        onClose={() => setShowWizzard(false)}
+      />
     </Form>
   );
 }

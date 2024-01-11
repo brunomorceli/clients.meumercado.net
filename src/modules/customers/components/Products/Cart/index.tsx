@@ -1,14 +1,14 @@
-"use client";
-
-import { ConfirmModal, InputQuantity } from "@shared/components";
 import React, { useState } from "react";
-import { GeneralUtils, ICartProduct } from "@root/modules/shared";
+
+import { ConfirmModal, InputQuantity } from "src/modules/shared/components";
+import { GeneralUtils, ICartProduct } from "src/modules/shared";
 import { SubtitleCustom, TitleCustom } from "./styles";
 
 interface ProductCartProps {
   products: ICartProduct[];
   onChange: (product: ICartProduct) => void;
   onRemove: (product: ICartProduct) => void;
+  onPick?: ((product: ICartProduct) => void);
 }
 
 export function ProductCart(props: ProductCartProps) {
@@ -17,6 +17,10 @@ export function ProductCart(props: ProductCartProps) {
   function getError(cartProduct: ICartProduct): string | undefined {
     const quantity = cartProduct.quantity;
     const stock = cartProduct.product.quantity;
+    
+    if (cartProduct.product.unlimited) {
+      return;
+    }
 
     if (stock === 0) {
       return "O estoque deste produto está esgotado. Por favor, remove o produto.";
@@ -45,7 +49,12 @@ export function ProductCart(props: ProductCartProps) {
             marginBottom: 20,
           }}
         >
-          <TitleCustom>{cartProduct.product.label.toUpperCase()}</TitleCustom>
+          <TitleCustom
+            appearance="link"
+            onClick={() => props.onPick && props.onPick(cartProduct)}
+          >
+            {cartProduct.product.label.toUpperCase()}
+          </TitleCustom>
           <SubtitleCustom>
             Preço : {GeneralUtils.getAmountLabel(cartProduct.product.price)}
             {GeneralUtils.getSulfixLabel(

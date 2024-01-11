@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Category = styled.div`
-  color: white;
+  color: var(--header-text-color);
   cursor: pointer;
   font-weight: 500;
   display: inline-block;

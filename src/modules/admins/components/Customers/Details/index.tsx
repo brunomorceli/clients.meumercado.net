@@ -10,13 +10,15 @@ import {
   TitleBase,
   WhatsappIcon,
   useToasterStore,
-} from "@shared";
+} from "src/modules/shared";
 import { useStore } from "zustand";
-import { useCustomerStore } from "@root/modules/admins/stores";
-import { useRouter } from "next/router";
-import { useOrderStore } from "@admins/stores";
+import { useCustomerStore } from "src/modules/admins/stores";
+import { useNavigate } from "react-router";
+import { useOrderStore } from "src/modules/admins/stores";
 import { Field, Label } from "./styles";
 import { OrdersList } from "./List";
+import { OrdersDetailsHandler } from "src/modules/admins/pages/Orders/OrdersDetailsPage";
+import { ProductsEditHandler } from "src/modules/admins/pages/Products/ProductsEditPage";
 
 interface CustomerDetailsProps {
   userId?: string | null | undefined;
@@ -24,7 +26,7 @@ interface CustomerDetailsProps {
 
 export function CustomerDetails(props: CustomerDetailsProps) {
   const { userId } = props;
-  const router = useRouter();
+  const navigate = useNavigate();
   const toasterStore = useStore(useToasterStore);
   const customerStore = useStore(useCustomerStore);
   const orderStore = useStore(useOrderStore);
@@ -85,7 +87,7 @@ export function CustomerDetails(props: CustomerDetailsProps) {
     <>
       <TitleBase
         title={user.id ? "Dados do cliente" : "Novo cliente"}
-        onBack={() => router.back()}
+        onBack={() => navigate(-1)}
       />
 
       <PanelBase title="Dados pessoais">
@@ -103,7 +105,7 @@ export function CustomerDetails(props: CustomerDetailsProps) {
             <Field>
               {user.phoneNumber ? (
                 <Button
-                  style={{ marginLeft: -10 }}
+                  style={{ padding: 0 }}
                   appearance="subtle"
                   onClick={() =>
                     window.open(
@@ -112,7 +114,7 @@ export function CustomerDetails(props: CustomerDetailsProps) {
                     )
                   }
                 >
-                  {GeneralUtils.maskPhonenumber(user.phoneNumber)}
+                  <strong>{GeneralUtils.maskPhonenumber(user.phoneNumber)}</strong>
                   &nbsp;
                   <WhatsappIcon />
                 </Button>
@@ -123,7 +125,9 @@ export function CustomerDetails(props: CustomerDetailsProps) {
           </Col>
           <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
             <Label>CPF/CNPJ</Label>
-            <Field>{user.cpfCnpj}</Field>
+            <Field>
+              {user.cpfCnpj ? GeneralUtils.maskCpfCnpj(user.cpfCnpj!) : "N/I"}
+            </Field>
           </Col>
         </FlexboxGrid>
       </PanelBase>
@@ -161,8 +165,12 @@ export function CustomerDetails(props: CustomerDetailsProps) {
         <OrdersList
           orders={orders}
           onChangeStatus={handleChangeStatus}
-          onDetails={(o) => router.replace(`/admins/orders/${o.id}/details`)}
-          onProductDetails={(p) => router.replace(`/admins/products/${p.id}`)}
+          onDetails={(o) =>
+            navigate(OrdersDetailsHandler.navigate(o.id!.toString()))
+          }
+          onProductDetails={(p) =>
+            navigate(ProductsEditHandler.navigate(p.id!.toString()))
+          }
         />
         {orders.length === 0 && <h4>Nenhum resultado.</h4>}
       </PanelBase>

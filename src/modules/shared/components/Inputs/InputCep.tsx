@@ -1,7 +1,10 @@
 import { useStore } from "zustand";
-import { useExternalApiStore, useToasterStore } from "@shared/stores";
+import {
+  useExternalApiStore,
+  useToasterStore,
+} from "src/modules/shared/stores";
 import { useState } from "react";
-import { IFindAddressResult } from "@shared/interfaces/find-address-result.interface";
+import { IFindAddressResult } from "src/modules/shared/interfaces/find-address-result.interface";
 import { Form, InputGroup, MaskedInput, Schema } from "rsuite";
 import ReloadIcon from "@rsuite/icons/Reload";
 

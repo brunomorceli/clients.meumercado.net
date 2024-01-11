@@ -1,9 +1,9 @@
-import { IOrder, IOrderUpdate } from "@shared/interfaces";
-import { OrderService } from "@admins/services";
+import { IOrder, IOrderUpdate } from "src/modules/shared";
+import { OrderService } from "src/modules/admins/services";
 import { create } from "zustand";
-import { IFindOrder } from "../interfaces/find-order.interface";
-import { IFindOrderResult } from "../interfaces/find-order-result.interface";
-import { IFindOrderByUser, IFindOrderByUserResult } from "../interfaces";
+import { IFindOrder } from "src/modules/admins/interfaces/find-order.interface";
+import { IFindOrderResult } from "src/modules/admins/interfaces/find-order-result.interface";
+import { IFindOrderByUser, IFindOrderByUserResult } from "src/modules/admins/interfaces";
 
 interface useOrderStoreProps {
   update: (data: IOrderUpdate) => Promise<IOrder>;

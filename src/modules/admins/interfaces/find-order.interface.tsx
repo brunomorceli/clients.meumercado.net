@@ -1,4 +1,4 @@
-import { EOrderStatus, IPagination } from "@root/modules/shared";
+import { EOrderStatus, IPagination } from "src/modules/shared";
 
 export interface IFindOrder extends IPagination {
   userId?: string;

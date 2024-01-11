@@ -1,4 +1,4 @@
-import { IOrder } from "@root/modules/shared";
+import { IOrder } from "src/modules/shared";
 import { List } from "rsuite";
 import { Item } from "./Item";
 

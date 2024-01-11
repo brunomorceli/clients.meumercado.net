@@ -1,24 +1,27 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { useStore } from "zustand";
+import { Pagination, Placeholder } from "rsuite";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ProductCard } from "@root/modules/customers/components";
-import {
-  useAuthStore,
-  useCartStore,
-  useCompanyStore,
-  useMasterpageStore,
-  useProductStore,
-} from "@root/modules/customers/stores";
+
+import { ProductCard } from "src/modules/customers/components";
+import { HomePageHandler } from "src/modules/customers/pages/HompePage";
 import {
   CategoriesUtils,
   IProduct,
   NoProductFoundResult,
   TitleBase,
   useToasterStore,
-} from "@root/modules/shared";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { Pagination, Placeholder } from "rsuite";
-import { useStore } from "zustand";
+} from "src/modules/shared";
+import {
+  useAuthStore,
+  useCartStore,
+  useCompanyStore,
+  useMasterpageStore,
+  useProductStore,
+} from "src/modules/customers/stores";
+import { ProductDetailsPageHandler } from "src/modules/customers/pages/Products/ProductDetailsPage";
 
 const titleStyle = {
   color: "white",
@@ -35,7 +38,7 @@ interface ProductsByCategoryProps {
 }
 
 export function ProductsByCategory(props: ProductsByCategoryProps) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const authStore = useStore(useAuthStore);
   const cartStore = useStore(useCartStore);
   const companyStore = useStore(useCompanyStore);
@@ -68,7 +71,7 @@ export function ProductsByCategory(props: ProductsByCategoryProps) {
         );
         if (!categoryFound) {
           toastStore.error("Categoria inválida");
-          router.replace("/customers");
+          navigate(HomePageHandler.navigate());
           return;
         }
 
@@ -134,9 +137,7 @@ export function ProductsByCategory(props: ProductsByCategoryProps) {
         <ProductCard
           products={[...products]}
           onAdd={handleAddProduct}
-          onDetails={(p) =>
-            router.replace(`/customers/products/${p.id}/details`)
-          }
+          onDetails={(p) => navigate(ProductDetailsPageHandler.navigate(p.id!.toString()))}
         />
       )}
       {products.length > resultsPerPage && (
@@ -149,9 +150,7 @@ export function ProductsByCategory(props: ProductsByCategoryProps) {
           ellipsis
         />
       )}
-      {products.length === 0 &&
-        <NoProductFoundResult />
-      }
+      {products.length === 0 && <NoProductFoundResult />}
     </>
   );
 }

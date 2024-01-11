@@ -6,12 +6,12 @@ import {
   InputNumber,
   TrashButton,
   InputCepSchema,
-} from "..";
+} from "../";
 import {
   IFindAddressResult,
   IFindAddressResultHandler,
-} from "@shared/interfaces/find-address-result.interface";
-import { useToasterStore } from "@shared/stores";
+} from "src/modules/shared/interfaces/find-address-result.interface";
+import { useToasterStore } from "src/modules/shared/stores";
 import { useStore } from "zustand";
 
 interface AddressFormProps {

@@ -1,5 +1,5 @@
-import { IUser } from "@shared/interfaces";
-import { UserService } from "@customers/services";
+import { IUser } from "src/modules/shared/interfaces";
+import { UserService } from "src/modules/customers/services";
 import { create } from "zustand";
 
 interface useUserStoreProps {

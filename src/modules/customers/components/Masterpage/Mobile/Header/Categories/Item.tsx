@@ -1,4 +1,3 @@
-import { Nav } from "rsuite";
 import { IOption } from "./interfaces/option.interface";
 import { CustomNavItem, CustomNavMenu } from "./styles";
 

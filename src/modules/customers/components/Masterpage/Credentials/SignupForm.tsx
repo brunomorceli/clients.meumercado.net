@@ -1,11 +1,11 @@
-import { PublicGuard, UserForm, UserFormSchema } from "@shared/components";
-import { useToasterStore } from "@shared/stores";
+import { UserForm, UserFormSchema } from "src/modules/shared/components";
+import { useToasterStore } from "src/modules/shared/stores";
 import { useRef, useState } from "react";
 import { Schema, Form, Button } from "rsuite";
 import { useStore } from "zustand";
-import PlusIcon from '@rsuite/icons/Plus';
-import { IUser, IUserHandler } from "@shared/interfaces";
-import { ERoleType } from "@shared/enums";
+import PlusIcon from "@rsuite/icons/Plus";
+import { IUser, IUserHandler } from "src/modules/shared/interfaces";
+import { ERoleType } from "src/modules/shared/enums";
 
 interface SignupFormProps {
   onSubmit: (user: IUser) => void;
@@ -20,7 +20,6 @@ export function SignupForm(props: SignupFormProps) {
   );
   const model = Schema.Model(UserFormSchema);
 
-
   function handleSubmit(): void {
     if (!formRef.current.check()) {
       toasterStore.error("Preencha todos os campos obrigatórios.");
@@ -31,20 +30,25 @@ export function SignupForm(props: SignupFormProps) {
   }
 
   return (
-    <PublicGuard>
-      <Form
-        ref={formRef}
-        model={model}
-        formValue={user}
-        formError={formError}
-        onError={setFormError}
-        onSubmit={handleSubmit}
+    <Form
+      ref={formRef}
+      model={model}
+      formValue={user}
+      formError={formError}
+      onError={setFormError}
+      onSubmit={handleSubmit}
+    >
+      <UserForm user={user} error={formError} onChange={setUser} />
+      <Button
+        appearance="primary"
+        color="green"
+        onClick={handleSubmit}
+        block
+        startIcon={<PlusIcon />}
+        size="lg"
       >
-        <UserForm user={user} error={formError} onChange={setUser} />
-        <Button appearance="primary" color="green" onClick={handleSubmit} block startIcon={<PlusIcon />} size="lg">
-          Criar conta
-        </Button>
-      </Form>
-    </PublicGuard>
+        Criar conta
+      </Button>
+    </Form>
   );
 }

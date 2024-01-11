@@ -3,18 +3,18 @@ import {
   CredentialsModal,
   IUser,
   useToasterStore,
-} from "@root/modules/shared";
+} from "src/modules/shared";
 import { useStore } from "zustand";
-import { useRouter } from "next/router";
+import { useNavigate } from 'react-router';
 import { useEffect, useState } from "react";
-import { useAuthStore, useMasterpageStore } from "@customers/stores";
+import { useAuthStore, useMasterpageStore } from "src/modules/customers/stores";
 import { SignupForm } from "./SignupForm";
 import { ConfirmForm } from "./ConfirmForm";
 import { SigninForm } from "./SigninForm";
 import { Button, FlexboxGrid } from "rsuite";
 
 export function Credentials() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const authStore = useStore(useAuthStore);
   const masterpageStore = useStore(useMasterpageStore);
   const toasterStore = useStore(useToasterStore);

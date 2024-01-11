@@ -1,6 +1,9 @@
-import { ICompany, ICompanySearchResult } from "@shared/interfaces";
-import { ICompanySearch } from "@shared/interfaces/company-search.interface";
-import { CompanyService } from "@admins/services";
+import {
+  ICompany,
+  ICompanySearchResult,
+  ICompanySearch,
+} from "src/modules/shared/interfaces";
+import { CompanyService } from "src/modules/admins/services";
 import { create } from "zustand";
 
 interface useCompanyStoreProps {

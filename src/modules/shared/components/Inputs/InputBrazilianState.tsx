@@ -1,4 +1,4 @@
-import { EBrazilianStateHandler } from "@shared/enums";
+import { EBrazilianStateHandler } from "../../enums";
 import { Form, SelectPicker } from "rsuite";
 
 interface InputBrazilianStateProps {

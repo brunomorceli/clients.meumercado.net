@@ -5,7 +5,7 @@ import {
   EOrderStatusHandler,
   GeneralUtils,
   IOrder,
-} from "@shared";
+} from "src/modules/shared";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 

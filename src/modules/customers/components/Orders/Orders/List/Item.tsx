@@ -1,11 +1,11 @@
 import { List, Panel, Button } from "rsuite";
 import { Subtitle } from "./styles";
-import { EOrderStatus, FormModal, IOrder, InputText, PanelBase } from "@shared";
+import { EOrderStatus, FormModal, IOrder, InputText, PanelBase } from "src/modules/shared";
 import BlockIcon from "@rsuite/icons/Block";
 import { useEffect, useState } from "react";
 import { Products } from "./Products";
 import { Order } from "./Order";
-import { OrderProgress } from "@shared/components";
+import { OrderProgress } from "src/modules/shared/components";
 
 interface OrderListProps {
   order: IOrder;

@@ -1,16 +1,16 @@
 import { Dropdown, Stack } from "rsuite";
 import styled from "styled-components";
 
-export const HeaderContainer = styled(Stack.Item)<{ backgroundColor?: string }>`
+export const HeaderContainer = styled(Stack.Item)`
   width: 100vw;
   min-height: 55px;
-  background-color: ${(props) => props.backgroundColor || '#8bc34a'};
+  background-color: var(--primary-color);
 `;
 
-export const CompanyName = styled.div<{color?: string}>`
+export const CompanyName = styled.div`
   width: 100%;
   text-align: center;
-  color: ${(props) => props.color || 'white'};
+  color: var(--header-text-color);
   font-weight: 500;
   font-size: 15px;
   cursor: pointer;
@@ -20,7 +20,7 @@ export const CompanyName = styled.div<{color?: string}>`
 
 export const Item = styled.div<{color?: string}>`
   display: inline-block;
-  color: ${(props) => props.color || 'white'};
+  color: var(--header-text-color);
   font-weight: 500;
   font-size: 20px;
   cursor: pointer;
@@ -35,12 +35,12 @@ export const DropdownSettings = styled(Dropdown)`
   }
 `;
 
-export const SecondaryHeader = styled(Stack.Item)<{ backgroundColor?: string }>`
+export const SecondaryHeader = styled(Stack.Item)`
   width: 100vw;
   padding-left: 20px;
   padding-right: 20px;
   height: 45px;
-  background-color: ${(props) => props.backgroundColor || '#8bc34a'};
+  background-color: var(--primary-color);
   position: absolute;
   z-index: 9;
   text-align: center;

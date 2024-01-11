@@ -1,8 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
-import { IProduct } from "@shared/interfaces";
+import { IProduct } from "src/modules/shared/interfaces";
 import { Avatar, FlexboxGrid, IconButton, List } from "rsuite";
 import TrashIcon from "@rsuite/icons/Trash";
-import { GeneralUtils } from "@shared/utils";
+import { GeneralUtils } from "src/modules/shared/utils";
 import { PriceLabel } from "./styles";
 interface ProductListItemProps {
   product: IProduct;

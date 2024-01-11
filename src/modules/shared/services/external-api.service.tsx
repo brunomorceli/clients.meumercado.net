@@ -1,9 +1,9 @@
-import { IFindAddressResult } from "@shared/interfaces/find-address-result.interface";
-import { GeneralUtils } from "@shared/utils";
+import { IFindAddressResult } from "../interfaces/find-address-result.interface";
+import { GeneralUtils } from "../utils";
 import axios from "axios";
 
 export class ExternalApiService {
-  private static baseURL: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+  private static baseURL: string = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
   static findAddress(cep: string): Promise<IFindAddressResult> {
     return new Promise((resolve, reject) => {

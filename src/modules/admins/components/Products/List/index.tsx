@@ -1,4 +1,4 @@
-import { IProduct } from "@shared/interfaces";
+import { IProduct } from "src/modules/shared/interfaces";
 import { Button, List, Modal } from "rsuite";
 import { useState } from "react";
 import { ProductListItem } from "./Item";

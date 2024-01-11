@@ -14,7 +14,6 @@ interface InputAsyncSearchProps {
 const cache: any = {};
 export function InputAsyncSearch(props: InputAsyncSearchProps) {
   const toasterStore = useStore(useToasterStore);
-  const [search, setSearch] = useState<string>("");
   const [filter, setFilter] = useState<any>(props.filters?.[0].value);
   const [searchError, setSearchError] = useState<string | null>(null);
 
@@ -25,7 +24,6 @@ export function InputAsyncSearch(props: InputAsyncSearchProps) {
       error = "O campo deve conter pelo menos 3 letras";
     }
 
-    setSearch(text || "");
     setSearchError(error);
 
     if (error || val.length === 0) {

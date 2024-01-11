@@ -26,14 +26,16 @@ export function AlertModal(props: AlertModalProps) {
           </Modal.Header>
         )}
         <Modal.Body>{props.children}</Modal.Body>
-        <Modal.Footer>
-          <Button
-            appearance="primary"
-            onClick={() => props.onClose && props.onClose()}
-          >
-            {props.btnText || "Ok"}
-          </Button>
-        </Modal.Footer>
+        {props.onClose &&
+          <Modal.Footer>
+            <Button
+              appearance="primary"
+              onClick={() => props.onClose && props.onClose()}
+            >
+              {props.btnText || "Ok"}
+            </Button>
+          </Modal.Footer>
+        }
       </Modal>
     </>
   );

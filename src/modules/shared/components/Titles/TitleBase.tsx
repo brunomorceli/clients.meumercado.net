@@ -14,6 +14,7 @@ export function TitleBase(props: PanelBaseProps) {
         cursor: Boolean(onBack) ? "pointer" : "default",
         marginTop: 10,
         marginBottom: 10,
+        color: 'var(--title-text-color)',
       }}
     >
       {onBack && (

@@ -1,9 +1,9 @@
 import { useStore } from "zustand";
-import { useToasterStore } from "@shared/stores";
-import { useAuthStore, useCompanyStore } from "@admins/stores";
+import { useToasterStore } from "src/modules/shared/stores";
+import { useAuthStore, useCompanyStore } from "src/modules/admins/stores";
 import { CategoryForm, CustomItemDataType } from "./Form";
 import { useCallback, useEffect, useState } from "react";
-import { ICompany, ICompanyHandler } from "@shared/interfaces";
+import { ICompany, ICompanyHandler } from "src/modules/shared/interfaces";
 
 interface CategoriesProps {
   onChange?: (company: ICompany) => void;

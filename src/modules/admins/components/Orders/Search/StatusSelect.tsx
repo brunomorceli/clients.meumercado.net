@@ -1,4 +1,4 @@
-import { EOrderStatusHandler } from "@root/modules/shared";
+import { EOrderStatusHandler } from "src/modules/shared";
 import { SelectPicker } from "rsuite";
 
 interface StatusSelectProps {

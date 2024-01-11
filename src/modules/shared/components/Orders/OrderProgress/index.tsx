@@ -1,6 +1,8 @@
 import { Timeline } from "rsuite";
 import { CustomTimeline, Label, Observation, Title } from "./styles";
-import { EOrderStatusHandler, GeneralUtils, IOrder } from "@shared";
+import { EOrderStatusHandler } from "../../../enums";
+import { GeneralUtils } from "../../../utils";
+import { IOrder } from "../../../interfaces";
 
 interface OrderProgressProps {
   order: IOrder;

@@ -1,4 +1,4 @@
-import { ECompanyStatusType } from "@shared/enums";
+import { ECompanyStatusType } from "src/modules/shared/enums";
 import { IPagination } from ".";
 
 export interface ICompanySearch extends IPagination {

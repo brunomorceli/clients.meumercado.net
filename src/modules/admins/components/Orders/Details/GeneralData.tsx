@@ -1,12 +1,14 @@
-import { Button, Col, FlexboxGrid } from "rsuite";
+import { Button, FlexboxGrid } from "rsuite";
 import { CustoCol, Label, Title } from "./styles";
 import {
+  Col24,
+  EDeliveryType,
   EOrderStatus,
   EOrderStatusHandler,
   GeneralUtils,
   IOrder,
   IOrderHandler,
-} from "@shared";
+} from "src/modules/shared";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUpRightFromSquare,
@@ -89,6 +91,20 @@ export function GeneralData(props: GeneralDataProps) {
           </>
         )}
       </Col12>
+      <Col12>
+        <Label>Tipo de entrega</Label>
+        <Title>
+          {order.deliveryType === EDeliveryType.DELIVERY ? 'Entrega a domicílio': 'Retirada na loja'}
+        </Title>
+      </Col12>
+      {order.deliveryType === EDeliveryType.DELIVERY &&
+        <Col24>
+          <Label>Endereço de entrega</Label>
+          <Title>
+            {GeneralUtils.getFullAddress(order.user!)}
+          </Title>
+        </Col24>
+      }
     </FlexboxGrid>
   );
 }

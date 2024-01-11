@@ -1,4 +1,5 @@
-import { ECompanyStatusType } from "@shared/enums";
+import { ECompanyStatusType } from "../enums";
+import { ITheme, IThemeHandler } from "..";
 
 export interface ICompany {
   id?: string;
@@ -18,8 +19,9 @@ export interface ICompany {
   email?: string;
   responsible?: string;
   logo?: string | null | undefined;
-  covers: string[],
+  covers?: string[],
   categories: any[],
+  theme?: ITheme;
   status?: ECompanyStatusType;
   createdAt?: string;
   deletedAt?: string;
@@ -43,6 +45,7 @@ export class ICompanyHandler {
       logo: null,
       covers: [],
       categories: [],
+      theme: IThemeHandler.empty(),
       status: ECompanyStatusType.ACTIVE,
     };
   }

@@ -1,6 +1,6 @@
 import { FlexboxGrid } from "rsuite";
 import { Label, Title } from "./styles";
-import { GeneralUtils, IOrder } from "@shared";
+import { GeneralUtils, IOrder } from "src/modules/shared";
 
 interface ProductsProps {
   order: IOrder;

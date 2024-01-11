@@ -1,3 +1,5 @@
+import { IUser } from "..";
+
 export class GeneralUtils {
   static getErrorMessage(error: any, defaultMsg: string): string {
     if (
@@ -66,7 +68,7 @@ export class GeneralUtils {
   }
 
   static getSubdomain(url: string): string | null {
-    const clientUrl = process.env.NEXT_PUBLIC_CLIENT_URL as string;
+    const clientUrl = process.env.REACT_APP_CLIENT_URL as string;
     if (url.indexOf(clientUrl) === 0) {
       return null;
     }
@@ -116,11 +118,22 @@ export class GeneralUtils {
       return phoneNumber || '';
     }
 
-    const ddd = phoneNumber.slice(0, 2);
-    const first = phoneNumber.slice(2, 3);
-    const second = phoneNumber.slice(3, 7);
-    const third = phoneNumber.slice(7);
+    return phoneNumber.toString().replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, "($1) $2 $3-$4");
+  }
 
-    return `(${ddd}) ${first} ${second}-${third}`;
+  static maskCpfCnpj(cpfCnpj: string): string {
+    let result = cpfCnpj.replace(/\D/g, '');
+    if (result.length === 11) {
+      return cpfCnpj.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+    }
+
+    return cpfCnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
+  }
+
+  static getFullAddress(user: IUser): string {
+    const number = user.addressNumber || 'S/N';
+    const neighborhood = `Bairro ${user.neighborhood || 'N/I'}`;
+
+    return `${user.address}, ${number} - ${neighborhood} - ${user.city}, ${user.state} - CEP: ${user.cep}`;
   }
 }

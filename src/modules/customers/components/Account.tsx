@@ -1,3 +1,10 @@
+import { useStore } from "zustand";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
+import { FlexboxGrid, Form, Placeholder, Schema } from "rsuite";
+
+import { useUserStore } from "src/modules/customers/stores";
+import { HomePageHandler } from "src/modules/customers/pages/HompePage";
 import {
   IUser,
   IUserHandler,
@@ -7,15 +14,10 @@ import {
   UserForm,
   UserFormSchema,
   useToasterStore,
-} from "@root/modules/shared";
-import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
-import { FlexboxGrid, Form, Placeholder, Schema } from "rsuite";
-import { useStore } from "zustand";
-import { useUserStore } from "../stores";
+} from "src/modules/shared";
 
 export function Account() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const userStore = useStore(useUserStore);
   const toasterStore = useStore(useToasterStore);
   const [user, setUser] = useState<IUser>(IUserHandler.empty());
@@ -51,7 +53,7 @@ export function Account() {
     userStore
       .update(user)
       .then((updatedUser) => {
-        toasterStore.success('Dados atualizados com sucesso.');
+        toasterStore.success("Dados atualizados com sucesso.");
         setUser(updatedUser);
       })
       .catch(toasterStore.error)
@@ -84,7 +86,7 @@ export function Account() {
     <>
       <TitleBase
         title="Meus dados"
-        onBack={() => router.replace("/customers")}
+        onBack={() => navigate(HomePageHandler.navigate())}
       />
       <Form
         fluid={true}

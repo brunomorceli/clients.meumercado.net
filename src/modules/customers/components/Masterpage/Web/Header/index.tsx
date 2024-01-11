@@ -1,15 +1,36 @@
 /* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable @next/next/no-img-element */
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import { useStore } from "zustand";
 import { Badge, Col, Dropdown, FlexboxGrid, Stack } from "rsuite";
 import CogIcon from "@rsuite/icons/legacy/Cog";
-import { useRouter } from "next/router";
-import { useStore } from "zustand";
+import UserInfoIcon from "@rsuite/icons/UserInfo";
+import ArrowDownLineIcon from "@rsuite/icons/ArrowDownLine";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBagShopping,
+  faBasketShopping,
+  faCartShopping,
+  faHouse,
+  faPhone,
+  faRightToBracket,
+  faUpRightFromSquare,
+} from "@fortawesome/free-solid-svg-icons";
+
+import { ProductAutocomplete } from "src/modules/customers/components";
+import { ICartProductHandler, IProduct } from "src/modules/shared/interfaces";
+import { ConfirmModal } from "src/modules/shared/components";
+import { Categories } from "./Categories";
+import { OrdersPageHandler } from "src/modules/customers/pages/Orders/OrderPage";
+import { AccountPageHandler } from "src/modules/customers/pages/Account/AccountPage";
+import { HomePageHandler } from "src/modules/admins/pages/HomePage";
+import { ProductsByCategoryPageHandler } from "src/modules/customers/pages/Products/ProductsByCategoryPage";
 import {
   useAuthStore,
   useCartStore,
   useCompanyStore,
   useMasterpageStore,
-} from "@customers/stores";
+} from "src/modules/customers/stores";
 import {
   HeaderContainer,
   Item,
@@ -17,30 +38,9 @@ import {
   SecondaryHeader,
   DropdownSettings,
 } from "./styles";
-import { ProductAutocomplete } from "../../..";
-import { ICartProductHandler, IProduct } from "@shared/interfaces";
-import { ConfirmModal } from "@shared/components";
-import {
-  faBagShopping,
-  faCartShopping,
-  faHouse,
-  faPhone,
-  faRightToBracket,
-  faUpRightFromSquare,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import UserInfoIcon from "@rsuite/icons/UserInfo";
-import { useState } from "react";
-import { Categories } from "./Categories";
-import ArrowDownLineIcon from "@rsuite/icons/ArrowDownLine";
 
-interface HeaderProps {
-  backgroundColor?: string;
-  color?: string;
-}
-
-export function Header(props: HeaderProps) {
-  const router = useRouter();
+export function Header() {
+  const navigate = useNavigate();
   const authStore = useStore(useAuthStore);
   const masterpageStore = useStore(useMasterpageStore);
   const companyStore = useStore(useCompanyStore);
@@ -72,31 +72,31 @@ export function Header(props: HeaderProps) {
       )}
     >
       <Dropdown.Item
-        onSelect={() => router.replace("/customers/account")}
+        onSelect={() => navigate(OrdersPageHandler.navigate())}
+        icon={<FontAwesomeIcon icon={faBasketShopping} />}
+      >
+        &nbsp;Meus pedidos
+      </Dropdown.Item>
+      <Dropdown.Item
+        onSelect={() => navigate(AccountPageHandler.navigate())}
         icon={<UserInfoIcon />}
       >
         Meus dados
       </Dropdown.Item>
       <Dropdown.Item
-        onSelect={() => router.replace("/customers/orders")}
-        icon={<FontAwesomeIcon icon={faBagShopping} />}
-      >
-        Meus pedidos
-      </Dropdown.Item>
-      <Dropdown.Item
         onSelect={() => setShowExitModal(true)}
         icon={<FontAwesomeIcon icon={faUpRightFromSquare} />}
       >
-        Sair
+        &nbsp;Sair
       </Dropdown.Item>
     </DropdownSettings>
   );
 
   return (
     <>
-      <HeaderContainer backgroundColor={props.backgroundColor}>
+      <HeaderContainer>
         <Stack alignItems="center" justifyContent="flex-start">
-          <CompanyName onClick={() => router.replace("/")} color={props.color}>
+          <CompanyName onClick={() => navigate(HomePageHandler.navigate())}>
             {company.logo ? (
               <img src={company.logo} height={45} />
             ) : (
@@ -106,18 +106,18 @@ export function Header(props: HeaderProps) {
           <Stack.Item grow={1}>
             <ProductAutocomplete onPick={handleAddProduct} />
           </Stack.Item>
-          <Item onClick={masterpageStore.toggleCart}>
-            <FontAwesomeIcon icon={faCartShopping} style={{ marginRight: 5 }} />{" "}
-            Carrinho
-            {products.length !== 0 && (
-              <>
-                &nbsp;
-                <Badge content={products.length} />
-              </>
-            )}
-          </Item>
+          {products.length !== 0 && (
+            <Item onClick={masterpageStore.toggleCart}>
+              <FontAwesomeIcon
+                icon={faCartShopping}
+                style={{ marginRight: 5 }}
+              />
+              Carrinho &nbsp;
+              <Badge content={products.length} />
+            </Item>
+          )}
           {authStore.authenticated ? (
-            <Settings></Settings>
+            <Settings />
           ) : (
             <Item onClick={() => masterpageStore.toggleLogin()}>
               <FontAwesomeIcon icon={faRightToBracket} />
@@ -126,8 +126,8 @@ export function Header(props: HeaderProps) {
           )}
         </Stack>
       </HeaderContainer>
-      <SecondaryHeader backgroundColor={props.backgroundColor}>
-        <Item onClick={() => router.replace("/customers")}>
+      <SecondaryHeader>
+        <Item onClick={() => navigate(HomePageHandler.navigate())}>
           <FontAwesomeIcon icon={faHouse} /> Início
         </Item>
         <Item>
@@ -143,7 +143,9 @@ export function Header(props: HeaderProps) {
               <Categories
                 options={company.categories}
                 onPick={(id) =>
-                  router.replace(`/customers/products/categories/${id}`)
+                  navigate(
+                    ProductsByCategoryPageHandler.navigate(id.toString())
+                  )
                 }
               />
             </Col>

@@ -1,4 +1,4 @@
-import { IOrder, IProduct, OrdersStatusForm } from "@root/modules/shared";
+import { IOrder, IProduct, OrdersStatusForm } from "src/modules/shared";
 import { List } from "rsuite";
 import { Item } from "./Item";
 import { useState } from "react";

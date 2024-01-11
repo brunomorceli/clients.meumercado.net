@@ -1,14 +1,12 @@
-"use client";
-
 import { useEffect, useRef, useState } from "react";
-import { FormModal, InputQuantity } from "@shared/components";
 import { Col, Form, Schema } from "rsuite";
-import React from "react";
+
+import { FormModal, InputQuantity } from "src/modules/shared/components";
 import {
   GeneralUtils,
   ICartProduct,
   ICartProductHandler,
-} from "@root/modules/shared";
+} from "src/modules/shared";
 
 interface ProductFormProps {
   product?: ICartProduct | null | undefined;
@@ -52,7 +50,9 @@ export function ProductForm(props: ProductFormProps) {
   }
 
   const open = Boolean(props.product);
-  const price = `${GeneralUtils.getAmountLabel(product.price)}${GeneralUtils.getSulfixLabel(product.quantitySulfix)}`;
+  const price = `${GeneralUtils.getAmountLabel(
+    product.price
+  )}${GeneralUtils.getSulfixLabel(product.quantitySulfix)}`;
   return (
     <FormModal
       title="Adicionar produto"
@@ -79,11 +79,10 @@ export function ProductForm(props: ProductFormProps) {
           />
         </Col>
         <h4 style={{ color: "#007a00" }}>
-          Total: {GeneralUtils.getAmountLabel(cartProduct.quantity * product.price)}
+          Total:{" "}
+          {GeneralUtils.getAmountLabel(cartProduct.quantity * product.price)}
         </h4>
-        <h6 style={{ color: "#b9b9b9" }}>
-          Preço: {price}
-        </h6>
+        <h6 style={{ color: "#b9b9b9" }}>Preço: {price}</h6>
       </Form>
     </FormModal>
   );

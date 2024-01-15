@@ -68,12 +68,14 @@ export class GeneralUtils {
   }
 
   static getSubdomain(url: string): string | null {
-    let semProtocolo = url.replace(/^(https?:|)\/\//, '');
+    const notProtocol = url.replace(/^(https?:|)\/\//, '');
+    const parts = notProtocol.split('.');
 
-    let partes = semProtocolo.split('.');
-    let subdominio = partes.length > 1 ? partes[0] : '';
+    if (parts.length >= 2) {
+        return parts[0];
+    }
 
-    return subdominio;
+    return null;
   }
 
   static getSulfixLabel(val: any, separator: string = "/"): string {

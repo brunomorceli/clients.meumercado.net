@@ -6,10 +6,12 @@ import CustomersRoutes from "src/modules/customers/pages/Routes";
 import { GeneralUtils } from "src/modules/shared";
 
 export default function RoutesComponent() {
-  const subdomain = GeneralUtils.getSubdomain(window.location.href);
   const location = useLocation();
+  const subdomain = GeneralUtils.getSubdomain(
+    (window.location.href || "").replace(window.location.hostname || "", "")
+  );
 
-  console.log('------------- subdomain:', subdomain)
+  console.log("------------- subdomain:", subdomain);
 
   if (!subdomain) {
     if (location.pathname.indexOf("/admins") === 0) {

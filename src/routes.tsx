@@ -9,6 +9,8 @@ export default function RoutesComponent() {
   const subdomain = GeneralUtils.getSubdomain(window.location.href);
   const location = useLocation();
 
+  console.log('------------- subdomain:', subdomain)
+
   if (!subdomain) {
     if (location.pathname.indexOf("/admins") === 0) {
       return <AdminsRoutes />;

@@ -68,22 +68,12 @@ export class GeneralUtils {
   }
 
   static getSubdomain(url: string): string | null {
-    const clientUrl = process.env.REACT_APP_CLIENT_URL as string;
-    if (url.indexOf(clientUrl) === 0) {
-      return null;
-    }
+    let semProtocolo = url.replace(/^(https?:|)\/\//, '');
 
-    let domain = url;
-    if (url.includes("://")) {
-      domain = url.split("://")[1];
-    }
+    let partes = semProtocolo.split('.');
+    let subdominio = partes.length > 1 ? partes[0] : '';
 
-    if (domain.indexOf("www")) {
-      domain = domain.replace("wwww", "");
-    }
-
-    const tenantId = domain.split(".")[0];
-    return tenantId;
+    return subdominio;
   }
 
   static getSulfixLabel(val: any, separator: string = "/"): string {

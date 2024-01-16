@@ -68,7 +68,8 @@ export class GeneralUtils {
   }
 
   static getSubdomain(url: string): string | null {
-    const notProtocol = url.replace(/^(https?:|)\/\//, '');
+    const notProtocol = url.replace('https://', '').replace('http://', '');
+    console.log('aaaaaaaaaa --', notProtocol);
     const parts = notProtocol.split('.');
 
     if (parts.length >= 2) {

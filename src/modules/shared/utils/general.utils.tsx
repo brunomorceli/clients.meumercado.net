@@ -67,16 +67,14 @@ export class GeneralUtils {
     ];
   }
 
-  static getSubdomain(url: string): string | null {
-    const notProtocol = url.replace('https://', '').replace('http://', '');
-    console.log('aaaaaaaaaa --', notProtocol);
-    const parts = notProtocol.split('.');
+  static getSubdomain(hostname: string): string | null {
+    const result = hostname
+    .replace("https://", "")
+    .replace("http://", "")
+    .replace(process.env.REACT_APP_BASE_URL || "", "")
+    .replace('.', '');
 
-    if (parts.length >= 2) {
-        return parts[0];
-    }
-
-    return null;
+    return result.length !== 0 ? result : null;
   }
 
   static getSulfixLabel(val: any, separator: string = "/"): string {
@@ -108,24 +106,29 @@ export class GeneralUtils {
 
   static maskPhonenumber(phoneNumber: string): string {
     if (!phoneNumber || phoneNumber.length < 11) {
-      return phoneNumber || '';
+      return phoneNumber || "";
     }
 
-    return phoneNumber.toString().replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, "($1) $2 $3-$4");
+    return phoneNumber
+      .toString()
+      .replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, "($1) $2 $3-$4");
   }
 
   static maskCpfCnpj(cpfCnpj: string): string {
-    let result = cpfCnpj.replace(/\D/g, '');
+    let result = cpfCnpj.replace(/\D/g, "");
     if (result.length === 11) {
-      return cpfCnpj.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+      return cpfCnpj.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
     }
 
-    return cpfCnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
+    return cpfCnpj.replace(
+      /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
+      "$1.$2.$3/$4-$5"
+    );
   }
 
   static getFullAddress(user: IUser): string {
-    const number = user.addressNumber || 'S/N';
-    const neighborhood = `Bairro ${user.neighborhood || 'N/I'}`;
+    const number = user.addressNumber || "S/N";
+    const neighborhood = `Bairro ${user.neighborhood || "N/I"}`;
 
     return `${user.address}, ${number} - ${neighborhood} - ${user.city}, ${user.state} - CEP: ${user.cep}`;
   }

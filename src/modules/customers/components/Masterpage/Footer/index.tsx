@@ -25,7 +25,7 @@ export function Footer() {
       </p>
       <Button
         appearance="subtle"
-        onClick={() => window.open("https://meumercado.com.br", "_blank")}
+        onClick={() => window.open("https://meumercado.net", "_blank")}
       >
         created by Meumercado
       </Button>

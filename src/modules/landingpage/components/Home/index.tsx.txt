@@ -1,0 +1,165 @@
+import { useNavigate } from "react-router";
+import { Affix, Button, Col, Container, Divider } from "rsuite";
+import { HomePageHandler } from "src/modules/admins/pages/HomePage";
+import { Jumbotron } from "./Jumbotron";
+import Menu from "./Menu";
+import { Jumbotron2 } from "./Jumbotron2";
+
+export default function HomeLandingpage() {
+  const navigate = useNavigate();
+
+  return (
+    <Container>
+      <Menu />
+      <Col xs={24} sm={24} md={24} lg={18} xl={18} xxl={12}>
+        <Jumbotron2 />
+        <Jumbotron />
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
+          Praesent interdum orci quis justo condimentum elementum. <br />
+          Aenean cursus cursus lectus eget pellentesque. <br />
+          Aenean efficitur libero vel libero vehicula, vel tristique sapien
+          tincidunt. <br />
+          Nam congue condimentum est eu scelerisque. Quisque aliquam mattis
+          purus. <br />
+          Sed sagittis tortor ligula, vestibulum ultrices orci vehicula eget.{" "}
+          <br />
+          Phasellus tempus massa nec sapien mattis porta. <br />
+          Nam tellus massa, pellentesque vel eros nec, tincidunt egestas nisi.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
+          Praesent interdum orci quis justo condimentum elementum. <br />
+          Aenean cursus cursus lectus eget pellentesque. <br />
+          Aenean efficitur libero vel libero vehicula, vel tristique sapien
+          tincidunt. <br />
+          Nam congue condimentum est eu scelerisque. Quisque aliquam mattis
+          purus. <br />
+          Sed sagittis tortor ligula, vestibulum ultrices orci vehicula eget.{" "}
+          <br />
+          Phasellus tempus massa nec sapien mattis porta. <br />
+          Nam tellus massa, pellentesque vel eros nec, tincidunt egestas nisi.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
+          Praesent interdum orci quis justo condimentum elementum. <br />
+          Aenean cursus cursus lectus eget pellentesque. <br />
+          Aenean efficitur libero vel libero vehicula, vel tristique sapien
+          tincidunt. <br />
+          Nam congue condimentum est eu scelerisque. Quisque aliquam mattis
+          purus. <br />
+          Sed sagittis tortor ligula, vestibulum ultrices orci vehicula eget.{" "}
+          <br />
+          Phasellus tempus massa nec sapien mattis porta. <br />
+          Nam tellus massa, pellentesque vel eros nec, tincidunt egestas nisi.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
+          Praesent interdum orci quis justo condimentum elementum. <br />
+          Aenean cursus cursus lectus eget pellentesque. <br />
+          Aenean efficitur libero vel libero vehicula, vel tristique sapien
+          tincidunt. <br />
+          Nam congue condimentum est eu scelerisque. Quisque aliquam mattis
+          purus. <br />
+          Sed sagittis tortor ligula, vestibulum ultrices orci vehicula eget.{" "}
+          <br />
+          Phasellus tempus massa nec sapien mattis porta. <br />
+          Nam tellus massa, pellentesque vel eros nec, tincidunt egestas nisi.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
+          Praesent interdum orci quis justo condimentum elementum. <br />
+          Aenean cursus cursus lectus eget pellentesque. <br />
+          Aenean efficitur libero vel libero vehicula, vel tristique sapien
+          tincidunt. <br />
+          Nam congue condimentum est eu scelerisque. Quisque aliquam mattis
+          purus. <br />
+          Sed sagittis tortor ligula, vestibulum ultrices orci vehicula eget.{" "}
+          <br />
+          Phasellus tempus massa nec sapien mattis porta. <br />
+          Nam tellus massa, pellentesque vel eros nec, tincidunt egestas nisi.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
+          Praesent interdum orci quis justo condimentum elementum. <br />
+          Aenean cursus cursus lectus eget pellentesque. <br />
+          Aenean efficitur libero vel libero vehicula, vel tristique sapien
+          tincidunt. <br />
+          Nam congue condimentum est eu scelerisque. Quisque aliquam mattis
+          purus. <br />
+          Sed sagittis tortor ligula, vestibulum ultrices orci vehicula eget.{" "}
+          <br />
+          Phasellus tempus massa nec sapien mattis porta. <br />
+          Nam tellus massa, pellentesque vel eros nec, tincidunt egestas nisi.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
+          Praesent interdum orci quis justo condimentum elementum. <br />
+          Aenean cursus cursus lectus eget pellentesque. <br />
+          Aenean efficitur libero vel libero vehicula, vel tristique sapien
+          tincidunt. <br />
+          Nam congue condimentum est eu scelerisque. Quisque aliquam mattis
+          purus. <br />
+          Sed sagittis tortor ligula, vestibulum ultrices orci vehicula eget.{" "}
+          <br />
+          Phasellus tempus massa nec sapien mattis porta. <br />
+          Nam tellus massa, pellentesque vel eros nec, tincidunt egestas nisi.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
+          Praesent interdum orci quis justo condimentum elementum. <br />
+          Aenean cursus cursus lectus eget pellentesque. <br />
+          Aenean efficitur libero vel libero vehicula, vel tristique sapien
+          tincidunt. <br />
+          Nam congue condimentum est eu scelerisque. Quisque aliquam mattis
+          purus. <br />
+          Sed sagittis tortor ligula, vestibulum ultrices orci vehicula eget.{" "}
+          <br />
+          Phasellus tempus massa nec sapien mattis porta. <br />
+          Nam tellus massa, pellentesque vel eros nec, tincidunt egestas nisi.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
+          Praesent interdum orci quis justo condimentum elementum. <br />
+          Aenean cursus cursus lectus eget pellentesque. <br />
+          Aenean efficitur libero vel libero vehicula, vel tristique sapien
+          tincidunt. <br />
+          Nam congue condimentum est eu scelerisque. Quisque aliquam mattis
+          purus. <br />
+          Sed sagittis tortor ligula, vestibulum ultrices orci vehicula eget.{" "}
+          <br />
+          Phasellus tempus massa nec sapien mattis porta. <br />
+          Nam tellus massa, pellentesque vel eros nec, tincidunt egestas nisi.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
+          Praesent interdum orci quis justo condimentum elementum. <br />
+          Aenean cursus cursus lectus eget pellentesque. <br />
+          Aenean efficitur libero vel libero vehicula, vel tristique sapien
+          tincidunt. <br />
+          Nam congue condimentum est eu scelerisque. Quisque aliquam mattis
+          purus. <br />
+          Sed sagittis tortor ligula, vestibulum ultrices orci vehicula eget.{" "}
+          <br />
+          Phasellus tempus massa nec sapien mattis porta. <br />
+          Nam tellus massa, pellentesque vel eros nec, tincidunt egestas nisi.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
+          Praesent interdum orci quis justo condimentum elementum. <br />
+          Aenean cursus cursus lectus eget pellentesque. <br />
+          Aenean efficitur libero vel libero vehicula, vel tristique sapien
+          tincidunt. <br />
+          Nam congue condimentum est eu scelerisque. Quisque aliquam mattis
+          purus. <br />
+          Sed sagittis tortor ligula, vestibulum ultrices orci vehicula eget.{" "}
+          <br />
+          Phasellus tempus massa nec sapien mattis porta. <br />
+          Nam tellus massa, pellentesque vel eros nec, tincidunt egestas nisi.
+        </p>
+        <Divider />
+        <h5>Landingpage</h5>
+      </Col>
+    </Container>
+  );
+}

@@ -1,1 +1,1 @@
-export * from './Landingpage';
+export * from '../components/Home';

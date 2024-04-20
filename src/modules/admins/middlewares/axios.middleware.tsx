@@ -1,10 +1,5 @@
-import { useToasterStore } from "src/modules/shared/stores";
-import { useAuthStore } from "../stores";
+import { useRequestStore } from "../stores";
 import axios from "axios";
-import { useNavigate } from 'react-router';
-import { useStore } from "zustand";
-import { CredentialsSigninHandler } from "../pages/Credentials/CredentialsSigninPage";
-import { HomePageHandler } from "../pages/HomePage";
 
 function getFromLocalStorage(key: string): any {
   const data = window.localStorage.getItem(key) || "";
@@ -24,30 +19,40 @@ axios.interceptors.request.use(
 
     return config;
   },
-  (error) => {
-    return new Promise((resolve, reject) => {
-      if (!error || !error.response) {
-        return reject({
-          response: {
-            data: { message: "Erro desconhecido" },
-          },
-        });
-      }
+  (error) => Promise.reject(error)
+);
 
-      const navigate = useNavigate();
-      const authStore = useStore(useAuthStore);
-      const toasterStore = useStore(useToasterStore);
-      const status = error.response.status;
-      if (status === 401) {
+axios.interceptors.response.use(
+  (res) => res,
+  (error) => {
+    if (!error || !error.response) {
+      return Promise.reject({
+        response: {
+          data: { message: "Erro desconhecido" },
+        },
+      });
+    }
+
+    const status = error.response.status;
+
+    useRequestStore.getState().setError(status);
+
+    /*if (status === 401) {
         authStore.signout();
         navigate(CredentialsSigninHandler.navigate());
       }
 
+      console.log("status:", status);
+      if (status === 402) {
+        toasterStore.warning("Seu plano chegou no limite.");
+        navigate(PlansPageHandler.navigate());
+      }
+
       if (status === 403) {
         toasterStore.warning("Você não tem permissão para acessar essa rota.");
-        navigate(HomePageHandler.navigate())}
+        navigate(HomePageHandler.navigate());
+      }*/
 
-      reject(error);
-    });
+    return Promise.reject(error);
   }
 );

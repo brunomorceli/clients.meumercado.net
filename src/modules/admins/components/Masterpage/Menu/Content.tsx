@@ -16,6 +16,8 @@ import { CompaniesHandler } from "src/modules/admins/pages/Companies/CompaniesPa
 import { ThemePageHandler } from "src/modules/admins/pages/ThemePage";
 import { PlansPageHandler } from "src/modules/admins/pages/Plans/PlansPage";
 import { MenuButton } from "./styles";
+import { useStore } from "zustand";
+import { useAuthStore } from "src/modules/admins/stores";
 
 interface MenuContentProps {
   onGo: (path: string) => void;
@@ -23,34 +25,47 @@ interface MenuContentProps {
 }
 
 export function MenuContent(props: MenuContentProps) {
+  const { paymentRerquired } = useStore(useAuthStore);
   return (
     <>
-      <MenuButton
-        size="lg"
-        appearance="subtle"
-        block
-        onClick={() => props.onGo(OrdersHandler.navigate())}
-      >
-        <FontAwesomeIcon icon={faCartShopping} /> Meus pedidos
-      </MenuButton>
+      {!paymentRerquired && (
+        <>
+          <MenuButton
+            size="lg"
+            appearance="subtle"
+            block
+            onClick={() => props.onGo(OrdersHandler.navigate())}
+          >
+            <FontAwesomeIcon icon={faCartShopping} /> Meus pedidos
+          </MenuButton>
+          <MenuButton
+            size="lg"
+            appearance="subtle"
+            block
+            onClick={() => props.onGo(ProductsHandler.navigate())}
+          >
+            <FontAwesomeIcon icon={faBagShopping} /> Meus produtos
+          </MenuButton>
 
-      <MenuButton
-        size="lg"
-        appearance="subtle"
-        block
-        onClick={() => props.onGo(ProductsHandler.navigate())}
-      >
-        <FontAwesomeIcon icon={faBagShopping} /> Meus produtos
-      </MenuButton>
+          <MenuButton
+            size="lg"
+            appearance="subtle"
+            block
+            onClick={() => props.onGo(CustomersHandler.navigate())}
+          >
+            <FontAwesomeIcon icon={faUsers} /> Meus clientes
+          </MenuButton>
 
-      <MenuButton
-        size="lg"
-        appearance="subtle"
-        block
-        onClick={() => props.onGo(CustomersHandler.navigate())}
-      >
-        <FontAwesomeIcon icon={faUsers} /> Meus clientes
-      </MenuButton>
+          <MenuButton
+            size="lg"
+            appearance="subtle"
+            block
+            onClick={() => props.onGo(ThemePageHandler.navigate())}
+          >
+            <FontAwesomeIcon icon={faPaintbrush} /> Alterar tema
+          </MenuButton>
+        </>
+      )}
 
       <MenuButton
         size="lg"
@@ -59,15 +74,6 @@ export function MenuContent(props: MenuContentProps) {
         onClick={() => props.onGo(CompaniesHandler.navigate())}
       >
         <FontAwesomeIcon icon={faStore} /> Dados da empresa
-      </MenuButton>
-
-      <MenuButton
-        size="lg"
-        appearance="subtle"
-        block
-        onClick={() => props.onGo(ThemePageHandler.navigate())}
-      >
-        <FontAwesomeIcon icon={faPaintbrush} /> Alterar tema
       </MenuButton>
 
       <MenuButton

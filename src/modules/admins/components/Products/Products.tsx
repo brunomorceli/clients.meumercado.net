@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from "react";
 import { IProduct, IProductSearch } from "src/modules/shared";
 import { useStore } from "zustand";
@@ -22,24 +23,22 @@ export function Products() {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [processing, setProcessing] = useState<boolean>(false);
   const [searching, setSearching] = useState<boolean>(false);
-  const searchProducts = useCallback(
-    (search: IProductSearch = {}) => {
-      setSearching(true);
-
-      productStore
-        .find(search)
-        .then((result) => {
-          setProducts(result.data);
-        })
-        .catch((e) => toasterStore.error(e))
-        .finally(() => setSearching(false));
-    },
-    [productStore, toasterStore]
-  );
 
   useEffect(() => {
     searchProducts();
-  }, [searchProducts]);
+  }, []);
+
+  function searchProducts(search: IProductSearch = {}) {
+    setSearching(true);
+
+    productStore
+      .find(search)
+      .then((result) => {
+        setProducts(result.data);
+      })
+      .catch((e) => toasterStore.error(e))
+      .finally(() => setSearching(false));
+  }
 
   function handleSearch(search: IProductSearch = {}): void {
     searchProducts(search);
@@ -63,7 +62,10 @@ export function Products() {
 
   return (
     <>
-      <TitleBase title="Meus produtos" onBack={() => navigate(HomePageHandler.navigate())} />
+      <TitleBase
+        title="Meus produtos"
+        onBack={() => navigate(HomePageHandler.navigate())}
+      />
       <PanelBase
         title="Produtos"
         hideTitleDivider

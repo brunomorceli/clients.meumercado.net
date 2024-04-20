@@ -17,11 +17,13 @@ interface useAuthStoreProps {
   tenantId: string;
   companyName: string;
   logo?: string | null | undefined;
+  paymentRerquired: boolean;
   signin: (email: string) => Promise<ISigninResponse | null>;
   signup: (data: ISignup) => Promise<any>;
   confirm: (data: IConfirm) => Promise<void>;
   updateCompany: (company: ICompany) => void;
   signout: () => void;
+  setPaymentRequired: (status: boolean) => void;
 }
 
 export const useAuthStore = create(
@@ -35,6 +37,7 @@ export const useAuthStore = create(
       tenantId: "",
       companyName: "",
       logo: null,
+      paymentRerquired: false,
 
       signin: (email: string) => AuthService.signin(email),
 
@@ -74,6 +77,13 @@ export const useAuthStore = create(
           ...get(),
           authenticated: false,
           ...IAuthenticationHandler.empty(),
+        });
+      },
+
+      setPaymentRequired: (status: boolean) => {
+        set({
+          ...get(),
+          paymentRerquired: status,
         });
       },
     }),

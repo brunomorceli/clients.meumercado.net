@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useNavigate } from "react-router";
 import { useStore } from "zustand";
 import axios from "axios";
 
@@ -17,7 +17,8 @@ function getFromLocalStorage(key: string): any {
 
 axios.interceptors.request.use(
   (config: any) => {
-    const auth = (getFromLocalStorage("customers-auth-store") || {}).state || {};
+    const auth =
+      (getFromLocalStorage("customers-auth-store") || {}).state || {};
     if (auth && auth.token && auth.token.length !== 0) {
       config.headers["Authorization"] = `Bearer ${auth.token}`;
     }

@@ -18,3 +18,4 @@ export * from './check-stock.interface';
 export * from './check-stock-result.interface';
 export * from './theme.interface';
 export * from './product-base.interface';
+export * from './credit-card.interface';

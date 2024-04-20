@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faBell, faHouse } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { DrawerNotifications } from "src/modules/shared/components";
-import { useNavigate } from 'react-router';
+import { useNavigate } from "react-router";
 import { ENotificationTypeHandler } from "src/modules/shared/enums";
 import { INotification } from "src/modules/shared/interfaces";
 import { CustomHeader, HomeButtom } from "./styles";
@@ -57,23 +57,28 @@ export function Appbar(props: AppbarProps) {
           <HomeButtom
             appearance="subtle"
             onClick={props.onHome}
-            startIcon={<FontAwesomeIcon icon={faHouse} style={{ fontSize: 20 }} />}
+            startIcon={
+              <FontAwesomeIcon icon={faHouse} style={{ fontSize: 20 }} />
+            }
           >
+            ADMIN -
             {isAuth
               ? authStore.companyName.toUpperCase()
-              : process.env.REACT_APP_APP_NAME} 
+              : process.env.REACT_APP_APP_NAME}
           </HomeButtom>
           <Stack.Item flex={1}>
-            <Stack justifyContent="flex-end">
-              <Button
-                style={btStyle}
-                appearance="subtle"
-                onClick={() => setOpen(true)}
-              >
-                <FontAwesomeIcon icon={faBell} style={{ fontSize: 20 }} />
-                {unread.length !== 0 && <Badge content={unread.length} />}
-              </Button>
-            </Stack>
+            {!authStore.paymentRerquired && (
+              <Stack justifyContent="flex-end">
+                <Button
+                  style={btStyle}
+                  appearance="subtle"
+                  onClick={() => setOpen(true)}
+                >
+                  <FontAwesomeIcon icon={faBell} style={{ fontSize: 20 }} />
+                  {unread.length !== 0 && <Badge content={unread.length} />}
+                </Button>
+              </Stack>
+            )}
           </Stack.Item>
         </FlexboxGrid>
       </CustomHeader>

@@ -101,7 +101,7 @@ export function OrderCheckout() {
 
     updateStock(company.id!, products)
       .then((cartProducts) => {
-        if (cartProducts.some((cp) => cp.quantity > cp.product.quantity)) {
+        if (cartProducts.some((cp) => !cp.product.unlimited && cp.quantity > cp.product.quantity)) {
           toasterStore.error(
             "Alguns produtos se encontram fora de estoque, por favor, atualize os valores antes de prosseguir."
           );

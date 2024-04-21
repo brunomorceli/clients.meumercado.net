@@ -1,8 +1,8 @@
-import { ECompanyPlanType } from "../enums";
+import { EPlan } from "../enums";
 
-export interface ICompanyPlan {
+export interface ISubscription {
   id?: string;
-  type: ECompanyPlanType;
+  plan: EPlan;
   isActive: boolean;
   isCancelled: boolean;
   createdAt: string;

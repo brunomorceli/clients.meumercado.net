@@ -4,7 +4,7 @@ import {
   IAuthenticationHandler,
   ISigninResponse,
 } from "../interfaces";
-import { ICompany, ICompanyPlan } from "src/modules/shared/interfaces";
+import { ICompany, ISubscription } from "src/modules/shared/interfaces";
 import { AuthService } from "src/modules/admins/services";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -17,14 +17,14 @@ interface useAuthStoreProps {
   tenantId: string;
   companyName: string;
   logo?: string | null | undefined;
-  plan?: ICompanyPlan | null | undefined;
+  subscription?: ISubscription | null | undefined;
   signin: (email: string) => Promise<ISigninResponse | null>;
   signup: (data: ISignup) => Promise<any>;
   confirm: (data: IConfirm) => Promise<void>;
   updateCompany: (company: ICompany) => void;
   signout: () => void;
-  getLastPlan: () => Promise<ICompanyPlan>;
-  updatePlan: () => void;
+  getSubscription: () => Promise<ISubscription>;
+  refreshSubscription: () => void;
 }
 
 export const useAuthStore = create(
@@ -38,7 +38,7 @@ export const useAuthStore = create(
       tenantId: "",
       companyName: "",
       logo: null,
-      plan: null,
+      subscription: null,
 
       signin: (email: string) => AuthService.signin(email),
 
@@ -57,7 +57,7 @@ export const useAuthStore = create(
                 tenantId: auth.tenantId,
                 companyName: auth.companyName,
                 logo: auth.logo,
-                plan: null,
+                subscription: null,
               });
 
               resolve();
@@ -82,12 +82,12 @@ export const useAuthStore = create(
         });
       },
 
-      getLastPlan: () => AuthService.getLastPlan(),
+      getSubscription: () => AuthService.getSubscription(),
 
-      updatePlan: async () => {
-        const plan = await AuthService.getLastPlan();
-        if (Boolean(plan)) {
-          set({ ...get(), plan });
+      refreshSubscription: async () => {
+        const subscription = await AuthService.getSubscription();
+        if (Boolean(subscription)) {
+          set({ ...get(), subscription: subscription });
         }
 
         return Promise.resolve();

@@ -1,4 +1,4 @@
-export enum ECompanyPlanType {
+export enum EPlan {
   TRIAL = "TRIAL",
   BASIC = "BASIC",
   INTERMEDIATE = "INTERMEDIATE",

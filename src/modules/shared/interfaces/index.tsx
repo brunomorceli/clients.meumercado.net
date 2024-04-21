@@ -7,7 +7,7 @@ export * from "./product-search-result.interface";
 export * from "./product-base-search.interface";
 export * from "./product-base-search-result.interface";
 export * from "./company.interface";
-export * from "./company-plan.interface";
+export * from "./subscription.interface";
 export * from "./company-search.interface";
 export * from "./company-search-result.interface";
 export * from "./select-option.iterface";

@@ -42,8 +42,11 @@ export default function AdminsRoutes() {
   const { authenticated } = authStore;
 
   useEffect(() => {
-    authStore.updatePlan();
-    const intervalHandler = setInterval(() => authStore.updatePlan(), 10000);
+    authStore.refreshSubscription();
+    const intervalHandler = setInterval(
+      () => authStore.refreshSubscription(),
+      10000
+    );
 
     return () => {
       clearInterval(intervalHandler);
@@ -51,7 +54,7 @@ export default function AdminsRoutes() {
   }, []);
 
   useEffect(() => {
-    requestStore.errorStatus === 402 && authStore.updatePlan();
+    requestStore.errorStatus === 402 && authStore.refreshSubscription();
   }, [requestStore]);
 
   if (!authenticated) {
@@ -77,7 +80,7 @@ export default function AdminsRoutes() {
     );
   }
 
-  if (!authStore.plan?.isActive) {
+  if (!authStore.subscription?.isActive) {
     return (
       <AdminMasterpage>
         <Routes>

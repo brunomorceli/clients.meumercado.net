@@ -1,4 +1,4 @@
-import { ICompanyPlan } from "src/modules/shared";
+import { ISubscription } from "src/modules/shared";
 
 export interface IAuthentication {
   token: string;
@@ -8,7 +8,7 @@ export interface IAuthentication {
   tenantId: string;
   companyName: string;
   logo?: string | null | undefined;
-  plan?: ICompanyPlan | null | undefined;
+  subscription?: ISubscription | null | undefined;
 }
 
 export class IAuthenticationHandler {
@@ -21,7 +21,6 @@ export class IAuthenticationHandler {
       tenantId: "",
       companyName: "",
       logo: null,
-      plan: null,
     };
   }
 }

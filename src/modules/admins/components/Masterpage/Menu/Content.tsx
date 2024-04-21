@@ -28,7 +28,7 @@ export function MenuContent(props: MenuContentProps) {
   const authStore = useStore(useAuthStore);
   return (
     <>
-      {authStore.plan?.isActive && (
+      {authStore.subscription?.isActive && (
         <>
           <MenuButton
             size="lg"

@@ -11,7 +11,7 @@ export function NotificationSound() {
 
   useEffect(() => {
     const intervalHandler = setInterval(() => {
-      authStore.plan?.isActive && userStore.update();
+      authStore.subscription?.isActive && userStore.update();
     }, 15000);
 
     return () => {

@@ -5,7 +5,7 @@ import {
 } from "src/modules/admins/interfaces";
 import { ISigninResponse } from "src/modules/admins/interfaces/signin-response.interface";
 import axios from "axios";
-import { ICompanyPlan } from "src/modules/shared";
+import { ISubscription } from "src/modules/shared";
 
 export class AuthService {
   private static baseURL: string =
@@ -41,9 +41,9 @@ export class AuthService {
     });
   }
 
-  static getLastPlan(): Promise<ICompanyPlan> {
+  static getSubscription(): Promise<ISubscription> {
     return new Promise((resolve, reject) => {
-      const url = `${this.baseURL}/admins/companies/last-plan`;
+      const url = `${this.baseURL}/admins/auth/subscription`;
       axios
         .get(url)
         .then((response) => resolve(response.data))

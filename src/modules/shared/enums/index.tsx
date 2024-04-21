@@ -1,5 +1,5 @@
 export * from "./company-status-type.enum";
-export * from "./company-plan-type.enum";
+export * from "./plan.enum";
 export * from "./product-type.enum";
 export * from "./role-type.enum";
 export * from "./brazilian-state.enum";

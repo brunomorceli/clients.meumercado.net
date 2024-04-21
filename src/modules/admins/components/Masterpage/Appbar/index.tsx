@@ -68,7 +68,7 @@ export function Appbar(props: AppbarProps) {
               : process.env.REACT_APP_APP_NAME}
           </HomeButtom>
           <Stack.Item flex={1}>
-            {authStore.plan?.isActive && (
+            {authStore.subscription?.isActive && (
               <Stack justifyContent="flex-end">
                 <Button
                   style={btStyle}

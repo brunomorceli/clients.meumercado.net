@@ -25,10 +25,10 @@ interface MenuContentProps {
 }
 
 export function MenuContent(props: MenuContentProps) {
-  const { paymentRerquired } = useStore(useAuthStore);
+  const authStore = useStore(useAuthStore);
   return (
     <>
-      {!paymentRerquired && (
+      {authStore.plan?.isActive && (
         <>
           <MenuButton
             size="lg"

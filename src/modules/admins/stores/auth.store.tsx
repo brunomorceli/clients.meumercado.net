@@ -4,7 +4,7 @@ import {
   IAuthenticationHandler,
   ISigninResponse,
 } from "../interfaces";
-import { ICompany } from "src/modules/shared/interfaces";
+import { ICompany, ICompanyPlan } from "src/modules/shared/interfaces";
 import { AuthService } from "src/modules/admins/services";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -17,13 +17,14 @@ interface useAuthStoreProps {
   tenantId: string;
   companyName: string;
   logo?: string | null | undefined;
-  paymentRerquired: boolean;
+  plan?: ICompanyPlan | null | undefined;
   signin: (email: string) => Promise<ISigninResponse | null>;
   signup: (data: ISignup) => Promise<any>;
   confirm: (data: IConfirm) => Promise<void>;
   updateCompany: (company: ICompany) => void;
   signout: () => void;
-  setPaymentRequired: (status: boolean) => void;
+  getLastPlan: () => Promise<ICompanyPlan>;
+  updatePlan: () => void;
 }
 
 export const useAuthStore = create(
@@ -37,7 +38,7 @@ export const useAuthStore = create(
       tenantId: "",
       companyName: "",
       logo: null,
-      paymentRerquired: false,
+      plan: null,
 
       signin: (email: string) => AuthService.signin(email),
 
@@ -56,6 +57,7 @@ export const useAuthStore = create(
                 tenantId: auth.tenantId,
                 companyName: auth.companyName,
                 logo: auth.logo,
+                plan: null,
               });
 
               resolve();
@@ -80,11 +82,15 @@ export const useAuthStore = create(
         });
       },
 
-      setPaymentRequired: (status: boolean) => {
-        set({
-          ...get(),
-          paymentRerquired: status,
-        });
+      getLastPlan: () => AuthService.getLastPlan(),
+
+      updatePlan: async () => {
+        const plan = await AuthService.getLastPlan();
+        if (Boolean(plan)) {
+          set({ ...get(), plan });
+        }
+
+        return Promise.resolve();
       },
     }),
 

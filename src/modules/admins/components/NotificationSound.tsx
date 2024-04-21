@@ -1,15 +1,17 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useStore } from "zustand";
 import { useEffect, useRef, useState } from "react";
-import { useUserStore } from "src/modules/admins/stores";
+import { useAuthStore, useUserStore } from "src/modules/admins/stores";
 
 export function NotificationSound() {
+  const authStore = useStore(useAuthStore);
   const userStore = useStore(useUserStore);
   const [last, setLast] = useState<number>(userStore.last);
   const audioRef = useRef<any>();
 
   useEffect(() => {
     const intervalHandler = setInterval(() => {
-      userStore.update();
+      authStore.plan?.isActive && userStore.update();
     }, 15000);
 
     return () => {

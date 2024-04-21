@@ -1,10 +1,5 @@
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Navigate, Route, Routes } from "react-router-dom";
 import { AdminMasterpage } from "src/modules/admins/components";
 import { useStore } from "zustand";
 import { useAuthStore, useRequestStore } from "../stores";
@@ -42,16 +37,21 @@ import PlansPage, { PlansPageHandler } from "./Plans/PlansPage";
 import { useEffect } from "react";
 
 export default function AdminsRoutes() {
-  const navigate = useNavigate();
-  const location = useLocation();
   const requestStore = useStore(useRequestStore);
   const authStore = useStore(useAuthStore);
-  const { authenticated, paymentRerquired } = authStore;
+  const { authenticated } = authStore;
 
   useEffect(() => {
-    if (requestStore.errorStatus === 402) {
-      authStore.setPaymentRequired(true);
-    }
+    authStore.updatePlan();
+    const intervalHandler = setInterval(() => authStore.updatePlan(), 10000);
+
+    return () => {
+      clearInterval(intervalHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    requestStore.errorStatus === 402 && authStore.updatePlan();
   }, [requestStore]);
 
   if (!authenticated) {
@@ -77,7 +77,7 @@ export default function AdminsRoutes() {
     );
   }
 
-  if (authStore.paymentRerquired) {
+  if (!authStore.plan?.isActive) {
     return (
       <AdminMasterpage>
         <Routes>

@@ -1,9 +1,15 @@
-import { ISignup, IConfirm, IAuthentication } from "src/modules/admins/interfaces";
+import {
+  ISignup,
+  IConfirm,
+  IAuthentication,
+} from "src/modules/admins/interfaces";
 import { ISigninResponse } from "src/modules/admins/interfaces/signin-response.interface";
 import axios from "axios";
+import { ICompanyPlan } from "src/modules/shared";
 
 export class AuthService {
-  private static baseURL: string = process.env.REACT_APP_API_URL || "http://localhost:3001";
+  private static baseURL: string =
+    process.env.REACT_APP_API_URL || "http://localhost:3001";
 
   static signin(email: string): Promise<ISigninResponse | null> {
     return new Promise((resolve, reject) => {
@@ -11,7 +17,7 @@ export class AuthService {
       axios
         .post(url, { email })
         .then((res) => resolve(res.status === 204 ? null : res.data))
-        .catch(() => reject('Erro ao tentar autenticar usuário.'));
+        .catch(() => reject("Erro ao tentar autenticar usuário."));
     });
   }
 
@@ -21,17 +27,27 @@ export class AuthService {
       axios
         .post(url, data)
         .then((res) => resolve(res.data))
-        .catch(() => reject('Erro ao tentar criar usuário.'));
+        .catch(() => reject("Erro ao tentar criar usuário."));
     });
   }
-  
+
   static confirm(data: IConfirm): Promise<IAuthentication> {
     return new Promise((resolve, reject) => {
       const url = `${this.baseURL}/admins/auth/confirm`;
       axios
         .post(url, data)
         .then((response) => resolve(response.data))
-        .catch(() => reject('Erro ao tentar confirmar autenticação.'));
+        .catch(() => reject("Erro ao tentar confirmar autenticação."));
+    });
+  }
+
+  static getLastPlan(): Promise<ICompanyPlan> {
+    return new Promise((resolve, reject) => {
+      const url = `${this.baseURL}/admins/companies/last-plan`;
+      axios
+        .get(url)
+        .then((response) => resolve(response.data))
+        .catch(() => reject("Erro ao tentar obter o plano."));
     });
   }
 }

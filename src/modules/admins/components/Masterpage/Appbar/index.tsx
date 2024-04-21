@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Badge, Button, FlexboxGrid, Stack } from "rsuite";
 import { useStore } from "zustand";
 import { useAuthStore, useUserStore } from "src/modules/admins/stores";
@@ -67,7 +68,7 @@ export function Appbar(props: AppbarProps) {
               : process.env.REACT_APP_APP_NAME}
           </HomeButtom>
           <Stack.Item flex={1}>
-            {!authStore.paymentRerquired && (
+            {authStore.plan?.isActive && (
               <Stack justifyContent="flex-end">
                 <Button
                   style={btStyle}

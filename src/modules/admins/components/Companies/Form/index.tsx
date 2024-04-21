@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { ICompany, ICompanyHandler } from "src/modules/shared/interfaces";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AddressForm,
   AddressFormSchema,
@@ -42,19 +43,17 @@ export function CompanyForm(props: CompanyFormProps) {
   const [company, setCompany] = useState<ICompany>(ICompanyHandler.empty());
   const formRef = useRef<any>();
   const [formError, setFormError] = useState<any>({});
-  const loadCompany = useCallback(
-    (companyId: string) => {
-      companyStore
-        .get(companyId)
-        .then((c) => setCompany(c))
-        .catch((e) => toasterStore.error(e));
-    },
-    [toasterStore, companyStore]
-  );
 
   useEffect(() => {
     companyId && loadCompany(companyId);
   }, []);
+
+  function loadCompany(companyId: string) {
+    companyStore
+      .get(companyId)
+      .then((c) => setCompany(c))
+      .catch((e) => toasterStore.error(e));
+  }
 
   function handleChangeCompanyKey(key: string, val: any): void {
     setCompany({ ...company, [key]: val });
@@ -102,7 +101,7 @@ export function CompanyForm(props: CompanyFormProps) {
           <Form.ControlLabel>Subdomínio</Form.ControlLabel>
         </Row>
         <Row style={{ marginLeft: 3, marginBottom: 20 }}>
-          <a href={subdomain} target="_blank">
+          <a rel="noopener noreferrer" href={subdomain} target="_blank">
             <h6>
               <FontAwesomeIcon icon={faLink} /> {subdomain}
             </h6>

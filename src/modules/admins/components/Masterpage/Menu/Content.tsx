@@ -14,7 +14,7 @@ import { ProductsHandler } from "src/modules/admins/pages/Products/ProductsPage"
 import { CustomersHandler } from "src/modules/admins/pages/Customers/CustomersPage";
 import { CompaniesHandler } from "src/modules/admins/pages/Companies/CompaniesPage";
 import { ThemePageHandler } from "src/modules/admins/pages/ThemePage";
-import { PlansPageHandler } from "src/modules/admins/pages/Plans/PlansPage";
+import { SubscriptionDetailsPageHandler } from "src/modules/admins/pages/Plans/PlansPage";
 import { MenuButton } from "./styles";
 import { useStore } from "zustand";
 import { useAuthStore } from "src/modules/admins/stores";
@@ -80,7 +80,7 @@ export function MenuContent(props: MenuContentProps) {
         size="lg"
         appearance="subtle"
         block
-        onClick={() => props.onGo(PlansPageHandler.navigate())}
+        onClick={() => props.onGo(SubscriptionDetailsPageHandler.navigate())}
       >
         <FontAwesomeIcon icon={faCreditCard} /> Dados do plano
       </MenuButton>

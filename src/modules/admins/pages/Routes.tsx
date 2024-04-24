@@ -33,8 +33,13 @@ import ProductsEditPage, {
   ProductsEditHandler,
 } from "./Products/ProductsEditPage";
 import ThemePage, { ThemePageHandler } from "./ThemePage";
-import PlansPage, { PlansPageHandler } from "./Plans/PlansPage";
+import SubscriptionDetailsPage, {
+  SubscriptionDetailsPageHandler,
+} from "./Plans/PlansPage";
 import { useEffect } from "react";
+import UpdateSubscriptionPage, {
+  UpdateSubscriptionPageHandler,
+} from "./Plans/UpdateSubscriptionPage";
 
 export default function AdminsRoutes() {
   const requestStore = useStore(useRequestStore);
@@ -86,9 +91,21 @@ export default function AdminsRoutes() {
         <Routes>
           <Route
             path="/*"
-            element={<Navigate to={PlansPageHandler.route()} replace />}
+            element={
+              <Navigate to={SubscriptionDetailsPageHandler.route()} replace />
+            }
           />
-          <Route path={PlansPageHandler.route()} element={<PlansPage />} />
+
+          <Route
+            path={SubscriptionDetailsPageHandler.route()}
+            element={<SubscriptionDetailsPage />}
+          />
+
+          <Route
+            path={UpdateSubscriptionPageHandler.route()}
+            element={<UpdateSubscriptionPage />}
+          />
+
           <Route path={CompaniesHandler.route()} element={<CompaniesPage />} />
         </Routes>
       </AdminMasterpage>
@@ -107,22 +124,26 @@ export default function AdminsRoutes() {
         <Route path={CompaniesHandler.route()} element={<CompaniesPage />} />
 
         <Route path={CustomersHandler.route()} element={<CustomersPage />} />
+
         <Route
           path={CustomersCreateHandler.route()}
           element={<CustomersCreatePage />}
         />
+
         <Route
           path={CustomersDetailsHandler.route()}
           element={<CustomersDetailsPage />}
         />
 
         <Route path={OrdersHandler.route()} element={<OrdersPage />} />
+
         <Route
           path={OrdersDetailsHandler.route()}
           element={<OrdersDetailsPage />}
         />
 
         <Route path={ProductsHandler.route()} element={<ProductsPage />} />
+
         <Route
           path={ProductsCreateHandler.route()}
           element={<ProductsCreatePage />}
@@ -132,7 +153,15 @@ export default function AdminsRoutes() {
           element={<ProductsEditPage />}
         />
 
-        <Route path={PlansPageHandler.route()} element={<PlansPage />} />
+        <Route
+          path={SubscriptionDetailsPageHandler.route()}
+          element={<SubscriptionDetailsPage />}
+        />
+
+        <Route
+          path={UpdateSubscriptionPageHandler.route()}
+          element={<UpdateSubscriptionPage />}
+        />
 
         <Route path={ThemePageHandler.route()} element={<ThemePage />} />
       </Routes>

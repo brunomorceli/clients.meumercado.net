@@ -3,6 +3,7 @@ import { Form, Input } from "rsuite";
 interface InputNumberProps {
   label?: string;
   value: any;
+  maxLength?: number;
   options?: any;
   error?: string | null | undefined;
   onChange: (value: number) => void;
@@ -10,7 +11,11 @@ interface InputNumberProps {
 
 export function InputNumber(props: InputNumberProps) {
   function handleChange(value: string): void {
-    const onlyNumbers = value.replace(/[^0-9]+/g, "");
+    let onlyNumbers = value.replace(/[^0-9]+/g, "");
+    if (props.maxLength) {
+      onlyNumbers = onlyNumbers.substring(0, props.maxLength);
+    }
+
     props.onChange && props.onChange(Number(onlyNumbers));
   }
 
@@ -20,7 +25,7 @@ export function InputNumber(props: InputNumberProps) {
       <Input
         value={`${props.value || ""}`}
         onChange={(val) => handleChange(val)}
-        {...props.options || {}}
+        {...(props.options || {})}
       />
       <Form.ErrorMessage show={Boolean(props.error)}>
         {props.error}

@@ -1,19 +1,31 @@
 export interface ICreditCard {
-  number: string;
-  expMonth: number;
-  expYear: number;
-  cvv: string;
+  cardNumber: string;
   holderName: string;
+  expiryDate: string;
+  cvv: string;
+  holderDocument: string;
 }
 
 export class ICreditCardHandler {
   static empty(): ICreditCard {
     return {
-      number: '',
-      cvv: '',
-      holderName: '',
-      expMonth: 1,
-      expYear: Number(new Date().getFullYear().toString().substring(2)),
+      cardNumber: "",
+      holderName: "",
+      expiryDate: "",
+      cvv: "",
+      holderDocument: "",
+    };
+  }
+
+  static toPagarme(card: ICreditCard): any {
+    const parts = (card.expiryDate || "").split("/");
+    return {
+      number: card.cardNumber,
+      expMonth: Number(parts[0]),
+      expYear: parts.length === 2 ? Number(parts[1]) : 0,
+      cvv: card.cvv,
+      holderName: card.holderName,
+      holderDocument: card.holderDocument,
     };
   }
 }

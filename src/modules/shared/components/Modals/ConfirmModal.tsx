@@ -7,6 +7,7 @@ interface ConfirmModalProps {
   children?: ReactNode | null | undefined;
   confirmText?: string | null | undefined;
   cancelText?: string | null | undefined;
+  disableConfirm?: boolean;
   onClose?: () => void;
   onConfirm?: () => void;
 }
@@ -29,6 +30,7 @@ export function ConfirmModal(props: ConfirmModalProps) {
           </Button>
           <Button
             appearance="primary"
+            disabled={Boolean(props.disableConfirm)}
             onClick={() => props.onConfirm && props.onConfirm()}
           >
             {props.confirmText || "Confirmar"}
